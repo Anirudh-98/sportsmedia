@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SiteShell } from "@/components/layout/SiteShell";
+import { AuthProvider } from "@/context/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,6 +27,14 @@ export const metadata: Metadata = {
     "PET Masters",
     "Sports Scholarships",
   ],
+  icons: {
+    icon: [
+      { url: "/bluezonelogo.webp", type: "image/webp" },
+      { url: "/icon.webp", type: "image/webp" },
+    ],
+    shortcut: "/bluezonelogo.webp",
+    apple: "/bluezonelogo.webp",
+  },
 };
 
 export default function RootLayout({
@@ -38,8 +47,15 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full`}
     >
+      <head>
+        <link rel="icon" href="/bluezonelogo.webp" type="image/webp" />
+        <link rel="shortcut icon" href="/bluezonelogo.webp" type="image/webp" />
+        <link rel="apple-touch-icon" href="/bluezonelogo.webp" />
+      </head>
       <body className="min-h-full flex flex-col bg-[#f8fafc] text-slate-900">
-        <SiteShell>{children}</SiteShell>
+        <AuthProvider>
+          <SiteShell>{children}</SiteShell>
+        </AuthProvider>
       </body>
     </html>
   );

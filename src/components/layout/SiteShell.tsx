@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { TopHeader } from '../header/TopHeader';
 import { MainNavbar } from '../navigation/MainNavbar';
 import { Footer } from '../footer/Footer';
@@ -13,11 +13,24 @@ interface SiteShellProps {
 
 export const SiteShell: React.FC<SiteShellProps> = ({ children }) => {
   const router = useRouter();
+  const pathname = usePathname();
   const [authModal, setAuthModal] = useState<{ isOpen: boolean; mode: 'login' | 'register' }>({
     isOpen: false,
     mode: 'login',
   });
   const [toastNotification, setToastNotification] = useState<string | null>(null);
+
+  const isDashboardOrAuth =
+    pathname?.startsWith('/login') ||
+    pathname?.startsWith('/student') ||
+    pathname?.startsWith('/coach') ||
+    pathname?.startsWith('/school') ||
+    pathname?.startsWith('/sponsor') ||
+    pathname?.startsWith('/admin');
+
+  if (isDashboardOrAuth) {
+    return <main className="w-full min-h-screen flex flex-col">{children}</main>;
+  }
 
   const showToast = (message: string) => {
     setToastNotification(message);

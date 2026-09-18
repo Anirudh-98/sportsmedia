@@ -54,9 +54,16 @@ export default function Home() {
         {/* Column 1: Welcome & Login */}
         <div className="lg:col-span-3 flex flex-col">
           <WelcomeLoginCard
-            onLogin={() => router.push('/about')}
-            onCreateAccount={() => router.push('/contact')}
-            onRoleClick={(role) => router.push(role === 'STUDENTS' ? '/athletes' : role === 'COACHES' ? '/jobs' : '/about')}
+            onLogin={(email) => router.push(email ? `/login?email=${encodeURIComponent(email)}` : '/login')}
+            onCreateAccount={() => router.push('/login?mode=register')}
+            onRoleClick={(role) => {
+              const r = role.toLowerCase().startsWith('student')
+                ? 'student'
+                : role.toLowerCase().startsWith('coach')
+                ? 'coach'
+                : 'school';
+              router.push(`/login?role=${r}`);
+            }}
           />
         </div>
 

@@ -2,7 +2,9 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { FaSearch, FaGlobe } from 'react-icons/fa';
+import Link from 'next/link';
+import { FaSearch, FaGlobe, FaUserShield, FaSignOutAlt } from 'react-icons/fa';
+import { useAuth } from '@/context/AuthContext';
 import {
   FacebookIcon,
   InstagramIcon,
@@ -27,6 +29,7 @@ const SOCIALS = [
 ];
 
 export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenAuth, onSearch }) => {
+  const { user, logout } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -153,20 +156,40 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenAuth, onSearch }) =>
               </form>
 
               <div className="flex items-center gap-2 shrink-0">
-                <button
-                  type="button"
-                  onClick={() => onOpenAuth('login')}
-                  className="rounded-md bg-[#0765AD] px-5 py-2 text-sm font-black uppercase tracking-wider text-white hover:bg-[#054E85] shadow-2xs cursor-pointer active:scale-95 transition-all"
-                >
-                  LOGIN
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onOpenAuth('register')}
-                  className="rounded-md bg-[#159447] px-5 py-2 text-sm font-black uppercase tracking-wider text-white hover:bg-[#0F7538] shadow-2xs cursor-pointer active:scale-95 transition-all"
-                >
-                  REGISTER
-                </button>
+                {user ? (
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href={`/${user.role}/dashboard`}
+                      className="inline-flex items-center gap-1.5 rounded-md bg-[#032D59] px-3.5 py-1.5 text-xs font-black uppercase tracking-wider text-white hover:bg-[#0B5FA5] shadow-xs cursor-pointer active:scale-95 transition-all"
+                    >
+                      <FaUserShield size={12} className="text-[#F4C430]" />
+                      <span>{user.role} Dashboard</span>
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={logout}
+                      title="Sign Out"
+                      className="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors cursor-pointer"
+                    >
+                      <FaSignOutAlt size={14} />
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <Link
+                      href="/login"
+                      className="rounded-md bg-[#0765AD] px-5 py-2 text-sm font-black uppercase tracking-wider text-white hover:bg-[#054E85] shadow-2xs cursor-pointer active:scale-95 transition-all"
+                    >
+                      LOGIN
+                    </Link>
+                    <Link
+                      href="/login?mode=register"
+                      className="rounded-md bg-[#159447] px-5 py-2 text-sm font-black uppercase tracking-wider text-white hover:bg-[#0F7538] shadow-2xs cursor-pointer active:scale-95 transition-all"
+                    >
+                      REGISTER
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
 
