@@ -1,0 +1,46 @@
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
+import { SiteShell } from "@/components/layout/SiteShell";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "SPORTSMEDIA.WORLD | Sports Media Blue Zone - Grassroots Sports Portal",
+  description:
+    "The Digital Gateway to Sports Talent. School, College & Grassroots Sports ecosystem to Identify, Nurture, Promote, and Empower student athletes, PET masters, and coaches.",
+  keywords: [
+    "Sports Media Blue Zone",
+    "SportsMedia.World",
+    "School Sports India",
+    "Grassroots Sports",
+    "College Athletics",
+    "PET Masters",
+    "Sports Scholarships",
+  ],
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} h-full`}
+    >
+      <body className="min-h-full flex flex-col bg-[#f8fafc] text-slate-900">
+        <SiteShell>{children}</SiteShell>
+      </body>
+    </html>
+  );
+}
