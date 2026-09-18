@@ -61,22 +61,28 @@ export const OurImpactCard: React.FC = () => {
             return (
               <div
                 key={idx}
-                className={`${stat.cardBg} ${stat.borderColor} border rounded-md p-2.5 sm:p-3 py-3.5 sm:py-4.5 flex flex-col items-center justify-between text-center min-h-[155px] sm:min-h-[175px] shadow-2xs group hover:scale-105 transition-transform duration-200`}
+                className={`${stat.cardBg} ${stat.borderColor} border rounded-md p-2 sm:p-2.5 py-4 sm:py-5 flex flex-col items-center justify-between text-center min-h-[155px] sm:min-h-[175px] shadow-2xs group hover:scale-105 transition-transform duration-200`}
               >
-                {/* Icon */}
-                <div className={`mt-1.5 ${stat.textColor}`}>
+                {/* Icon row */}
+                <div className={`h-8 flex items-center justify-center ${stat.textColor}`}>
                   <Icon size={24} />
                 </div>
 
-                {/* Number */}
-                <span className={`text-lg sm:text-xl font-black leading-none my-2 ${stat.textColor}`}>
-                  {stat.value}
-                </span>
+                {/* Number row - strictly aligned */}
+                <div className="h-8 flex items-center justify-center my-auto">
+                  <span className={`text-lg sm:text-xl font-black leading-none ${stat.textColor}`}>
+                    {stat.value}
+                  </span>
+                </div>
 
-                {/* Label */}
-                <div className={`text-[10.5px] sm:text-xs font-black uppercase tracking-tight leading-tight ${stat.textColor}`}>
+                {/* Label row - fixed 2-line height for identical baseline */}
+                <div className={`h-9 flex flex-col items-center justify-start text-[10.5px] sm:text-xs font-black uppercase tracking-tight leading-tight ${stat.textColor}`}>
                   <div>{stat.line1}</div>
-                  {stat.line2 && <div>{stat.line2}</div>}
+                  {stat.line2 ? (
+                    <div>{stat.line2}</div>
+                  ) : (
+                    <div className="invisible select-none" aria-hidden="true">&nbsp;</div>
+                  )}
                 </div>
               </div>
             );
