@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { FaTimes, FaLock, FaEnvelope, FaUser, FaCheckCircle } from 'react-icons/fa';
+import { useRouter } from 'next/navigation';
+import { FaTimes, FaLock, FaEnvelope, FaUser, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
 import { BlueZoneTreeLogo } from '../brand/BrandLogos';
+import { useAuth, UserRole } from '@/context/AuthContext';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -15,19 +17,37 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   initialMode = 'login',
   onClose,
 }) => {
+  const router = useRouter();
+  const { login, register } = useAuth();
+
   const [mode, setMode] = useState<'login' | 'register'>(initialMode);
-  const [role, setRole] = useState<'student' | 'coach' | 'school' | 'sponsor'>('student');
-  const [submitted, setSubmitted] = useState(false);
+  const [role, setRole] = useState<UserRole>('student');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
+    setErrorMessage('');
+    setLoading(true);
+
+    try {
+      if (mode === 'register') {
+        if (!name.trim()) throw new Error('Please enter your full name or institution.');
+        await register({ name, email, password, role });
+      } else {
+        await login(email, password, role);
+      }
       onClose();
-    }, 1800);
+    } catch (err: any) {
+      setErrorMessage(err?.message || 'Authentication failed. Please check credentials.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -44,7 +64,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <h3 className="text-lg font-bold uppercase tracking-wide">
                 {mode === 'login' ? 'Portal Login' : 'Register New Account'}
               </h3>
-              <p className="text-sm text-blue-200">SportsMedia Blue Zone Ecosystem</p>
+              <p className="text-sm text-blue-200">SportsMedia.World Role Authentication</p>
             </div>
           </div>
           <button
@@ -60,7 +80,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         <div className="flex border-b border-slate-200 bg-slate-50">
           <button
             type="button"
-            onClick={() => setMode('login')}
+            onClick={() => { setMode('login'); setErrorMessage(''); }}
             className={`flex-1 py-3.5 text-sm font-bold uppercase tracking-wide transition-colors cursor-pointer ${
               mode === 'login'
                 ? 'bg-white text-[#1565c0] border-b-2 border-[#1565c0]'
@@ -71,7 +91,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </button>
           <button
             type="button"
-            onClick={() => setMode('register')}
+            onClick={() => { setMode('register'); setErrorMessage(''); }}
             className={`flex-1 py-3.5 text-sm font-bold uppercase tracking-wide transition-colors cursor-pointer ${
               mode === 'register'
                 ? 'bg-white text-[#2e7d32] border-b-2 border-[#2e7d32]'
@@ -90,14 +110,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           <div className="grid grid-cols-4 gap-2">
             {[
               { id: 'student', label: 'Student' },
-              { id: 'coach', label: 'PET / Coach' },
+              { id: 'coach', label: 'Coach' },
               { id: 'school', label: 'School' },
               { id: 'sponsor', label: 'Sponsor' },
             ].map((r) => (
               <button
                 key={r.id}
                 type="button"
-                onClick={() => setRole(r.id as any)}
+                onClick={() => { setRole(r.id as any); setErrorMessage(''); }}
                 className={`py-2.5 px-2 text-xs font-semibold rounded-lg border transition-all text-center cursor-pointer ${
                   role === r.id
                     ? 'bg-[#0d2240] text-white border-[#0d2240]'
@@ -112,87 +132,85 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
         {/* Form Body */}
         <div className="p-7">
-          {submitted ? (
-            <div className="py-10 flex flex-col items-center justify-center text-center">
-              <FaCheckCircle size={52} className="text-emerald-500 mb-3 animate-bounce" />
-              <h4 className="text-lg font-bold text-slate-800">
-                {mode === 'login' ? 'Login Successful!' : 'Registration Complete!'}
-              </h4>
-              <p className="text-sm text-slate-500 mt-1.5">Welcome to SportsMedia Blue Zone.</p>
+          {errorMessage && (
+            <div className="mb-4 p-3 bg-rose-50 border border-rose-200 rounded-lg text-rose-700 text-xs font-bold flex items-start gap-2">
+              <FaExclamationCircle size={15} className="shrink-0 mt-0.5" />
+              <span>{errorMessage}</span>
             </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {mode === 'register' && (
-                <div>
-                  <label className="block text-sm font-semibold text-slate-700 uppercase tracking-wide mb-1.5">
-                    Full Name / Institution
-                  </label>
-                  <div className="relative">
-                    <FaUser size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Rohit Kumar / DPS Hyderabad"
-                      className="w-full pl-11 pr-4 py-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#1565c0] focus:outline-hidden"
-                    />
-                  </div>
-                </div>
-              )}
-
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 uppercase tracking-wide mb-1.5">
-                  Email Address
-                </label>
-                <div className="relative">
-                  <FaEnvelope size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input
-                    type="email"
-                    required
-                    placeholder="name@school.edu.in"
-                    className="w-full pl-11 pr-4 py-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#1565c0] focus:outline-hidden"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 uppercase tracking-wide mb-1.5">
-                  Password
-                </label>
-                <div className="relative">
-                  <FaLock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input
-                    type="password"
-                    required
-                    placeholder="••••••••"
-                    className="w-full pl-11 pr-4 py-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#1565c0] focus:outline-hidden"
-                  />
-                </div>
-              </div>
-
-              {mode === 'login' && (
-                <div className="flex items-center justify-between text-sm text-slate-600">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" className="w-4 h-4 rounded text-[#1565c0]" />
-                    <span>Remember me</span>
-                  </label>
-                  <a href="#" className="font-semibold text-[#1565c0] hover:underline">
-                    Forgot password?
-                  </a>
-                </div>
-              )}
-
-              <button
-                type="submit"
-                className={`w-full py-3.5 rounded-lg text-white font-bold text-sm uppercase tracking-wide shadow-sm hover:shadow-md transition-all mt-5 cursor-pointer ${
-                  mode === 'login'
-                    ? 'bg-[#1565c0] hover:bg-[#0d47a1]'
-                    : 'bg-[#2e7d32] hover:bg-[#1b5e20]'
-                }`}
-              >
-                {mode === 'login' ? `LOGIN AS ${role.toUpperCase()}` : 'CREATE FREE ACCOUNT'}
-              </button>
-            </form>
           )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {mode === 'register' && (
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 uppercase tracking-wide mb-1.5">
+                  Full Name / Institution
+                </label>
+                <div className="relative">
+                  <FaUser size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="e.g. Rohit Kumar / DPS Hyderabad"
+                    className="w-full pl-11 pr-4 py-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#1565c0] focus:outline-hidden"
+                  />
+                </div>
+              </div>
+            )}
+
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 uppercase tracking-wide mb-1.5">
+                Email Address
+              </label>
+              <div className="relative">
+                <FaEnvelope size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="name@example.com"
+                  className="w-full pl-11 pr-4 py-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#1565c0] focus:outline-hidden"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 uppercase tracking-wide mb-1.5">
+                Password
+              </label>
+              <div className="relative">
+                <FaLock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full pl-11 pr-4 py-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#1565c0] focus:outline-hidden"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full py-3.5 rounded-lg text-white font-bold text-sm uppercase tracking-wide shadow-sm hover:shadow-md transition-all mt-5 cursor-pointer disabled:opacity-60 flex items-center justify-center gap-2 ${
+                mode === 'login'
+                  ? 'bg-[#1565c0] hover:bg-[#0d47a1]'
+                  : 'bg-[#2e7d32] hover:bg-[#1b5e20]'
+              }`}
+            >
+              {loading ? (
+                <span>Authenticating...</span>
+              ) : mode === 'login' ? (
+                `LOGIN AS ${role.toUpperCase()}`
+              ) : (
+                'CREATE ACCOUNT'
+              )}
+            </button>
+          </form>
         </div>
 
       </div>

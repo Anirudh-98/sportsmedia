@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
@@ -12,11 +12,11 @@ import {
   FaCheckCircle,
   FaBroadcastTower,
   FaChevronRight,
-  FaExchangeAlt,
   FaShieldAlt,
   FaLock,
   FaCheck,
   FaTimesCircle,
+  FaExclamationTriangle,
 } from 'react-icons/fa';
 import { useAuth, UserRole } from '@/context/AuthContext';
 import { BlueZoneTreeLogo } from '@/components/brand/BrandLogos';
@@ -48,19 +48,143 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
 }) => {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, logout, demoLogin } = useAuth();
+  const { user, logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [showRoleSwitcher, setShowRoleSwitcher] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [showPermissionsModal, setShowPermissionsModal] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const permissionSummary = getRolePermissionSummary(role);
   const matrix = ROLE_PERMISSION_MATRIX[role];
 
-  const handleRoleSwitch = (newRole: UserRole) => {
-    setShowRoleSwitcher(false);
-    demoLogin(newRole);
-  };
+  // 1. Loading State during SSR hydration / session check
+  if (!isClient) {
+    return (
+      <div className="min-h-screen w-full flex flex-col items-center justify-center bg-[#F4F7FB]">
+        <div
+          className="w-10 h-10 border-4 border-t-transparent rounded-full animate-spin mb-3"
+          style={{ borderColor: `${themeColor} transparent ${themeColor} ${themeColor}` }}
+        />
+        <p className="text-xs font-black uppercase tracking-wider text-slate-700">
+          Authenticating {roleTitle} Session...
+        </p>
+      </div>
+    );
+  }
+
+  // 2. Strict Authentication Guard: Unauthenticated users cannot access dashboards
+  if (!user) {
+    return (
+      <div className="min-h-screen w-full bg-gradient-to-b from-[#F0F5FA] via-[#F8FAFC] to-white flex flex-col justify-between py-12 px-4 antialiased">
+        <div className="max-w-md w-full mx-auto my-auto bg-white rounded-2xl shadow-xl border border-slate-200 p-8 text-center flex flex-col items-center animate-in fade-in">
+          <div className="w-16 h-16 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mb-4 shadow-inner">
+            <FaLock size={26} />
+          </div>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 text-rose-700 text-[11px] font-black uppercase tracking-wider mb-3 border border-rose-200">
+            <FaShieldAlt size={12} />
+            Strict Access Control
+          </div>
+          <h2 className="text-xl font-black text-[#032D59] uppercase tracking-tight mb-2">
+            Authentication Required
+          </h2>
+          <p className="text-xs text-slate-600 font-medium leading-relaxed mb-6">
+            Access to the <span className="font-black text-slate-900">{roleTitle}</span> dashboard is restricted. You must sign in with an authorized account to access this area.
+          </p>
+          <div className="w-full space-y-2.5">
+            <button
+              type="button"
+              onClick={() => router.push(`/login?role=${role}`)}
+              className="w-full py-3 px-4 rounded-xl text-white text-xs font-black uppercase tracking-wider shadow-md hover:opacity-95 transition-all cursor-pointer"
+              style={{ backgroundColor: themeColor }}
+            >
+              Sign In to {roleTitle}
+            </button>
+            <Link
+              href="/"
+              className="block w-full py-2.5 text-xs font-black text-slate-600 hover:text-slate-900 transition-colors"
+            >
+              Return to Public Portal
+            </Link>
+          </div>
+        </div>
+        <div className="text-center text-[11px] text-slate-400 font-semibold">
+          &copy; 2026 SportsMedia.World &bull; Zero-Trust Role Security Enforced
+        </div>
+      </div>
+    );
+  }
+
+  // 3. Strict Role-Based Authorization Guard:
+  // - Admin dashboard strictly requires 'admin' role
+  // - Other dashboards strictly require matching role (or admin oversight)
+  const isAuthorized = role === 'admin'
+    ? user.role === 'admin'
+    : (user.role === role || user.role === 'admin');
+
+  if (!isAuthorized) {
+    return (
+      <div className="min-h-screen w-full bg-gradient-to-b from-[#F0F5FA] via-[#F8FAFC] to-white flex flex-col justify-between py-12 px-4 antialiased">
+        <div className="max-w-lg w-full mx-auto my-auto bg-white rounded-2xl shadow-xl border border-rose-200 p-8 text-center flex flex-col items-center animate-in fade-in">
+          <div className="w-16 h-16 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mb-4 shadow-inner">
+            <FaExclamationTriangle size={28} />
+          </div>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 text-rose-700 text-[11px] font-black uppercase tracking-wider mb-3 border border-rose-200">
+            <FaShieldAlt size={12} />
+            403 Forbidden &bull; Role Isolation
+          </div>
+          <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight mb-2">
+            Role Authorization Failed
+          </h2>
+          <p className="text-xs text-slate-600 font-medium leading-relaxed mb-4">
+            You are currently signed in as <span className="font-black text-slate-900">{user.name}</span> under the <span className="font-black text-blue-700 uppercase">{user.role}</span> role.
+          </p>
+
+          <div className="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 mb-6 text-left space-y-2 text-xs">
+            <div className="flex justify-between">
+              <span className="text-slate-500 font-bold">Authenticated User:</span>
+              <span className="font-black text-slate-800">{user.email}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-500 font-bold">Your Authorized Role:</span>
+              <span className="font-black text-emerald-700 uppercase">{user.role}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-500 font-bold">Target Dashboard:</span>
+              <span className="font-black text-rose-700 uppercase">{role} (RESTRICTED)</span>
+            </div>
+          </div>
+
+          <p className="text-[11px] text-slate-500 font-semibold mb-6 leading-normal">
+            SportsMedia.World enforces strict role isolation. In-dashboard role switching is disabled. You can only access your designated role dashboard or sign out to authenticate with a different account.
+          </p>
+
+          <div className="w-full space-y-2.5">
+            <button
+              type="button"
+              onClick={() => router.push(`/${user.role}/dashboard`)}
+              className="w-full py-3 px-4 rounded-xl bg-[#032D59] hover:bg-[#0B5FA5] text-white text-xs font-black uppercase tracking-wider shadow-md transition-all cursor-pointer"
+            >
+              Go to My {user.role.toUpperCase()} Dashboard
+            </button>
+            <button
+              type="button"
+              onClick={logout}
+              className="w-full py-2.5 px-4 rounded-xl border border-slate-300 hover:bg-rose-50 hover:border-rose-200 text-rose-600 text-xs font-black uppercase tracking-wider transition-colors cursor-pointer"
+            >
+              Sign Out / Switch Account
+            </button>
+          </div>
+        </div>
+        <div className="text-center text-[11px] text-slate-400 font-semibold">
+          &copy; 2026 SportsMedia.World &bull; Zero-Trust Role Security Enforced
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen w-full bg-[#F4F7FB] flex flex-col antialiased text-slate-800">
@@ -118,49 +242,8 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
           </div>
         </div>
 
-        {/* Right: Quick Role Switcher + Notifications + User Avatar */}
+        {/* Right: Notifications + Authenticated User Pill + Sign Out (NO Role Switcher) */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Quick Switch Role Dropdown */}
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => setShowRoleSwitcher(!showRoleSwitcher)}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-md transition-colors cursor-pointer"
-            >
-              <FaExchangeAlt size={11} className="text-[#0B5FA5]" />
-              <span className="hidden md:inline">Switch Role</span>
-            </button>
-
-            {showRoleSwitcher && (
-              <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50 animate-in fade-in">
-                <div className="px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-slate-400 border-b border-slate-100">
-                  Switch Dashboard (Realtime)
-                </div>
-                {[
-                  { id: 'student', label: 'Student (Journalism)', color: '#0B5FA5' },
-                  { id: 'coach', label: 'Coach (Athletes)', color: '#168C45' },
-                  { id: 'school', label: 'School (Institution)', color: '#7E378B' },
-                  { id: 'sponsor', label: 'Sponsor (Talent Grants)', color: '#F28C28' },
-                  { id: 'admin', label: 'Super Admin', color: '#032D59' },
-                ].map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => handleRoleSwitch(item.id as UserRole)}
-                    className={`w-full text-left px-3 py-2 text-xs font-black flex items-center justify-between hover:bg-slate-50 cursor-pointer ${
-                      role === item.id ? 'bg-blue-50/60 text-[#0B5FA5]' : 'text-slate-700'
-                    }`}
-                  >
-                    <span className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
-                      {item.label}
-                    </span>
-                    {role === item.id && <FaCheckCircle size={12} className="text-[#0B5FA5]" />}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
 
           {/* Notifications Trigger */}
           <div className="relative">

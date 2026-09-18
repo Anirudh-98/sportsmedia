@@ -53,18 +53,7 @@ export default function Home() {
       <section className="w-full grid grid-cols-1 lg:grid-cols-12 gap-1 sm:gap-1.5 items-stretch">
         {/* Column 1: Welcome & Login */}
         <div className="lg:col-span-3 flex flex-col">
-          <WelcomeLoginCard
-            onLogin={(email) => router.push(email ? `/login?email=${encodeURIComponent(email)}` : '/login')}
-            onCreateAccount={() => router.push('/login?mode=register')}
-            onRoleClick={(role) => {
-              const r = role.toLowerCase().startsWith('student')
-                ? 'student'
-                : role.toLowerCase().startsWith('coach')
-                ? 'coach'
-                : 'school';
-              router.push(`/login?role=${r}`);
-            }}
-          />
+          <WelcomeLoginCard />
         </div>
 
         {/* Column 2: YouTube Video Player Showcase */}

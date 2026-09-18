@@ -174,6 +174,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, password?: string, targetRole?: UserRole): Promise<UserRole> => {
     const cleanEmail = email.trim().toLowerCase();
 
+    if (!cleanEmail) {
+      throw new Error('Please enter your registered email address.');
+    }
+
+    if (!password || password.length < 4) {
+      throw new Error('Please enter a valid password (minimum 4 characters).');
+    }
+
+    // Strict Admin verification
+    if (targetRole === 'admin' && !cleanEmail.includes('admin') && cleanEmail !== 'admin@sportsmedia.world') {
+      throw new Error('Access Denied: Only verified administrator credentials are authorized for the Admin portal.');
+    }
+
     // Check Cloud Firestore for existing user profile
     let detectedRole: UserRole = targetRole || 'student';
     let detectedName = cleanEmail.split('@')[0];
@@ -184,24 +197,53 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const querySnap = await getDocs(q);
       if (!querySnap.empty) {
         const userData = querySnap.docs[0].data();
-        detectedRole = userData.role as UserRole;
+        const accountRole = (userData.role || 'student') as UserRole;
+
+        // Strict role validation: account role must match selected portal role
+        if (targetRole && accountRole !== targetRole) {
+          throw new Error(
+            `Access Denied: This account is registered under the ${accountRole.toUpperCase()} role. You cannot sign in through the ${targetRole.toUpperCase()} portal. Please select the ${accountRole.toUpperCase()} tab.`
+          );
+        }
+
+        detectedRole = accountRole;
         detectedName = userData.name || detectedName;
         detectedInstitution = userData.institution || '';
       } else {
-        // Fallback detection by email / target role
-        if (cleanEmail.includes('admin')) detectedRole = 'admin';
-        else if (cleanEmail.includes('coach')) detectedRole = 'coach';
-        else if (cleanEmail.includes('school')) detectedRole = 'school';
-        else if (cleanEmail.includes('sponsor')) detectedRole = 'sponsor';
-        else if (cleanEmail.includes('student') || cleanEmail.includes('journalist')) detectedRole = 'student';
-        else if (targetRole) detectedRole = targetRole;
+        // Validation against official role presets
+        if (targetRole === 'admin') {
+          if (!cleanEmail.includes('admin')) {
+            throw new Error('Access Denied: Only authorized administrator emails can access the Admin portal.');
+          }
+          detectedRole = 'admin';
+        } else if (targetRole === 'coach') {
+          if (cleanEmail.includes('student') || cleanEmail.includes('school') || cleanEmail.includes('sponsor')) {
+            throw new Error('Role Mismatch: Credentials do not match the Coach role. Please use coach credentials or select your matching role.');
+          }
+          detectedRole = 'coach';
+        } else if (targetRole === 'school') {
+          if (cleanEmail.includes('student') || cleanEmail.includes('coach') || cleanEmail.includes('sponsor')) {
+            throw new Error('Role Mismatch: Credentials do not match the School role. Please use school credentials or select your matching role.');
+          }
+          detectedRole = 'school';
+        } else if (targetRole === 'sponsor') {
+          if (cleanEmail.includes('student') || cleanEmail.includes('coach') || cleanEmail.includes('school')) {
+            throw new Error('Role Mismatch: Credentials do not match the Sponsor role. Please use sponsor credentials or select your matching role.');
+          }
+          detectedRole = 'sponsor';
+        } else if (targetRole === 'student') {
+          if (cleanEmail.includes('admin') || cleanEmail.includes('coach') || cleanEmail.includes('school')) {
+            throw new Error('Role Mismatch: Credentials do not match the Student role. Please use student credentials or select your matching role.');
+          }
+          detectedRole = 'student';
+        }
       }
-    } catch (e) {
-      if (cleanEmail.includes('admin')) detectedRole = 'admin';
-      else if (cleanEmail.includes('coach')) detectedRole = 'coach';
-      else if (cleanEmail.includes('school')) detectedRole = 'school';
-      else if (cleanEmail.includes('sponsor')) detectedRole = 'sponsor';
-      else if (targetRole) detectedRole = targetRole;
+    } catch (e: any) {
+      if (e.message && e.message.includes('Access Denied') || e.message?.includes('Role Mismatch')) {
+        throw e;
+      }
+      // Fallback detection
+      if (targetRole) detectedRole = targetRole;
     }
 
     const preset = PRESET_ACCOUNTS[detectedRole];
@@ -215,7 +257,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     saveSession(newSession);
 
-    // Route to dedicated dashboard based upon login credentials and role
+    // Route strictly to the user's dedicated dashboard based upon verified role
     router.push(getDashboardPath(detectedRole));
     return detectedRole;
   };

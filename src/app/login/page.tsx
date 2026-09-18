@@ -98,7 +98,7 @@ const ROLES: RoleOption[] = [
 function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { login, register, demoLogin } = useAuth();
+  const { login, register } = useAuth();
 
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [selectedRole, setSelectedRole] = useState<UserRole>('student');
@@ -162,11 +162,6 @@ function LoginContent() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleQuickDemo = (roleId: UserRole) => {
-    setLoading(true);
-    demoLogin(roleId);
   };
 
   const activeRoleConfig = ROLES.find((r) => r.id === selectedRole) || ROLES[0];
@@ -459,20 +454,23 @@ function LoginContent() {
               )}
             </button>
 
-            {/* One-Click Demo Login Button */}
-            <div className="pt-2">
-              <button
-                type="button"
-                onClick={() => handleQuickDemo(selectedRole)}
-                className="w-full py-2.5 px-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-black uppercase tracking-wider rounded-lg shadow-xs flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-98"
-              >
-                <FaBolt size={13} className="animate-pulse" />
-                <span>One-Click Realtime Demo ({activeRoleConfig.title})</span>
-              </button>
-              <p className="text-[10px] text-center text-slate-500 font-semibold mt-1.5">
-                Sign in instantly to test the live {activeRoleConfig.title} dashboard with real data and real-time syncing.
-              </p>
-            </div>
+            {/* Prefill Credentials Helper */}
+            {mode === 'login' && (
+              <div className="pt-2 text-center">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEmail(PRESET_ACCOUNTS[selectedRole].email);
+                    setPassword('sports123');
+                    setErrorMessage('');
+                  }}
+                  className="text-xs font-bold text-slate-500 hover:text-[#0B5FA5] hover:underline cursor-pointer inline-flex items-center gap-1.5"
+                >
+                  <FaBolt size={11} className="text-amber-500" />
+                  <span>Fill Official Test Credentials for {activeRoleConfig.title}</span>
+                </button>
+              </div>
+            )}
           </form>
         </div>
       </div>
