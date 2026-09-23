@@ -163,7 +163,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenAuth, onSearch }) =>
                       className="inline-flex items-center gap-1.5 rounded-md bg-[#032D59] px-3.5 py-1.5 text-xs font-black uppercase tracking-wider text-white hover:bg-[#0B5FA5] shadow-xs cursor-pointer active:scale-95 transition-all"
                     >
                       <FaUserShield size={12} className="text-[#F4C430]" />
-                      <span>{user.role} Dashboard</span>
+                      <span>{user.role === 'student' ? 'Trainee Journalist' : user.role} Dashboard</span>
                     </Link>
                     <button
                       type="button"

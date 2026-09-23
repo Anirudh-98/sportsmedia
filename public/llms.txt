@@ -1,0 +1,34 @@
+# SportsMedia.World
+
+> The digital gateway to sports talent: a grassroots sports media and journalism
+> platform connecting student athletes, coaches, schools, and CSR sponsors across
+> India. Its mission is to identify, nurture, promote, and empower student
+> athletes, PE teachers/coaches, and grassroots sports programs.
+
+SportsMedia.World is a Blue Zone initiative combining a public sports-news
+portal with a trainee sports-journalism school and a role-based platform
+connecting five kinds of users: trainee journalists (students), coaches,
+schools, CSR sponsors, and platform administrators.
+
+## Public content
+
+- [Home](/): overview of the platform, featured athletes, events, and news.
+- [About](/about): background on the Blue Zone / SportsMedia.World initiative.
+- [Athletes](/athletes): directory of featured grassroots athletes.
+- [Events](/events): upcoming and past grassroots sporting events.
+- [News](/news): sports journalism articles produced by trainee journalists.
+- [Journalism School](/journalism): the sports-journalism training program.
+- [Gallery](/gallery): photo coverage from events and academies.
+- [Initiatives](/initiatives): CSR and grassroots-development programs.
+- [Scholarship](/scholarship): athlete scholarship and sponsorship information.
+- [Sports](/sports): sports disciplines covered by the platform.
+- [Clubs](/clubs): affiliated clubs and academies.
+- [Jobs](/jobs): sports-sector opportunities.
+- [Livestream](/livestream) / [YouTube](/youtube): live and recorded match coverage.
+- [Contact](/contact): how to reach the SportsMedia.World team.
+
+## Not for indexing
+
+`/login` and everything under `/admin`, `/coach`, `/school`, `/sponsor`, and
+`/student` are authenticated, role-specific application dashboards, not public
+content. Please do not crawl, index, or summarize them as editorial content.

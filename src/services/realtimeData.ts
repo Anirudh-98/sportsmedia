@@ -1,23 +1,22 @@
 'use client';
 
-import {
-  collection,
-  doc,
-  setDoc,
-  updateDoc,
-  onSnapshot,
-  query,
-  orderBy,
-  serverTimestamp,
-  getDocs,
-} from 'firebase/firestore';
-import { db } from '@/lib/firebase';
-import { TOP_ATHLETES, Athlete } from '@/data/athletes';
-import { UPCOMING_EVENTS, SportsEvent } from '@/data/events';
+// ==========================================
+// 1. DATA TYPES (Preserving 100% type compatibility)
+// ==========================================
 
-// ==========================================
-// 1. DATA TYPES
-// ==========================================
+export interface AppUser {
+  id: string;
+  name: string;
+  email: string;
+  role: 'student' | 'coach' | 'school' | 'sponsor' | 'admin';
+  institution?: string;
+  avatar?: string;
+  status: 'Active' | 'Verified' | 'Pending' | 'Suspended';
+  joinedDate?: string;
+  createdAt?: any;
+}
+
+export type FirestoreUser = AppUser;
 
 export interface Course {
   id: string;
@@ -96,7 +95,7 @@ export interface SponsorshipProgram {
 
 export interface PendingApproval {
   id: string;
-  type: 'Student Registration' | 'Coach Registration' | 'School Verification' | 'Sponsor Verification' | 'Article Moderation' | 'Event Submission';
+  type: 'Trainee Journalist Registration' | 'Coach Registration' | 'School Verification' | 'Sponsor Verification' | 'Article Moderation' | 'Event Submission';
   title: string;
   submittedBy: string;
   role: string;
@@ -117,7 +116,7 @@ export interface MediaUpload {
 }
 
 // ==========================================
-// 2. INITIAL REAL DATA SEEDS
+// 2. INITIAL SEEDS (Used for immediate render & offline caching)
 // ==========================================
 
 const INITIAL_COURSES: Course[] = [
@@ -230,7 +229,7 @@ const INITIAL_ARTICLES: Article[] = [
     category: 'Cricket',
     status: 'published',
     authorName: 'Anirudh',
-    authorRole: 'Student Journalist',
+    authorRole: 'Trainee Journalist',
     views: 1420,
     publishedAt: '12 Sep 2026',
   },
@@ -241,7 +240,7 @@ const INITIAL_ARTICLES: Article[] = [
     category: 'Badminton',
     status: 'published',
     authorName: 'Anirudh',
-    authorRole: 'Student Journalist',
+    authorRole: 'Trainee Journalist',
     views: 980,
     publishedAt: '08 Sep 2026',
   },
@@ -252,7 +251,7 @@ const INITIAL_ARTICLES: Article[] = [
     category: 'Athletics',
     status: 'published',
     authorName: 'Anirudh',
-    authorRole: 'Student Journalist',
+    authorRole: 'Trainee Journalist',
     views: 740,
     publishedAt: '01 Sep 2026',
   },
@@ -263,7 +262,7 @@ const INITIAL_ARTICLES: Article[] = [
     category: 'Cricket',
     status: 'pending_approval',
     authorName: 'Anirudh',
-    authorRole: 'Student Journalist',
+    authorRole: 'Trainee Journalist',
     views: 0,
     publishedAt: 'Pending Review',
   },
@@ -391,8 +390,8 @@ const INITIAL_PENDING_APPROVALS: PendingApproval[] = [
     id: 'appr-1',
     type: 'Article Moderation',
     title: 'Next Gen Cricket Player Auction Analysis',
-    submittedBy: 'Anirudh (Student)',
-    role: 'Student Journalist',
+    submittedBy: 'Anirudh (Trainee Journalist)',
+    role: 'Trainee Journalist',
     timestamp: '2 hours ago',
     status: 'pending',
     details: 'Draft article examining grassroots analytics and player scouting bids.',
@@ -472,8 +471,56 @@ const INITIAL_MEDIA_UPLOADS: MediaUpload[] = [
   },
 ];
 
+export const INITIAL_USERS: AppUser[] = [
+  {
+    id: 'usr-student-1',
+    name: 'Anirudh',
+    email: 'student@sportsmedia.world',
+    role: 'student',
+    institution: 'Sports Media Journalism School',
+    status: 'Active',
+    joinedDate: '01 Jan 2026',
+  },
+  {
+    id: 'usr-coach-1',
+    name: 'Coach Rajesh Sharma',
+    email: 'coach@sportsmedia.world',
+    role: 'coach',
+    institution: 'NIS Athletics Academy & DPS Hyderabad',
+    status: 'Active',
+    joinedDate: '15 Jan 2026',
+  },
+  {
+    id: 'usr-school-1',
+    name: 'ABC International School',
+    email: 'school@sportsmedia.world',
+    role: 'school',
+    institution: 'Hyderabad Sports Wing',
+    status: 'Verified',
+    joinedDate: '20 Jan 2026',
+  },
+  {
+    id: 'usr-sponsor-1',
+    name: 'BlueZone Sports Fund',
+    email: 'sponsor@sportsmedia.world',
+    role: 'sponsor',
+    institution: 'Grassroots Sports Impact Foundation',
+    status: 'Verified',
+    joinedDate: '10 Feb 2026',
+  },
+  {
+    id: 'usr-admin-1',
+    name: 'Super Administrator',
+    email: 'admin@sportsmedia.world',
+    role: 'admin',
+    institution: 'SportsMedia.World Central HQ',
+    status: 'Active',
+    joinedDate: '01 Jan 2026',
+  },
+];
+
 // ==========================================
-// 3. REACTIVE STORAGE WITH FIRESTORE FALLBACK
+// 3. REACTIVE CLIENT STORE WITH BACKGROUND API SYNC
 // ==========================================
 
 class RealtimeStore {
@@ -495,7 +542,7 @@ class RealtimeStore {
     try {
       const stored = localStorage.getItem(`sm_realtime_${key}`);
       return stored ? JSON.parse(stored) : defaultVal;
-    } catch (e) {
+    } catch {
       return defaultVal;
     }
   }
@@ -510,7 +557,12 @@ class RealtimeStore {
     }
   }
 
-  subscribe<T>(key: string, initialDefault: T, callback: (data: T) => void): () => void {
+  subscribe<T>(
+    key: string,
+    initialDefault: T,
+    callback: (data: T) => void,
+    fetchRemote?: () => Promise<T | null>
+  ): () => void {
     if (!this.listeners[key]) {
       this.listeners[key] = new Set();
     }
@@ -518,6 +570,15 @@ class RealtimeStore {
 
     const current = this.get<T>(key, initialDefault);
     callback(current);
+
+    // Initial remote fetch
+    if (fetchRemote) {
+      fetchRemote().then((remoteData) => {
+        if (remoteData) {
+          this.set(key, remoteData);
+        }
+      });
+    }
 
     return () => {
       this.listeners[key]?.delete(callback);
@@ -539,19 +600,41 @@ class RealtimeStore {
 
 const store = new RealtimeStore();
 
+// Helper to fetch from Route Handlers
+async function fetchApi<T>(url: string): Promise<T | null> {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json.success ? json.data : null;
+  } catch {
+    return null;
+  }
+}
+
 // ==========================================
 // 4. PUBLIC REALTIME HOOKS & ACTIONS
 // ==========================================
 
 export const subscribeCourses = (callback: (courses: Course[]) => void) => {
-  return store.subscribe<Course[]>('courses', INITIAL_COURSES, callback);
+  return store.subscribe<Course[]>(
+    'courses',
+    INITIAL_COURSES,
+    callback,
+    () => fetchApi<Course[]>('/api/courses')
+  );
 };
 
 export const subscribeAssignments = (callback: (assignments: Assignment[]) => void) => {
-  return store.subscribe<Assignment[]>('assignments', INITIAL_ASSIGNMENTS, callback);
+  return store.subscribe<Assignment[]>(
+    'assignments',
+    INITIAL_ASSIGNMENTS,
+    callback,
+    () => fetchApi<Assignment[]>('/api/assignments')
+  );
 };
 
-export const submitAssignment = (data: {
+export const submitAssignment = async (data: {
   assignmentId: string;
   notes?: string;
   studentName: string;
@@ -565,19 +648,34 @@ export const submitAssignment = (data: {
   store.set('assignments', updated);
 
   addPendingApproval({
-    type: 'Student Registration',
+    type: 'Trainee Journalist Registration',
     title: `Assignment Submission: ${assignments.find((a) => a.id === data.assignmentId)?.title || 'Assignment'}`,
     submittedBy: data.studentName,
-    role: 'Student Journalist',
-    details: data.notes || 'Student submitted completed report for grading.',
+    role: 'Trainee Journalist',
+    details: data.notes || 'Trainee Journalist submitted completed report for grading.',
   });
+
+  try {
+    await fetch('/api/assignments', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+  } catch (err) {
+    console.warn('Assignment submission background sync warning:', err);
+  }
 };
 
 export const subscribeArticles = (callback: (articles: Article[]) => void) => {
-  return store.subscribe<Article[]>('articles', INITIAL_ARTICLES, callback);
+  return store.subscribe<Article[]>(
+    'articles',
+    INITIAL_ARTICLES,
+    callback,
+    () => fetchApi<Article[]>('/api/articles')
+  );
 };
 
-export const submitArticle = (data: {
+export const submitArticle = async (data: {
   title: string;
   excerpt: string;
   category: string;
@@ -606,14 +704,33 @@ export const submitArticle = (data: {
     details: data.excerpt,
   });
 
+  try {
+    const res = await fetch('/api/articles', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (res.ok) {
+      const json = await res.json();
+      if (json.data) return json.data;
+    }
+  } catch (err) {
+    console.warn('Article submission background sync warning:', err);
+  }
+
   return newArticle;
 };
 
 export const subscribeCoachAthletes = (callback: (athletes: CoachAthlete[]) => void) => {
-  return store.subscribe<CoachAthlete[]>('coach_athletes', INITIAL_COACH_ATHLETES, callback);
+  return store.subscribe<CoachAthlete[]>(
+    'coach_athletes',
+    INITIAL_COACH_ATHLETES,
+    callback,
+    () => fetchApi<CoachAthlete[]>('/api/athletes')
+  );
 };
 
-export const addCoachAthlete = (data: Omit<CoachAthlete, 'id'>) => {
+export const addCoachAthlete = async (data: Omit<CoachAthlete, 'id'>) => {
   const athletes = store.get<CoachAthlete[]>('coach_athletes', INITIAL_COACH_ATHLETES);
   const newAthlete: CoachAthlete = {
     ...data,
@@ -629,25 +746,60 @@ export const addCoachAthlete = (data: Omit<CoachAthlete, 'id'>) => {
     details: `Performance baseline: ${data.performance}%, School: ${data.school}`,
   });
 
+  try {
+    const res = await fetch('/api/athletes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (res.ok) {
+      const json = await res.json();
+      if (json.data) return json.data;
+    }
+  } catch (err) {
+    console.warn('Coach athlete sync warning:', err);
+  }
+
   return newAthlete;
 };
 
 export const subscribeSchoolInfo = (callback: (school: SchoolInfo) => void) => {
-  return store.subscribe<SchoolInfo>('school_info', INITIAL_SCHOOL_INFO, callback);
+  return store.subscribe<SchoolInfo>(
+    'school_info',
+    INITIAL_SCHOOL_INFO,
+    callback,
+    () => fetchApi<SchoolInfo>('/api/schools')
+  );
 };
 
-export const updateSchoolInfo = (data: Partial<SchoolInfo>) => {
+export const updateSchoolInfo = async (data: Partial<SchoolInfo>) => {
   const current = store.get<SchoolInfo>('school_info', INITIAL_SCHOOL_INFO);
   const updated = { ...current, ...data };
   store.set('school_info', updated);
+
+  try {
+    await fetch('/api/schools', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+  } catch (err) {
+    console.warn('School info sync warning:', err);
+  }
+
   return updated;
 };
 
 export const subscribeSponsorshipPrograms = (callback: (programs: SponsorshipProgram[]) => void) => {
-  return store.subscribe<SponsorshipProgram[]>('sponsorship_programs', INITIAL_SPONSOR_PROGRAMS, callback);
+  return store.subscribe<SponsorshipProgram[]>(
+    'sponsorship_programs',
+    INITIAL_SPONSOR_PROGRAMS,
+    callback,
+    () => fetchApi<SponsorshipProgram[]>('/api/sponsorships')
+  );
 };
 
-export const sponsorAthleteOrProgram = (data: {
+export const sponsorAthleteOrProgram = async (data: {
   programId?: string;
   athleteName?: string;
   sponsorName: string;
@@ -680,13 +832,28 @@ export const sponsorAthleteOrProgram = (data: {
     role: 'Sponsor',
     details: `Allocated to ${data.athleteName || 'Program funding'}. Awaiting fund disbursement confirmation.`,
   });
+
+  try {
+    await fetch('/api/sponsorships', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+  } catch (err) {
+    console.warn('Sponsorship sync warning:', err);
+  }
 };
 
 export const subscribeMediaUploads = (callback: (media: MediaUpload[]) => void) => {
-  return store.subscribe<MediaUpload[]>('media_uploads', INITIAL_MEDIA_UPLOADS, callback);
+  return store.subscribe<MediaUpload[]>(
+    'media_uploads',
+    INITIAL_MEDIA_UPLOADS,
+    callback,
+    () => fetchApi<MediaUpload[]>('/api/media')
+  );
 };
 
-export const addMediaUpload = (data: Omit<MediaUpload, 'id' | 'uploadedAt'>) => {
+export const addMediaUpload = async (data: Omit<MediaUpload, 'id' | 'uploadedAt'>) => {
   const mediaList = store.get<MediaUpload[]>('media_uploads', INITIAL_MEDIA_UPLOADS);
   const newMedia: MediaUpload = {
     ...data,
@@ -694,14 +861,34 @@ export const addMediaUpload = (data: Omit<MediaUpload, 'id' | 'uploadedAt'>) => 
     uploadedAt: 'Just now',
   };
   store.set('media_uploads', [newMedia, ...mediaList]);
+
+  try {
+    const res = await fetch('/api/media', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (res.ok) {
+      const json = await res.json();
+      if (json.data) return json.data;
+    }
+  } catch (err) {
+    console.warn('Media upload sync warning:', err);
+  }
+
   return newMedia;
 };
 
 export const subscribePendingApprovals = (callback: (approvals: PendingApproval[]) => void) => {
-  return store.subscribe<PendingApproval[]>('pending_approvals', INITIAL_PENDING_APPROVALS, callback);
+  return store.subscribe<PendingApproval[]>(
+    'pending_approvals',
+    INITIAL_PENDING_APPROVALS,
+    callback,
+    () => fetchApi<PendingApproval[]>('/api/approvals')
+  );
 };
 
-export const addPendingApproval = (data: Omit<PendingApproval, 'id' | 'timestamp' | 'status'>) => {
+export const addPendingApproval = async (data: Omit<PendingApproval, 'id' | 'timestamp' | 'status'>) => {
   const approvals = store.get<PendingApproval[]>('pending_approvals', INITIAL_PENDING_APPROVALS);
   const newApproval: PendingApproval = {
     ...data,
@@ -710,9 +897,19 @@ export const addPendingApproval = (data: Omit<PendingApproval, 'id' | 'timestamp
     status: 'pending',
   };
   store.set('pending_approvals', [newApproval, ...approvals]);
+
+  try {
+    await fetch('/api/approvals', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+  } catch (err) {
+    console.warn('Pending approval sync warning:', err);
+  }
 };
 
-export const updateApprovalStatus = (id: string, status: 'approved' | 'rejected') => {
+export const updateApprovalStatus = async (id: string, status: 'approved' | 'rejected') => {
   const approvals = store.get<PendingApproval[]>('pending_approvals', INITIAL_PENDING_APPROVALS);
   const target = approvals.find((a) => a.id === id);
 
@@ -728,4 +925,137 @@ export const updateApprovalStatus = (id: string, status: 'approved' | 'rejected'
     );
     store.set('articles', updatedArticles);
   }
+
+  try {
+    await fetch('/api/approvals', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, status }),
+    });
+  } catch (err) {
+    console.warn('Approval status update sync warning:', err);
+  }
 };
+
+// ==========================================
+// 5. USERS MANAGEMENT (Hostinger Cloud Database via API)
+// ==========================================
+
+export const subscribeUsers = (callback: (users: AppUser[]) => void) => {
+  return store.subscribe<AppUser[]>(
+    'app_users',
+    INITIAL_USERS,
+    callback,
+    async () => {
+      const data = await fetchApi<AppUser[]>('/api/users');
+      if (!data) return null;
+
+      // Merge with preset accounts to guarantee all demo accounts are available
+      const mergedMap = new Map<string, AppUser>();
+      INITIAL_USERS.forEach((u) => mergedMap.set(u.email.toLowerCase(), u));
+      data.forEach((u) => mergedMap.set(u.email.toLowerCase(), u));
+      return Array.from(mergedMap.values());
+    }
+  );
+};
+
+export const createUser = async (data: {
+  name: string;
+  email: string;
+  role: 'student' | 'coach' | 'school' | 'sponsor' | 'admin';
+  institution?: string;
+  status?: 'Active' | 'Verified' | 'Pending' | 'Suspended';
+}) => {
+  const userId = `usr-${Date.now()}`;
+  const cleanEmail = data.email.trim().toLowerCase();
+
+  const newUser: AppUser = {
+    id: userId,
+    name: data.name,
+    email: cleanEmail,
+    role: data.role,
+    institution: data.institution || 'Individual',
+    status: data.status || 'Active',
+    joinedDate: 'Today',
+  };
+
+  // Update local store immediately
+  const existing = store.get<AppUser[]>('app_users', INITIAL_USERS);
+  store.set('app_users', [newUser, ...existing.filter((u) => u.email.toLowerCase() !== cleanEmail)]);
+
+  // Persist to database via API
+  try {
+    const res = await fetch('/api/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (res.ok) {
+      const json = await res.json();
+      if (json.data) return json.data;
+    }
+  } catch (err) {
+    console.warn('User creation sync warning:', err);
+  }
+
+  return newUser;
+};
+
+export const updateUserRole = async (
+  userId: string,
+  newRole: 'student' | 'coach' | 'school' | 'sponsor' | 'admin'
+) => {
+  const users = store.get<AppUser[]>('app_users', INITIAL_USERS);
+  const updated = users.map((u) => (u.id === userId ? { ...u, role: newRole } : u));
+  store.set('app_users', updated);
+
+  try {
+    await fetch(`/api/users/${userId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ role: newRole }),
+    });
+  } catch (err) {
+    console.warn('Update user role sync warning:', err);
+  }
+};
+
+export const updateUserStatus = async (
+  userId: string,
+  newStatus: 'Active' | 'Verified' | 'Pending' | 'Suspended'
+) => {
+  const users = store.get<AppUser[]>('app_users', INITIAL_USERS);
+  const updated = users.map((u) => (u.id === userId ? { ...u, status: newStatus } : u));
+  store.set('app_users', updated);
+
+  try {
+    await fetch(`/api/users/${userId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: newStatus }),
+    });
+  } catch (err) {
+    console.warn('Update user status sync warning:', err);
+  }
+};
+
+export const deleteUser = async (userId: string) => {
+  const users = store.get<AppUser[]>('app_users', INITIAL_USERS);
+  store.set('app_users', users.filter((u) => u.id !== userId));
+
+  try {
+    await fetch(`/api/users/${userId}`, {
+      method: 'DELETE',
+    });
+  } catch (err) {
+    console.warn('Delete user sync warning:', err);
+  }
+};
+
+// Backward compatibility aliases
+export const subscribeFirestoreUsers = subscribeUsers;
+export const createFirestoreUser = createUser;
+export const updateFirestoreUserRole = updateUserRole;
+export const updateFirestoreUserStatus = updateUserStatus;
+export const deleteFirestoreUser = deleteUser;
+

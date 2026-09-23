@@ -32,66 +32,48 @@ interface RoleOption {
   icon: React.ElementType;
   description: string;
   themeColor: string;
-  activeBorder: string;
-  activeBg: string;
-  pillColor: string;
 }
 
 const ROLES: RoleOption[] = [
   {
     id: 'student',
-    title: 'STUDENT',
+    title: 'Trainee Journalist',
     badge: 'Journalist Education',
     icon: FaUserGraduate,
-    description: 'Learn sports reporting, complete journalism assignments, draft and publish sports articles',
+    description: 'Learn sports reporting, complete assignments, publish sports articles',
     themeColor: '#0B5FA5',
-    activeBorder: 'border-[#0B5FA5]',
-    activeBg: 'bg-[#EBF3FB]',
-    pillColor: 'bg-[#0B5FA5] text-white',
   },
   {
     id: 'coach',
-    title: 'COACH',
+    title: 'Coach',
     badge: 'PET Master & Academy',
     icon: FaChalkboardTeacher,
-    description: 'Register athletes, track performance metrics, upload match photos and video proofs',
+    description: 'Register athletes, track performance, upload match media proofs',
     themeColor: '#168C45',
-    activeBorder: 'border-[#168C45]',
-    activeBg: 'bg-[#EDF8F1]',
-    pillColor: 'bg-[#168C45] text-white',
   },
   {
     id: 'school',
-    title: 'SCHOOL',
+    title: 'School',
     badge: 'Institution Sports Wing',
     icon: FaUniversity,
-    description: 'Central institutional sports management, assign coaches, host inter-school competitions',
+    description: 'Central sports management, assign coaches, host competitions',
     themeColor: '#7E378B',
-    activeBorder: 'border-[#7E378B]',
-    activeBg: 'bg-[#F7EEF9]',
-    pillColor: 'bg-[#7E378B] text-white',
   },
   {
     id: 'sponsor',
-    title: 'SPONSOR',
+    title: 'Sponsor',
     badge: 'CSR & Talent Grants',
     icon: FaHandsHelping,
-    description: 'Discover emerging talent, fund grassroots athletics programs, track measurable social impact',
+    description: 'Discover emerging talent, fund programs, track social impact',
     themeColor: '#F28C28',
-    activeBorder: 'border-[#F28C28]',
-    activeBg: 'bg-[#FEF5EB]',
-    pillColor: 'bg-[#F28C28] text-white',
   },
   {
     id: 'admin',
-    title: 'ADMIN',
+    title: 'Admin',
     badge: 'Super Administrator',
     icon: FaCog,
-    description: 'Ecosystem control, pending approvals, user verification & moderation',
+    description: 'Ecosystem control, pending approvals, moderation',
     themeColor: '#032D59',
-    activeBorder: 'border-[#032D59]',
-    activeBg: 'bg-[#E8EFF6]',
-    pillColor: 'bg-[#032D59] text-white',
   },
 ];
 
@@ -112,7 +94,6 @@ function LoginContent() {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  // Handle URL role parameter
   useEffect(() => {
     const roleParam = searchParams.get('role') as UserRole;
     if (roleParam && ROLES.some((r) => r.id === roleParam)) {
@@ -124,6 +105,10 @@ function LoginContent() {
   }, [searchParams]);
 
   const handleRoleSelect = (roleId: UserRole) => {
+    if (mode === 'register' && roleId === 'admin') {
+      setErrorMessage('Admin accounts cannot be self-registered. Please contact an existing administrator.');
+      return;
+    }
     setSelectedRole(roleId);
     if (mode === 'login') {
       setEmail(PRESET_ACCOUNTS[roleId].email);
@@ -145,8 +130,13 @@ function LoginContent() {
           setLoading(false);
           return;
         }
+        if (selectedRole === 'admin') {
+          setErrorMessage('Admin accounts cannot be self-registered. Please contact an existing administrator.');
+          setLoading(false);
+          return;
+        }
 
-        setSuccessMessage('Creating account and setting role permissions in Cloud Firestore...');
+        setSuccessMessage('Creating account and setting role permissions...');
         await register({
           name,
           email,
@@ -155,7 +145,7 @@ function LoginContent() {
           institution,
         });
       } else {
-        await login(email, password, selectedRole);
+        await login(email, password, selectedRole, rememberMe);
       }
     } catch (err: any) {
       setErrorMessage(err?.message || 'Authentication failed. Please check your credentials.');
@@ -168,41 +158,40 @@ function LoginContent() {
   const ActiveIcon = activeRoleConfig.icon;
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-b from-[#F0F5FA] via-[#F8FAFC] to-white flex flex-col justify-between py-6 px-3 sm:px-6">
-      {/* Top Header Row with Back Button & Brand */}
-      <div className="max-w-5xl w-full mx-auto flex items-center justify-between pb-4 border-b border-slate-200">
+    <div className="min-h-screen w-full bg-[#F7F8FB] flex flex-col justify-between py-5 px-3 sm:px-6">
+      {/* Top bar */}
+      <div className="max-w-5xl w-full mx-auto flex items-center justify-between pb-4 border-b border-slate-100">
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-black text-[#0B5FA5] hover:text-[#032D59] transition-colors"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors"
         >
-          <FaArrowLeft size={13} />
-          <span>Back to Public Portal</span>
+          <FaArrowLeft size={12} />
+          <span>Back to public portal</span>
         </Link>
         <div className="flex items-center gap-2">
-          <BlueZoneTreeLogo size={28} />
-          <span className="text-xs sm:text-sm font-black text-[#032D59] tracking-wider uppercase">
+          <BlueZoneTreeLogo size={24} />
+          <span className="text-sm font-semibold text-slate-900">
             SportsMedia.World
           </span>
         </div>
       </div>
 
-      {/* Main Authentication Container */}
+      {/* Main container */}
       <div className="max-w-4xl w-full mx-auto my-6 flex flex-col items-center">
-        {/* Portal Title & Subtitle matching PRD */}
         <div className="text-center mb-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-[#0B5FA5] text-[11px] font-black uppercase tracking-wider mb-2">
-            <FaShieldAlt size={12} />
-            Cloud Firestore Role-Based Authentication
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#0B5FA5] text-xs font-medium mb-3">
+            <FaShieldAlt size={11} />
+            Secure zero-trust role authentication
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#032D59] uppercase tracking-tight">
-            SPORTS MEDIA.WORLD
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
+            Sports Media World
           </h1>
-          <p className="text-xs sm:text-sm text-slate-600 font-bold mt-1">
-            Digital Gateway to Sports Talent &bull; Select Your Role to Proceed
+          <p className="text-sm text-slate-500 mt-1.5">
+            The digital gateway to sports talent. Select your role to continue.
           </p>
         </div>
 
-        {/* 5 Clearly Separated Role Selection Tiles */}
+        {/* Role tiles */}
         <div className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3 mb-6">
           {ROLES.map((role) => {
             const Icon = role.icon;
@@ -212,32 +201,31 @@ function LoginContent() {
                 key={role.id}
                 type="button"
                 onClick={() => handleRoleSelect(role.id)}
-                className={`flex flex-col items-center text-center p-3 rounded-xl border-2 transition-all duration-200 cursor-pointer text-left relative ${
+                className={`flex flex-col items-center text-center p-3.5 rounded-2xl border transition-all duration-150 cursor-pointer relative ${
                   isSelected
-                    ? `${role.activeBorder} ${role.activeBg} shadow-md scale-102`
-                    : 'bg-white border-slate-200 hover:border-slate-300 hover:shadow-2xs'
+                    ? 'border-transparent shadow-sm'
+                    : 'bg-white border-slate-100 hover:border-slate-200'
                 }`}
+                style={isSelected ? { backgroundColor: `${role.themeColor}0D`, borderColor: `${role.themeColor}40` } : {}}
               >
                 {isSelected && (
-                  <div className="absolute top-2 right-2 text-emerald-600">
-                    <FaCheckCircle size={14} />
+                  <div className="absolute top-2 right-2 text-emerald-500">
+                    <FaCheckCircle size={13} />
                   </div>
                 )}
 
                 <div
-                  className={`w-12 h-12 rounded-full flex items-center justify-center text-white mb-2 shadow-xs transition-transform ${
-                    isSelected ? 'scale-110' : ''
-                  }`}
-                  style={{ backgroundColor: role.themeColor }}
+                  className="w-11 h-11 rounded-full flex items-center justify-center mb-2 transition-transform"
+                  style={{ backgroundColor: `${role.themeColor}17`, color: role.themeColor }}
                 >
-                  <Icon size={20} />
+                  <Icon size={18} />
                 </div>
 
-                <span className="text-xs sm:text-[13px] font-black text-slate-900 tracking-tight leading-none mb-1">
+                <span className="text-sm font-semibold text-slate-900 leading-tight mb-0.5">
                   {role.title}
                 </span>
 
-                <span className="text-[10px] font-extrabold text-slate-500 uppercase tracking-tight leading-tight">
+                <span className="text-[11px] text-slate-400 leading-tight">
                   {role.badge}
                 </span>
               </button>
@@ -245,10 +233,9 @@ function LoginContent() {
           })}
         </div>
 
-        {/* Dynamic Login / Create Account Form Box */}
-        <div className="w-full max-w-lg bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-md">
-          {/* Mode Switcher: Sign In vs Create Account */}
-          <div className="flex border-b border-slate-200 mb-5 pb-1">
+        {/* Form card */}
+        <div className="w-full max-w-lg bg-white rounded-2xl border border-slate-100 p-6 sm:p-8 shadow-sm">
+          <div className="flex border-b border-slate-100 mb-5">
             <button
               type="button"
               onClick={() => {
@@ -256,14 +243,14 @@ function LoginContent() {
                 setErrorMessage('');
                 setEmail(PRESET_ACCOUNTS[selectedRole].email);
               }}
-              className={`flex-1 pb-3 text-xs sm:text-sm font-black uppercase tracking-wider transition-colors cursor-pointer flex items-center justify-center gap-2 ${
+              className={`flex-1 pb-3 text-sm font-medium transition-colors cursor-pointer flex items-center justify-center gap-2 ${
                 mode === 'login'
                   ? 'text-[#0B5FA5] border-b-2 border-[#0B5FA5]'
                   : 'text-slate-400 hover:text-slate-700'
               }`}
             >
-              <FaSignInAlt size={14} />
-              <span>Sign In</span>
+              <FaSignInAlt size={13} />
+              <span>Sign in</span>
             </button>
             <button
               type="button"
@@ -271,67 +258,61 @@ function LoginContent() {
                 setMode('register');
                 setErrorMessage('');
                 setEmail('');
+                if (selectedRole === 'admin') {
+                  setSelectedRole('student');
+                }
               }}
-              className={`flex-1 pb-3 text-xs sm:text-sm font-black uppercase tracking-wider transition-colors cursor-pointer flex items-center justify-center gap-2 ${
+              className={`flex-1 pb-3 text-sm font-medium transition-colors cursor-pointer flex items-center justify-center gap-2 ${
                 mode === 'register'
                   ? 'text-[#168C45] border-b-2 border-[#168C45]'
                   : 'text-slate-400 hover:text-slate-700'
               }`}
             >
-              <FaUserPlus size={14} />
-              <span>Create Account</span>
+              <FaUserPlus size={13} />
+              <span>Create account</span>
             </button>
           </div>
 
-          {/* Active Role Header Strip */}
-          <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
-            <div className="flex items-center gap-3">
-              <div
-                className="w-10 h-10 rounded-lg flex items-center justify-center text-white shadow-xs"
-                style={{ backgroundColor: activeRoleConfig.themeColor }}
-              >
-                <ActiveIcon size={18} />
-              </div>
-              <div>
-                <h3 className="text-sm sm:text-base font-black text-slate-900 leading-tight uppercase">
-                  {mode === 'login' ? `Sign In as ${activeRoleConfig.title}` : `Register as ${activeRoleConfig.title}`}
-                </h3>
-                <p className="text-[11px] text-slate-500 font-semibold leading-tight">
-                  {activeRoleConfig.description}
-                </p>
-              </div>
-            </div>
-            <span
-              className={`text-[10px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider ${activeRoleConfig.pillColor}`}
+          {/* Active role header */}
+          <div className="flex items-center gap-3 pb-4 mb-4 border-b border-slate-100">
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+              style={{ backgroundColor: `${activeRoleConfig.themeColor}17`, color: activeRoleConfig.themeColor }}
             >
-              {activeRoleConfig.title}
-            </span>
+              <ActiveIcon size={17} />
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-slate-900 leading-tight">
+                {mode === 'login' ? `Sign in as ${activeRoleConfig.title}` : `Register as ${activeRoleConfig.title}`}
+              </h3>
+              <p className="text-xs text-slate-500 leading-tight mt-0.5">
+                {activeRoleConfig.description}
+              </p>
+            </div>
           </div>
 
           {errorMessage && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 text-xs font-bold rounded-md">
+            <div className="mb-4 p-3 bg-red-50 border border-red-100 text-red-700 text-sm rounded-xl">
               {errorMessage}
             </div>
           )}
 
           {successMessage && (
-            <div className="mb-4 p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold rounded-md">
+            <div className="mb-4 p-3 bg-emerald-50 border border-emerald-100 text-emerald-700 text-sm rounded-xl">
               {successMessage}
             </div>
           )}
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Full Name / Organization (For Registration) */}
             {mode === 'register' && (
               <>
                 <div>
-                  <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5">
-                    Full Name / Contact Person
+                  <label className="block text-xs font-medium text-slate-600 mb-1.5">
+                    Full name / contact person
                   </label>
                   <div className="relative">
                     <FaUser
-                      size={14}
+                      size={13}
                       className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
                     />
                     <input
@@ -340,18 +321,18 @@ function LoginContent() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="e.g. Anirudh Jyothula / Principal Sharma"
-                      className="w-full pl-10 pr-3.5 py-2.5 text-xs sm:text-sm bg-slate-50/50 border border-slate-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-[#0B5FA5] focus:outline-hidden text-slate-900 font-bold"
+                      className="w-full pl-10 pr-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#0B5FA5]/25 focus:border-[#0B5FA5] focus:outline-hidden text-slate-900"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5">
-                    School / Academy / Company Name (Optional)
+                  <label className="block text-xs font-medium text-slate-600 mb-1.5">
+                    School / academy / company name (optional)
                   </label>
                   <div className="relative">
                     <FaBuilding
-                      size={14}
+                      size={13}
                       className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
                     />
                     <input
@@ -359,21 +340,20 @@ function LoginContent() {
                       value={institution}
                       onChange={(e) => setInstitution(e.target.value)}
                       placeholder="e.g. DPS Hyderabad / Decathlon Foundation"
-                      className="w-full pl-10 pr-3.5 py-2.5 text-xs sm:text-sm bg-slate-50/50 border border-slate-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-[#0B5FA5] focus:outline-hidden text-slate-900 font-bold"
+                      className="w-full pl-10 pr-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#0B5FA5]/25 focus:border-[#0B5FA5] focus:outline-hidden text-slate-900"
                     />
                   </div>
                 </div>
               </>
             )}
 
-            {/* Email / Mobile */}
             <div>
-              <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5">
-                Email / Mobile Number
+              <label className="block text-xs font-medium text-slate-600 mb-1.5">
+                Email / mobile number
               </label>
               <div className="relative">
                 <FaEnvelope
-                  size={14}
+                  size={13}
                   className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
                 />
                 <input
@@ -382,19 +362,18 @@ function LoginContent() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="e.g. user@sportsmedia.world or mobile"
-                  className="w-full pl-10 pr-3.5 py-2.5 text-xs sm:text-sm bg-slate-50/50 border border-slate-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-[#0B5FA5] focus:outline-hidden text-slate-900 font-bold"
+                  className="w-full pl-10 pr-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#0B5FA5]/25 focus:border-[#0B5FA5] focus:outline-hidden text-slate-900"
                 />
               </div>
             </div>
 
-            {/* Password */}
             <div>
-              <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-medium text-slate-600 mb-1.5">
                 Password
               </label>
               <div className="relative">
                 <FaLock
-                  size={14}
+                  size={13}
                   className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
                 />
                 <input
@@ -403,7 +382,7 @@ function LoginContent() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your account password"
-                  className="w-full pl-10 pr-10 py-2.5 text-xs sm:text-sm bg-slate-50/50 border border-slate-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-[#0B5FA5] focus:outline-hidden text-slate-900 font-bold"
+                  className="w-full pl-10 pr-10 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#0B5FA5]/25 focus:border-[#0B5FA5] focus:outline-hidden text-slate-900"
                 />
                 <button
                   type="button"
@@ -411,15 +390,14 @@ function LoginContent() {
                   className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 cursor-pointer"
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
-                  {showPassword ? <FaEyeSlash size={15} /> : <FaEye size={15} />}
+                  {showPassword ? <FaEyeSlash size={14} /> : <FaEye size={14} />}
                 </button>
               </div>
             </div>
 
-            {/* Remember Me & Forgot Password */}
             {mode === 'login' && (
-              <div className="flex items-center justify-between text-xs pt-1">
-                <label className="flex items-center gap-2 text-slate-700 font-bold cursor-pointer">
+              <div className="flex items-center justify-between text-sm pt-1">
+                <label className="flex items-center gap-2 text-slate-600 font-medium cursor-pointer">
                   <input
                     type="checkbox"
                     checked={rememberMe}
@@ -431,30 +409,28 @@ function LoginContent() {
                 <button
                   type="button"
                   onClick={() => alert('Password reset instructions will be sent to ' + email)}
-                  className="text-[#0B5FA5] hover:text-[#032D59] font-black hover:underline cursor-pointer"
+                  className="text-[#0B5FA5] hover:text-[#032D59] font-medium hover:underline cursor-pointer"
                 >
-                  Forgot Password?
+                  Forgot password?
                 </button>
               </div>
             )}
 
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 text-white font-black text-xs sm:text-sm uppercase tracking-wider rounded-lg shadow-sm hover:shadow-md transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-2"
+              className="w-full py-3 text-white font-semibold text-sm rounded-xl shadow-sm hover:shadow-md transition-all active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2"
               style={{ backgroundColor: activeRoleConfig.themeColor }}
             >
               {loading ? (
                 <span>Processing...</span>
               ) : mode === 'register' ? (
-                <span>CREATE {activeRoleConfig.title} ACCOUNT</span>
+                <span>Create {activeRoleConfig.title.toLowerCase()} account</span>
               ) : (
-                <span>SIGN IN AS {activeRoleConfig.title}</span>
+                <span>Sign in as {activeRoleConfig.title.toLowerCase()}</span>
               )}
             </button>
 
-            {/* Prefill Credentials Helper */}
             {mode === 'login' && (
               <div className="pt-2 text-center">
                 <button
@@ -464,10 +440,10 @@ function LoginContent() {
                     setPassword('sports123');
                     setErrorMessage('');
                   }}
-                  className="text-xs font-bold text-slate-500 hover:text-[#0B5FA5] hover:underline cursor-pointer inline-flex items-center gap-1.5"
+                  className="text-sm font-medium text-slate-500 hover:text-[#0B5FA5] hover:underline cursor-pointer inline-flex items-center gap-1.5"
                 >
                   <FaBolt size={11} className="text-amber-500" />
-                  <span>Fill Official Test Credentials for {activeRoleConfig.title}</span>
+                  <span>Fill test credentials for {activeRoleConfig.title.toLowerCase()}</span>
                 </button>
               </div>
             )}
@@ -475,10 +451,10 @@ function LoginContent() {
         </div>
       </div>
 
-      {/* Footer Info */}
-      <div className="max-w-5xl w-full mx-auto text-center pt-4 border-t border-slate-200">
-        <p className="text-[11px] text-slate-500 font-semibold">
-          &copy; 2026 SportsMedia.World &bull; Blue Zone Ecosystem. Live Cloud Firestore rules enforce role-based permissions across all dashboards.
+      {/* Footer */}
+      <div className="max-w-5xl w-full mx-auto text-center pt-4 border-t border-slate-100">
+        <p className="text-xs text-slate-400">
+          &copy; 2026 SportsMedia.World &bull; Blue Zone Ecosystem. Secure zero-trust role-based permissions enforced across all dashboards.
         </p>
       </div>
     </div>
@@ -489,10 +465,10 @@ export default function LoginPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen w-full flex flex-col items-center justify-center bg-[#F8FAFC]">
-          <div className="w-10 h-10 border-4 border-[#0B5FA5] border-t-transparent rounded-full animate-spin mb-3" />
-          <p className="text-xs font-black uppercase tracking-wider text-[#032D59]">
-            Loading SportsMedia.World Login...
+        <div className="min-h-screen w-full flex flex-col items-center justify-center bg-[#F7F8FB]">
+          <div className="w-8 h-8 border-[3px] border-[#0B5FA5] border-t-transparent rounded-full animate-spin mb-3" />
+          <p className="text-sm font-medium text-slate-500">
+            Loading SportsMedia.World login...
           </p>
         </div>
       }

@@ -1,12 +1,10 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { doc, setDoc, getDoc, collection, query, where, getDocs, serverTimestamp } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
-import { addPendingApproval } from '@/services/realtimeData';
 
 export type UserRole = 'student' | 'coach' | 'school' | 'sponsor' | 'admin';
+export type RegistrableRole = Exclude<UserRole, 'admin'>;
 
 export interface UserSession {
   id: string;
@@ -64,214 +62,185 @@ interface AuthContextType {
   user: UserSession | null;
   role: UserRole | null;
   isAuthenticated: boolean;
-  login: (email: string, password?: string, targetRole?: UserRole) => Promise<UserRole>;
+  login: (email: string, password?: string, targetRole?: UserRole, rememberMe?: boolean) => Promise<UserRole>;
   register: (data: {
     name: string;
     email: string;
     password?: string;
-    role: UserRole;
+    role: RegistrableRole;
     institution?: string;
   }) => Promise<UserRole>;
-  demoLogin: (role: UserRole) => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+function getDashboardPath(role: UserRole): string {
+  switch (role) {
+    case 'student':
+      return '/student/dashboard';
+    case 'coach':
+      return '/coach/dashboard';
+    case 'school':
+      return '/school/dashboard';
+    case 'sponsor':
+      return '/sponsor/dashboard';
+    case 'admin':
+      return '/admin/dashboard';
+    default:
+      return '/';
+  }
+}
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UserSession | null>(null);
   const router = useRouter();
 
+  // On mount: check server session via /api/auth/me
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem('sm_active_session');
-      if (saved) {
-        setUser(JSON.parse(saved));
+    let isMounted = true;
+
+    async function checkAuth() {
+      try {
+        const res = await fetch('/api/auth/me', {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        if (!res.ok) return;
+
+        const data = await res.json();
+        if (isMounted && data.success && data.authenticated && data.data?.user) {
+          const u = data.data.user;
+          setUser({
+            id: u.id,
+            name: u.name,
+            email: u.email,
+            role: u.role as UserRole,
+            institution: u.institution || '',
+            avatar: u.avatar || PRESET_ACCOUNTS[u.role as UserRole]?.avatar,
+          });
+        }
+      } catch (err) {
+        console.warn('Could not verify active session:', err);
       }
-    } catch (e) {
-      console.error('Failed to load session', e);
     }
+
+    checkAuth();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  const saveSession = (session: UserSession | null) => {
-    setUser(session);
-    if (session) {
-      localStorage.setItem('sm_active_session', JSON.stringify(session));
-    } else {
-      localStorage.removeItem('sm_active_session');
-    }
-  };
+  const login = useCallback(
+    async (email: string, password?: string, targetRole?: UserRole, rememberMe: boolean = true): Promise<UserRole> => {
+      const cleanEmail = email.trim().toLowerCase();
 
-  const getDashboardPath = (role: UserRole): string => {
-    switch (role) {
-      case 'student':
-        return '/student/dashboard';
-      case 'coach':
-        return '/coach/dashboard';
-      case 'school':
-        return '/school/dashboard';
-      case 'sponsor':
-        return '/sponsor/dashboard';
-      case 'admin':
-        return '/admin/dashboard';
-      default:
-        return '/';
-    }
-  };
+      if (!cleanEmail) {
+        throw new Error('Please enter your registered email address.');
+      }
+      if (!password || password.length < 6) {
+        throw new Error('Please enter a valid password (minimum 6 characters).');
+      }
 
-  // Register an account in Cloud Firestore + Local Session
-  const register = async (data: {
-    name: string;
-    email: string;
-    password?: string;
-    role: UserRole;
-    institution?: string;
-  }): Promise<UserRole> => {
-    const cleanEmail = data.email.trim().toLowerCase();
-    const userId = `user-${Date.now()}`;
-
-    const newSession: UserSession = {
-      id: userId,
-      name: data.name,
-      email: cleanEmail,
-      role: data.role,
-      institution: data.institution || '',
-      avatar: PRESET_ACCOUNTS[data.role]?.avatar,
-    };
-
-    // Save to Cloud Firestore
-    try {
-      await setDoc(doc(db, 'users', userId), {
-        id: userId,
-        name: data.name,
-        email: cleanEmail,
-        role: data.role,
-        institution: data.institution || '',
-        createdAt: serverTimestamp(),
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: cleanEmail,
+          password,
+          targetRole,
+        }),
       });
-    } catch (e) {
-      console.warn('Firestore write warning (saving session locally):', e);
-    }
 
-    // Save locally
-    saveSession(newSession);
+      const json = await res.json();
 
-    // Alert Admin Approvals Queue in real-time
-    addPendingApproval({
-      type: `${data.role.charAt(0).toUpperCase() + data.role.slice(1)} Registration` as any,
-      title: `New Account: ${data.name} (${data.role.toUpperCase()})`,
-      submittedBy: data.name,
-      role: data.role,
-      details: `Email: ${cleanEmail}, Institution: ${data.institution || 'Individual'}`,
-    });
+      if (!res.ok || !json.success) {
+        throw new Error(json.error?.message || 'Authentication failed. Please check your credentials.');
+      }
 
-    // Auto redirect to dedicated dashboard
-    router.push(getDashboardPath(data.role));
-    return data.role;
-  };
+      const userData = json.data.user;
+      const session: UserSession = {
+        id: userData.id,
+        name: userData.name,
+        email: userData.email,
+        role: userData.role as UserRole,
+        institution: userData.institution || '',
+        avatar: userData.avatar || PRESET_ACCOUNTS[userData.role as UserRole]?.avatar,
+      };
 
-  // Login checking credentials and routing to dedicated dashboard based on role
-  const login = async (email: string, password?: string, targetRole?: UserRole): Promise<UserRole> => {
-    const cleanEmail = email.trim().toLowerCase();
+      setUser(session);
+      router.push(getDashboardPath(session.role));
+      return session.role;
+    },
+    [router]
+  );
 
-    if (!cleanEmail) {
-      throw new Error('Please enter your registered email address.');
-    }
+  const register = useCallback(
+    async (data: {
+      name: string;
+      email: string;
+      password?: string;
+      role: RegistrableRole;
+      institution?: string;
+    }): Promise<UserRole> => {
+      const cleanEmail = data.email.trim().toLowerCase();
 
-    if (!password || password.length < 4) {
-      throw new Error('Please enter a valid password (minimum 4 characters).');
-    }
+      if (!data.name.trim()) {
+        throw new Error('Please enter your full name or institution name.');
+      }
+      if (!cleanEmail) {
+        throw new Error('Please enter a valid email address.');
+      }
+      if (!data.password || data.password.length < 6) {
+        throw new Error('Please choose a password with at least 6 characters.');
+      }
 
-    // Strict Admin verification
-    if (targetRole === 'admin' && !cleanEmail.includes('admin') && cleanEmail !== 'admin@sportsmedia.world') {
-      throw new Error('Access Denied: Only verified administrator credentials are authorized for the Admin portal.');
-    }
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: data.name,
+          email: cleanEmail,
+          password: data.password,
+          role: data.role,
+          institution: data.institution,
+        }),
+      });
 
-    // Check Cloud Firestore for existing user profile
-    let detectedRole: UserRole = targetRole || 'student';
-    let detectedName = cleanEmail.split('@')[0];
-    let detectedInstitution = '';
+      const json = await res.json();
 
+      if (!res.ok || !json.success) {
+        throw new Error(json.error?.message || 'Could not create account. Please try again.');
+      }
+
+      const userData = json.data.user;
+      const newSession: UserSession = {
+        id: userData.id,
+        name: userData.name,
+        email: userData.email,
+        role: userData.role as UserRole,
+        institution: userData.institution || '',
+        avatar: userData.avatar || PRESET_ACCOUNTS[userData.role as UserRole]?.avatar,
+      };
+
+      setUser(newSession);
+      router.push(getDashboardPath(newSession.role));
+      return newSession.role;
+    },
+    [router]
+  );
+
+  const logout = useCallback(async () => {
     try {
-      const q = query(collection(db, 'users'), where('email', '==', cleanEmail));
-      const querySnap = await getDocs(q);
-      if (!querySnap.empty) {
-        const userData = querySnap.docs[0].data();
-        const accountRole = (userData.role || 'student') as UserRole;
-
-        // Strict role validation: account role must match selected portal role
-        if (targetRole && accountRole !== targetRole) {
-          throw new Error(
-            `Access Denied: This account is registered under the ${accountRole.toUpperCase()} role. You cannot sign in through the ${targetRole.toUpperCase()} portal. Please select the ${accountRole.toUpperCase()} tab.`
-          );
-        }
-
-        detectedRole = accountRole;
-        detectedName = userData.name || detectedName;
-        detectedInstitution = userData.institution || '';
-      } else {
-        // Validation against official role presets
-        if (targetRole === 'admin') {
-          if (!cleanEmail.includes('admin')) {
-            throw new Error('Access Denied: Only authorized administrator emails can access the Admin portal.');
-          }
-          detectedRole = 'admin';
-        } else if (targetRole === 'coach') {
-          if (cleanEmail.includes('student') || cleanEmail.includes('school') || cleanEmail.includes('sponsor')) {
-            throw new Error('Role Mismatch: Credentials do not match the Coach role. Please use coach credentials or select your matching role.');
-          }
-          detectedRole = 'coach';
-        } else if (targetRole === 'school') {
-          if (cleanEmail.includes('student') || cleanEmail.includes('coach') || cleanEmail.includes('sponsor')) {
-            throw new Error('Role Mismatch: Credentials do not match the School role. Please use school credentials or select your matching role.');
-          }
-          detectedRole = 'school';
-        } else if (targetRole === 'sponsor') {
-          if (cleanEmail.includes('student') || cleanEmail.includes('coach') || cleanEmail.includes('school')) {
-            throw new Error('Role Mismatch: Credentials do not match the Sponsor role. Please use sponsor credentials or select your matching role.');
-          }
-          detectedRole = 'sponsor';
-        } else if (targetRole === 'student') {
-          if (cleanEmail.includes('admin') || cleanEmail.includes('coach') || cleanEmail.includes('school')) {
-            throw new Error('Role Mismatch: Credentials do not match the Student role. Please use student credentials or select your matching role.');
-          }
-          detectedRole = 'student';
-        }
-      }
-    } catch (e: any) {
-      if (e.message && e.message.includes('Access Denied') || e.message?.includes('Role Mismatch')) {
-        throw e;
-      }
-      // Fallback detection
-      if (targetRole) detectedRole = targetRole;
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } catch {
+      // Ignore network errors on logout
+    } finally {
+      setUser(null);
+      router.push('/login');
     }
-
-    const preset = PRESET_ACCOUNTS[detectedRole];
-    const newSession: UserSession = {
-      ...preset,
-      name: detectedName || preset.name,
-      email: cleanEmail || preset.email,
-      role: detectedRole,
-      institution: detectedInstitution || preset.institution,
-    };
-
-    saveSession(newSession);
-
-    // Route strictly to the user's dedicated dashboard based upon verified role
-    router.push(getDashboardPath(detectedRole));
-    return detectedRole;
-  };
-
-  const demoLogin = (selectedRole: UserRole) => {
-    const session = PRESET_ACCOUNTS[selectedRole];
-    saveSession(session);
-    router.push(getDashboardPath(selectedRole));
-  };
-
-  const logout = () => {
-    saveSession(null);
-    router.push('/login');
-  };
+  }, [router]);
 
   return (
     <AuthContext.Provider
@@ -281,7 +250,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isAuthenticated: !!user,
         login,
         register,
-        demoLogin,
         logout,
       }}
     >

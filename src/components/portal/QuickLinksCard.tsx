@@ -26,7 +26,7 @@ export const QuickLinksCard: React.FC<QuickLinksCardProps> = ({ onSelectLink }) 
   ];
 
   const rightLinks = [
-    { title: 'Sponsor a Student', icon: FaUserGraduate, color: 'text-[#168C45]' },
+    { title: 'Sponsor a Trainee Journalist', icon: FaUserGraduate, color: 'text-[#168C45]' },
     { title: 'Advertise With Us', icon: FaBullhorn, color: 'text-[#168C45]' },
     { title: 'Sports Gallery', icon: FaImages, color: 'text-[#0B5FA5]' },
     { title: 'Contact Us', icon: FaPhoneAlt, color: 'text-[#168C45]' },

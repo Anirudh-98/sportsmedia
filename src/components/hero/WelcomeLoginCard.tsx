@@ -58,7 +58,7 @@ export const WelcomeLoginCard: React.FC<WelcomeLoginCardProps> = ({
                 {user.name}
               </span>
               <span className="text-[11px] font-bold text-slate-600 leading-tight mt-0.5">
-                Role: <span className="font-black text-emerald-700 uppercase">{user.role}</span>
+                Role: <span className="font-black text-emerald-700 uppercase">{user.role === 'student' ? 'Trainee Journalist' : user.role}</span>
               </span>
             </div>
           </div>
@@ -91,7 +91,7 @@ export const WelcomeLoginCard: React.FC<WelcomeLoginCardProps> = ({
             onClick={() => router.push(`/${user.role}/dashboard`)}
             className="w-full py-2.5 bg-[#0B5FA5] hover:bg-[#032D59] text-white font-black text-xs sm:text-[13px] uppercase tracking-wider rounded-md shadow-xs transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-2"
           >
-            <span>Open {user.role.toUpperCase()} Dashboard</span>
+            <span>Open {(user.role === 'student' ? 'Trainee Journalist' : user.role).toUpperCase()} Dashboard</span>
             <FaArrowRight size={12} />
           </button>
 
@@ -122,7 +122,7 @@ export const WelcomeLoginCard: React.FC<WelcomeLoginCardProps> = ({
         throw new Error('Please enter your password.');
       }
 
-      // Authenticate against Cloud Firestore and verify role
+      // Authenticate credentials against Database and verify role
       await login(email, password);
       // login() automatically routes directly to the verified role dashboard
     } catch (err: any) {
@@ -136,7 +136,7 @@ export const WelcomeLoginCard: React.FC<WelcomeLoginCardProps> = ({
     if (onRoleClick) {
       onRoleClick(roleName);
     } else {
-      const r = roleName.toLowerCase().startsWith('student')
+      const r = (roleName.toLowerCase().startsWith('student') || roleName.toLowerCase().startsWith('trainee'))
         ? 'student'
         : roleName.toLowerCase().startsWith('coach')
         ? 'coach'
@@ -258,16 +258,16 @@ export const WelcomeLoginCard: React.FC<WelcomeLoginCardProps> = ({
 
         {/* 3 Circular Action Icons */}
         <div className="grid grid-cols-3 gap-1.5 pt-2.5 mt-4 border-t border-[#D4E6F6] text-center">
-          {/* STUDENTS */}
+          {/* TRAINEE JOURNALIST */}
           <div
-            onClick={() => handleRoleNavigation('STUDENTS')}
+            onClick={() => handleRoleNavigation('TRAINEE JOURNALIST')}
             className="flex flex-col items-center group cursor-pointer"
           >
             <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#168C45] text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
               <FaUserGraduate size={16} />
             </div>
-            <span className="text-[11px] font-black text-[#032D59] uppercase tracking-tight mt-1 leading-tight">
-              STUDENTS
+            <span className="text-[10.5px] font-black text-[#032D59] uppercase tracking-tight mt-1 leading-tight text-center">
+              TRAINEE JOURNALIST
             </span>
             <span className="text-[10px] text-slate-700 font-extrabold leading-tight">
               Show Your Talent

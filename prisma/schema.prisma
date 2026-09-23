@@ -1,0 +1,187 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  passwordHash String
+  role         String    @default("student") // 'student' | 'coach' | 'school' | 'sponsor' | 'admin'
+  institution  String?
+  avatar       String?
+  status       String    @default("Active") // 'Active' | 'Verified' | 'Pending' | 'Suspended'
+  isVerified   Boolean   @default(false)
+  joinedDate   String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  sessions     Session[]
+
+  @@index([role])
+  @@index([email])
+}
+
+model Session {
+  id               String    @id @default(cuid())
+  userId           String
+  refreshTokenHash String    @db.VarChar(255)
+  expiresAt        DateTime
+  createdAt        DateTime  @default(now())
+  revokedAt        DateTime?
+
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([refreshTokenHash])
+}
+
+model Course {
+  id               String    @id @default(cuid())
+  title            String
+  category         String
+  progress         Int       @default(0)
+  modulesCount     Int       @default(1)
+  completedModules Int       @default(0)
+  nextLesson       String
+  status           String    @default("in_progress") // 'in_progress' | 'completed' | 'not_started'
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+model Assignment {
+  id          String    @id @default(cuid())
+  title       String
+  courseTitle String
+  dueDate     String
+  status      String    @default("pending") // 'pending' | 'submitted' | 'graded'
+  studentName String
+  studentId   String?
+  score       String?
+  feedback    String?   @db.Text
+  submittedAt String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([status])
+  @@index([studentName])
+}
+
+model Article {
+  id          String    @id @default(cuid())
+  title       String
+  excerpt     String    @db.Text
+  category    String
+  status      String    @default("draft") // 'draft' | 'pending_approval' | 'published'
+  authorName  String
+  authorRole  String
+  authorId    String?
+  views       Int       @default(0)
+  publishedAt String
+  coverImage  String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([status])
+  @@index([category])
+}
+
+model CoachAthlete {
+  id                String    @id @default(cuid())
+  name              String
+  sport             String
+  performance       Int       @default(0)
+  school            String
+  recentAchievement String    @db.Text
+  medals            Int       @default(0)
+  phone             String?
+  photo             String?
+  coachName         String
+  coachId           String?
+  sponsorName       String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([sport])
+  @@index([school])
+}
+
+model SchoolInfo {
+  id                String   @id @default("default-school")
+  name              String
+  city              String
+  principal         String
+  sportsCoordinator String
+  studentsCount     Int      @default(0)
+  coachesCount      Int      @default(0)
+  sportsCount       Int      @default(0)
+  achievementsCount Int      @default(0)
+  sportsBreakdown   String   @db.Text // JSON string: [{ sport, athletes, color }]
+  updatedAt         DateTime @updatedAt
+}
+
+model SponsorshipProgram {
+  id            String    @id @default(cuid())
+  title         String
+  sport         String
+  location      String
+  athletesCount Int       @default(0)
+  requirement   String    @db.Text
+  status        String    @default("open") // 'active' | 'open' | 'funded'
+  targetAmount  String
+  raisedAmount  String
+  sponsorName   String?
+  sponsorId     String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([status])
+  @@index([sport])
+}
+
+model MediaUpload {
+  id          String    @id @default(cuid())
+  title       String
+  type        String    @default("photo") // 'photo' | 'video' | 'certificate' | 'proof'
+  url         String
+  athleteName String
+  sport       String
+  uploadedBy  String
+  uploadedById String?
+  uploadedAt  String
+  createdAt   DateTime  @default(now())
+
+  @@index([type])
+}
+
+model PendingApproval {
+  id          String    @id @default(cuid())
+  type        String
+  title       String
+  submittedBy String
+  submittedById String?
+  role        String
+  timestamp   String
+  status      String    @default("pending") // 'pending' | 'approved' | 'rejected'
+  details     String    @db.Text
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([status])
+  @@index([type])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  email     String
+  tokenHash String    @db.VarChar(255)
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+
+  @@index([email])
+}

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { AuthProvider } from "@/context/AuthContext";
+import { SITE_URL } from "@/lib/seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,10 +15,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const title = "SPORTSMEDIA.WORLD | Sports Media Blue Zone - Grassroots Sports Portal";
+const description =
+  "The Digital Gateway to Sports Talent. School, College & Grassroots Sports ecosystem to Identify, Nurture, Promote, and Empower student athletes, PET masters, and coaches.";
+
 export const metadata: Metadata = {
-  title: "SPORTSMEDIA.WORLD | Sports Media Blue Zone - Grassroots Sports Portal",
-  description:
-    "The Digital Gateway to Sports Talent. School, College & Grassroots Sports ecosystem to Identify, Nurture, Promote, and Empower student athletes, PET masters, and coaches.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: title,
+    template: "%s | SportsMedia.World",
+  },
+  description,
   keywords: [
     "Sports Media Blue Zone",
     "SportsMedia.World",
@@ -27,6 +35,27 @@ export const metadata: Metadata = {
     "PET Masters",
     "Sports Scholarships",
   ],
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: "SportsMedia.World",
+    title,
+    description,
+    images: [{ url: "/bluezonelogo.webp" }],
+  },
+  twitter: {
+    card: "summary",
+    title,
+    description,
+    images: ["/bluezonelogo.webp"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   icons: {
     icon: [
       { url: "/bluezonelogo.webp", type: "image/webp" },

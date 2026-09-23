@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaTimes, FaLock, FaEnvelope, FaUser, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
 import { BlueZoneTreeLogo } from '../brand/BrandLogos';
-import { useAuth, UserRole } from '@/context/AuthContext';
+import { useAuth, RegistrableRole } from '@/context/AuthContext';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -21,7 +21,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const { login, register } = useAuth();
 
   const [mode, setMode] = useState<'login' | 'register'>(initialMode);
-  const [role, setRole] = useState<UserRole>('student');
+  const [role, setRole] = useState<RegistrableRole>('student');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -109,7 +109,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </label>
           <div className="grid grid-cols-4 gap-2">
             {[
-              { id: 'student', label: 'Student' },
+              { id: 'student', label: 'Trainee Journalist' },
               { id: 'coach', label: 'Coach' },
               { id: 'school', label: 'School' },
               { id: 'sponsor', label: 'Sponsor' },
