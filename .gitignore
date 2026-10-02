@@ -30,10 +30,31 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files & environment secrets - strictly never commit
+.env
 .env*
-!.env.example
-!.env.local.example
+*.env
+*.env*
+.env.local
+.env.development
+.env.test
+.env.production
+.env.example
+.env*.local
+
+# secrets, credentials, and keys
+*.key
+*.pem
+*.secret
+*.token
+*serviceAccount*.json
+firebase-adminsdk*.json
+credentials*.json
+secrets*.json
+
+# API routes and backend endpoints
+src/app/api/
+/api/
 
 # typescript
 *.tsbuildinfo

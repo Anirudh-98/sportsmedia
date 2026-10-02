@@ -4,11 +4,9 @@ A grassroots sports media and journalism platform connecting student athletes, c
 
 ## Getting Started
 
-1. Set up your environment variables:
-   Copy `.env.example` to `.env.local` and configure your database and Firebase credentials:
-   ```bash
-   cp .env.example .env.local
-   ```
+1. Set up your local environment:
+   Create `.env.local` and configure your Firebase configuration variables (keep `.env.local` private and never commit it):
+
 
 2. Run the development server:
    ```bash
