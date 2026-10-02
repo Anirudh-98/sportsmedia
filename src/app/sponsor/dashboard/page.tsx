@@ -92,10 +92,10 @@ export default function SponsorDashboardPage() {
       )}
 
       {/* PAGE HEADER */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3">
         <div>
           <p className="text-sm text-slate-400 mb-1">{todayLabel}</p>
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
             Welcome, {user?.name || 'Sponsor Partner'}
           </h1>
         </div>
@@ -119,7 +119,7 @@ export default function SponsorDashboardPage() {
       </div>
 
       {/* STATS */}
-      <div className="flex flex-wrap items-center gap-y-3 bg-white border border-slate-100 rounded-2xl px-5 py-4 mb-6 shadow-sm">
+      <div className="flex flex-wrap items-center gap-y-3 bg-white border border-slate-100 rounded-2xl px-4 py-2 mb-3 shadow-sm">
         {[
           { icon: Heart, value: sponsoredAthletes.length || 4, label: 'Athletes backed', color: '#7C3AED' },
           { icon: TrendingUp, value: totalFunded, label: 'CSR capital pledged', color: '#059669' },
@@ -139,9 +139,9 @@ export default function SponsorDashboardPage() {
       </div>
 
       {/* TALENT & PROGRAMS */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 mb-3">
+        <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm p-3.5">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-100 mb-2">
             <div>
               <h2 className="text-sm font-semibold text-slate-900">Talent spotlight</h2>
               <p className="text-xs text-slate-500 mt-0.5">Promising athletes requiring financial support for equipment & travel</p>
@@ -204,9 +204,9 @@ export default function SponsorDashboardPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6 flex flex-col justify-between">
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-3.5 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-100 mb-2">
               <div>
                 <h2 className="text-sm font-semibold text-slate-900">Grassroots drives</h2>
                 <p className="text-xs text-slate-500 mt-0.5">Equipment & conditioning grants</p>
@@ -242,7 +242,7 @@ export default function SponsorDashboardPage() {
             </div>
           </div>
 
-          <div className="pt-4 mt-4 border-t border-slate-100 text-center">
+          <div className="pt-2 mt-2 border-t border-slate-100 text-center">
             <Link href="/sponsor/sponsorships" className="text-sm font-medium hover:underline" style={{ color: ACCENT }}>
               View active sponsorships portfolio &rarr;
             </Link>
@@ -268,7 +268,7 @@ export default function SponsorDashboardPage() {
               </button>
             </div>
 
-            <form onSubmit={handleConfirmSponsorship} className="p-5 space-y-4">
+            <form onSubmit={handleConfirmSponsorship} className="p-3.5 space-y-2.5">
               <div className="bg-purple-50 p-3.5 rounded-xl">
                 <h4 className="text-sm font-medium text-purple-950">
                   Target beneficiary: {selectedAthlete ? selectedAthlete.name : selectedProgram?.title}

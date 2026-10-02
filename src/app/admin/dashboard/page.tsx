@@ -76,10 +76,10 @@ export default function AdminDashboardPage() {
       )}
 
       {/* PAGE HEADER */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3">
         <div>
           <p className="text-sm text-slate-400 mb-1">{todayLabel}</p>
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
             SportsMedia master admin
           </h1>
         </div>
@@ -103,7 +103,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* STATS */}
-      <div className="flex flex-wrap items-center gap-y-3 bg-white border border-slate-100 rounded-2xl px-5 py-4 mb-6 shadow-sm">
+      <div className="flex flex-wrap items-center gap-y-3 bg-white border border-slate-100 rounded-2xl px-4 py-2 mb-3 shadow-sm">
         {[
           { icon: Clock, value: pendingQueue.length, label: 'Pending queue', color: '#D97706' },
           { icon: Newspaper, value: articles.length, label: 'Articles synced', color: '#0B5FA5' },
@@ -122,10 +122,12 @@ export default function AdminDashboardPage() {
         ))}
       </div>
 
+      {/* Both card rows sit side by side on wide screens so the dashboard fits one screen */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 items-start mb-3">
       {/* APPROVALS & CONTROL */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+        <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm p-3.5">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-100 mb-2">
             <div>
               <h2 className="text-sm font-semibold text-slate-900">Pending approvals queue</h2>
               <p className="text-xs text-slate-500 mt-0.5">Live verifications awaiting admin authorization</p>
@@ -180,9 +182,9 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6 flex flex-col justify-between">
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-3.5 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-100 mb-2">
               <h2 className="text-sm font-semibold text-slate-900">Platform control</h2>
             </div>
 
@@ -222,7 +224,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          <div className="pt-4 mt-4 border-t border-slate-100 text-center">
+          <div className="pt-2 mt-2 border-t border-slate-100 text-center">
             <Link href="/admin/approvals" className="text-sm font-medium text-blue-700 hover:underline">
               Open full moderation desk &rarr;
             </Link>
@@ -231,8 +233,8 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* REALTIME USERS DIRECTORY SECTION */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6 mb-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100 mb-4">
+      <div className="min-w-0 bg-white rounded-2xl border border-slate-100 shadow-sm p-3.5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-100 mb-2">
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-base font-bold text-slate-900">Database Live Users Directory</h2>
@@ -242,7 +244,7 @@ export default function AdminDashboardPage() {
               </span>
             </div>
             <p className="text-xs text-slate-500 mt-0.5">
-              Live accounts synced with Hostinger Cloud Database. Strict role-based isolation enforces zero cross-portal access.
+              Live accounts synced with Cloud Database. Strict role-based isolation enforces zero cross-portal access.
             </p>
           </div>
           <Link
@@ -300,6 +302,7 @@ export default function AdminDashboardPage() {
             </tbody>
           </table>
         </div>
+      </div>
       </div>
     </DashboardShell>
   );

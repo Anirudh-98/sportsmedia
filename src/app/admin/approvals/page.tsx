@@ -64,13 +64,13 @@ export default function AdminApprovalsPage() {
       )}
 
       {/* Header */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-black uppercase tracking-wider mb-2">
             <Clock size={12} />
             Moderation Queue
           </div>
-          <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
+          <h1 className="text-xl font-black text-slate-900 uppercase tracking-tight">
             Pending Approvals & Verification Desk
           </h1>
           <p className="text-xs text-slate-500 font-medium">
@@ -117,14 +117,14 @@ export default function AdminApprovalsPage() {
       {/* Approvals List */}
       <div className="space-y-3.5">
         {filteredApprovals.length === 0 ? (
-          <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center text-xs text-slate-400 font-bold">
+          <div className="bg-white rounded-2xl border border-slate-200 p-3.5 text-center text-xs text-slate-400 font-bold">
             No requests matching filter criteria in queue.
           </div>
         ) : (
           filteredApprovals.map((item) => (
             <div
               key={item.id}
-              className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-blue-300 transition-all"
+              className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3.5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-blue-300 transition-all"
             >
               <div className="space-y-1.5 max-w-2xl">
                 <div className="flex items-center gap-2">

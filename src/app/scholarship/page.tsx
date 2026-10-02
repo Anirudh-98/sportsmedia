@@ -16,9 +16,9 @@ export default function ScholarshipPage() {
   const [submitted, setSubmitted] = useState(false);
 
   return (
-    <div className="w-full flex-1 flex flex-col items-center py-6 px-3 sm:px-6 lg:px-12 max-w-7xl mx-auto">
+    <div className="w-full flex-1 flex flex-col items-center py-2 px-3 sm:px-4 lg:px-6">
       {/* Breadcrumb */}
-      <div className="w-full flex items-center justify-between mb-4 pb-2 border-b border-slate-200">
+      <div className="w-full flex items-center justify-between mb-2 pb-1.5 border-b border-slate-200">
         <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600">
           <Link href="/" className="hover:text-[#0B5FA5] flex items-center gap-1">
             <FaArrowLeft size={12} />
@@ -33,17 +33,17 @@ export default function ScholarshipPage() {
       </div>
 
       {/* Header */}
-      <div className="w-full text-center max-w-3xl mb-8">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#032D59] uppercase tracking-tight">
+      <div className="w-full text-center max-w-4xl mb-3">
+        <h1 className="text-xl sm:text-2xl font-black text-[#032D59] uppercase tracking-tight">
           SPORTS SCHOLARSHIP &amp; STUDENT SUPPORT
         </h1>
-        <p className="text-sm sm:text-base text-slate-700 font-bold mt-2">
+        <p className="text-xs sm:text-sm text-slate-700 font-bold mt-1">
           Financial aid, professional equipment kits, travel stipends, and coaching sponsorships for economically challenged school athletes.
         </p>
       </div>
 
       {/* 3 Grant Tiers */}
-      <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+      <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
         {[
           {
             tier: 'Tier 1: Rising Star Kit Grant',
@@ -63,7 +63,7 @@ export default function ScholarshipPage() {
         ].map((grant, idx) => (
           <div
             key={idx}
-            className="bg-white rounded-xl border border-slate-200 p-6 shadow-xs flex flex-col justify-between"
+            className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs flex flex-col justify-between"
           >
             <div>
               <div className="mb-3">
@@ -83,16 +83,16 @@ export default function ScholarshipPage() {
       </div>
 
       {/* Application Form */}
-      <div className="w-full max-w-2xl bg-white rounded-xl border border-slate-200 p-6 sm:p-8 shadow-xs mb-8">
+      <div className="w-full max-w-2xl bg-white rounded-xl border border-slate-200 p-4 shadow-xs mb-3">
         <h2 className="text-xl font-black text-[#032D59] uppercase text-center mb-2">
           APPLY FOR SPORTS SCHOLARSHIP
         </h2>
-        <p className="text-xs text-slate-600 font-semibold text-center mb-6">
+        <p className="text-xs text-slate-600 font-semibold text-center mb-3">
           Verified applications are reviewed by the SportsMedia Blue Zone Trust panel.
         </p>
 
         {submitted ? (
-          <div className="p-6 bg-emerald-50 border border-emerald-200 rounded-lg text-center">
+          <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg text-center">
             <FaCheckCircle className="text-[#168C45] mx-auto mb-2" size={36} />
             <h3 className="text-base font-black text-slate-900">Application Received!</h3>
             <p className="text-xs text-slate-700 mt-1">
@@ -105,7 +105,7 @@ export default function ScholarshipPage() {
               e.preventDefault();
               setSubmitted(true);
             }}
-            className="space-y-4"
+            className="space-y-2"
           >
             <div>
               <label className="block text-xs font-black text-slate-700 uppercase mb-1">

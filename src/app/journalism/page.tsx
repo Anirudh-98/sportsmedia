@@ -96,9 +96,9 @@ export default function JournalismSchoolPage() {
   ];
 
   return (
-    <div className="w-full flex-1 flex flex-col items-center py-6 px-3 sm:px-6 lg:px-12 max-w-7xl mx-auto">
+    <div className="w-full flex-1 flex flex-col items-center py-2 px-3 sm:px-4 lg:px-6">
       {/* Breadcrumb Navigation */}
-      <div className="w-full flex items-center justify-between mb-4 pb-2 border-b border-slate-200">
+      <div className="w-full flex items-center justify-between mb-2 pb-1.5 border-b border-slate-200">
         <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600">
           <Link href="/" className="hover:text-[#0B5FA5] flex items-center gap-1">
             <FaArrowLeft size={12} />
@@ -113,9 +113,9 @@ export default function JournalismSchoolPage() {
       </div>
 
       {/* Hero Banner with the Master Photographer Image */}
-      <div className="w-full relative overflow-hidden bg-gradient-to-r from-[#032042] via-[#053266] to-[#032042] rounded-xl text-white p-6 sm:p-8 shadow-md border border-[#0B4F8A] mb-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-          <div className="lg:col-span-8 space-y-3 z-10">
+      <div className="w-full relative overflow-hidden bg-gradient-to-r from-[#032042] via-[#053266] to-[#032042] rounded-xl text-white p-4 shadow-md border border-[#0B4F8A] mb-3">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 items-center">
+          <div className="lg:col-span-9 space-y-1.5 z-10">
             <div className="flex items-center gap-2">
               <span className="p-1.5 bg-[#0B5FA5] rounded text-white shadow-xs">
                 <FaGraduationCap size={20} />
@@ -124,18 +124,18 @@ export default function JournalismSchoolPage() {
                 Official Certification Programme
               </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight leading-tight">
+            <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight leading-tight">
               SPORTS MEDIA JOURNALISM SCHOOL
             </h1>
             <p className="text-xs sm:text-sm font-extrabold text-blue-200 uppercase tracking-widest">
               Learn &bull; Report &bull; Share &bull; Make an Impact
             </p>
-            <p className="text-xs sm:text-sm text-slate-200 max-w-2xl leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-200 max-w-4xl leading-snug">
               A unique certificate training programme designed to train students, campus sports
               reporters, aspiring photojournalists, and digital creators to document grassroots sports
               with professional broadcast standards.
             </p>
-            <div className="flex flex-wrap gap-2 pt-2">
+            <div className="flex flex-wrap gap-2 pt-1">
               <span className="text-xs font-bold bg-white/10 px-3 py-1 rounded border border-white/20">
                 Official Press Accreditation
               </span>
@@ -148,7 +148,7 @@ export default function JournalismSchoolPage() {
             </div>
           </div>
 
-          <div className="lg:col-span-4 relative h-64 sm:h-72 rounded-lg overflow-hidden border border-white/20 shadow-lg">
+          <div className="lg:col-span-3 relative h-48 lg:h-32 rounded-lg overflow-hidden border border-white/20 shadow-lg">
             <Image
               src="/press.png"
               alt="Sports Media Journalism Photographer with Camera"
@@ -163,10 +163,12 @@ export default function JournalismSchoolPage() {
         </div>
       </div>
 
+      {/* Syllabus (left) and enrollment form (right) share one row on desktop */}
+      <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-3 items-start">
       {/* Curriculum Breakdown */}
-      <div className="w-full mb-8">
-        <div className="text-center mb-6">
-          <h2 className="text-xl sm:text-2xl font-black text-[#032D59] uppercase tracking-wide">
+      <div className="w-full lg:col-span-8">
+        <div className="text-center mb-2">
+          <h2 className="text-base sm:text-lg font-black text-[#032D59] uppercase tracking-wide">
             CERTIFICATE COURSE SYLLABUS & MODULES
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 font-semibold mt-1">
@@ -174,16 +176,16 @@ export default function JournalismSchoolPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
           {modules.map((m, idx) => {
             const Icon = m.icon;
             return (
               <div
                 key={idx}
-                className="bg-white rounded-lg border border-slate-200 p-5 shadow-xs flex flex-col justify-between"
+                className="bg-white rounded-lg border border-slate-200 p-3 shadow-xs flex flex-col justify-between"
               >
                 <div>
-                  <div className="flex items-center gap-2 mb-2.5">
+                  <div className="flex items-center gap-2">
                     <div className={`p-2 rounded-md bg-slate-100 ${m.color}`}>
                       <Icon size={18} />
                     </div>
@@ -191,7 +193,7 @@ export default function JournalismSchoolPage() {
                       {m.title}
                     </h3>
                   </div>
-                  <ul className="space-y-1.5 mt-3">
+                  <ul className="space-y-1 mt-2">
                     {m.topics.map((topic, i) => (
                       <li key={i} className="flex items-start gap-2 text-xs text-slate-700 leading-snug">
                         <span className="text-[#0B5FA5] mt-0.5 font-black">&bull;</span>
@@ -207,9 +209,9 @@ export default function JournalismSchoolPage() {
       </div>
 
       {/* Direct Enrollment Form */}
-      <div className="w-full bg-slate-50 rounded-xl border border-slate-200 p-6 sm:p-8 max-w-2xl mb-8 shadow-xs">
-        <div className="text-center mb-6">
-          <h2 className="text-xl font-black text-[#032D59] uppercase">
+      <div className="w-full bg-slate-50 rounded-xl border border-slate-200 p-3.5 max-w-2xl mx-auto lg:max-w-none lg:col-span-4 shadow-xs">
+        <div className="text-center mb-2">
+          <h2 className="text-base sm:text-lg font-black text-[#032D59] uppercase">
             ENROLL NOW IN JOURNALISM SCHOOL
           </h2>
           <p className="text-xs text-slate-600 font-semibold mt-1">
@@ -218,7 +220,7 @@ export default function JournalismSchoolPage() {
         </div>
 
         {enrolled ? (
-          <div className="p-6 bg-emerald-50 border border-emerald-200 rounded-lg text-center">
+          <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg text-center">
             <FaCheckCircle className="text-[#168C45] mx-auto mb-2" size={36} />
             <h3 className="text-base font-black text-slate-900">Application Submitted!</h3>
             <p className="text-xs text-slate-700 mt-1">
@@ -226,7 +228,7 @@ export default function JournalismSchoolPage() {
             </p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-3.5">
+          <form onSubmit={handleSubmit} className="space-y-2.5">
             <div>
               <label className="block text-xs font-black text-slate-700 uppercase mb-1">
                 Full Name
@@ -287,12 +289,13 @@ export default function JournalismSchoolPage() {
 
             <button
               type="submit"
-              className="w-full py-3 bg-gradient-to-r from-[#168C45] to-[#116E36] hover:from-[#116E36] hover:to-[#0D5429] text-white font-black text-xs uppercase tracking-wider rounded-md shadow-xs transition-all cursor-pointer"
+              className="w-full py-2 bg-gradient-to-r from-[#168C45] to-[#116E36] hover:from-[#116E36] hover:to-[#0D5429] text-white font-black text-xs uppercase tracking-wider rounded-md shadow-xs transition-all cursor-pointer"
             >
               SUBMIT APPLICATION FOR ENROLLMENT
             </button>
           </form>
         )}
+      </div>
       </div>
     </div>
   );

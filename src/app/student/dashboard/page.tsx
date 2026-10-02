@@ -122,10 +122,10 @@ export default function StudentDashboardPage() {
       )}
 
       {/* PAGE HEADER */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3">
         <div>
           <p className="text-sm text-slate-400 mb-1">{todayLabel}</p>
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
             Welcome back, {user?.name || 'Trainee Journalist'}
           </h1>
         </div>
@@ -150,7 +150,7 @@ export default function StudentDashboardPage() {
       </div>
 
       {/* STATS */}
-      <div className="flex flex-wrap items-center gap-y-3 bg-white border border-slate-100 rounded-2xl px-5 py-4 mb-6 shadow-sm">
+      <div className="flex flex-wrap items-center gap-y-3 bg-white border border-slate-100 rounded-2xl px-4 py-2 mb-3 shadow-sm">
         {[
           { icon: BookOpen, value: courses.length, label: 'Courses enrolled', color: '#0B5FA5' },
           { icon: CheckCircle2, value: completedCoursesCount, label: 'Completed', color: '#059669' },
@@ -170,13 +170,13 @@ export default function StudentDashboardPage() {
       </div>
 
       {/* ACTIVE COURSE */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6 mb-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-3.5 mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-100">
           <div>
             <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md">
               Current active module
             </span>
-            <h2 className="text-base font-semibold text-slate-900 mt-2">
+            <h2 className="text-base font-semibold text-slate-900 mt-1">
               Sports Reporting & Match Writing
             </h2>
             <p className="text-xs text-slate-500 mt-0.5">
@@ -193,7 +193,7 @@ export default function StudentDashboardPage() {
           </Link>
         </div>
 
-        <div className="pt-4">
+        <div className="pt-2">
           <div className="flex justify-between text-sm text-slate-600 mb-1.5">
             <span>Course progress: 8 of 10 lessons complete</span>
             <span className="text-blue-700 font-semibold">80%</span>
@@ -201,7 +201,7 @@ export default function StudentDashboardPage() {
           <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
             <div className="h-full bg-blue-600 rounded-full transition-all duration-500" style={{ width: '80%' }} />
           </div>
-          <div className="mt-3 flex items-center justify-between text-sm">
+          <div className="mt-2 flex items-center justify-between text-sm">
             <span className="text-slate-500">
               Up next: <strong className="text-slate-800 font-medium">Writing a Match Report (Under-16 District Finals)</strong>
             </span>
@@ -212,10 +212,12 @@ export default function StudentDashboardPage() {
         </div>
       </div>
 
+      {/* Both card rows sit side by side on wide screens so the dashboard fits one screen */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 items-start mb-3">
       {/* COURSES & ASSIGNMENTS */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+        <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm p-3.5">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-100 mb-2">
             <div>
               <h2 className="text-sm font-semibold text-slate-900">Enrolled courses</h2>
               <p className="text-xs text-slate-500 mt-0.5">Official Sports Media curriculum modules</p>
@@ -232,7 +234,7 @@ export default function StudentDashboardPage() {
             {courses.slice(0, 4).map((course) => (
               <div
                 key={course.id}
-                className="p-3.5 rounded-xl border border-slate-100 hover:border-blue-200 hover:bg-blue-50/30 transition-all flex items-center justify-between gap-4"
+                className="px-3 py-2 rounded-xl border border-slate-100 hover:border-blue-200 hover:bg-blue-50/30 transition-all flex items-center justify-between gap-3"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
@@ -271,9 +273,9 @@ export default function StudentDashboardPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6 flex flex-col justify-between">
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-3.5 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-100 mb-2">
               <div>
                 <h2 className="text-sm font-semibold text-slate-900">Assignments due</h2>
                 <p className="text-xs text-slate-500 mt-0.5">Practical reporting fieldwork</p>
@@ -290,7 +292,7 @@ export default function StudentDashboardPage() {
               {assignments.map((asg) => (
                 <div
                   key={asg.id}
-                  className="p-3.5 rounded-xl border border-slate-100 space-y-2"
+                  className="p-2.5 rounded-xl border border-slate-100 space-y-1.5"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <h4 className="text-sm font-medium text-slate-900 leading-tight">{asg.title}</h4>
@@ -329,7 +331,7 @@ export default function StudentDashboardPage() {
             </div>
           </div>
 
-          <div className="pt-4 mt-4 border-t border-slate-100 text-center">
+          <div className="pt-2 mt-2 border-t border-slate-100 text-center">
             <Link
               href="/student/assignments"
               className="text-sm font-medium text-[#0B5FA5] hover:underline"
@@ -341,9 +343,9 @@ export default function StudentDashboardPage() {
       </div>
 
       {/* ARTICLES & MEDIA */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-3.5">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-100 mb-2">
             <div>
               <h2 className="text-sm font-semibold text-slate-900">My articles & reports</h2>
               <p className="text-xs text-slate-500 mt-0.5">Live published stories and pending editorial drafts</p>
@@ -360,7 +362,7 @@ export default function StudentDashboardPage() {
             {articles.slice(0, 3).map((art) => (
               <div
                 key={art.id}
-                className="p-3 rounded-xl border border-slate-100 space-y-1.5"
+                className="p-2.5 rounded-xl border border-slate-100 space-y-1"
               >
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-[11px] font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
@@ -389,16 +391,16 @@ export default function StudentDashboardPage() {
           <button
             type="button"
             onClick={() => setShowArticleModal(true)}
-            className="w-full mt-4 py-2.5 rounded-xl border border-dashed border-blue-200 text-blue-700 hover:bg-blue-50 text-sm font-medium transition-colors flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full mt-2 py-1.5 rounded-xl border border-dashed border-blue-200 text-blue-700 hover:bg-blue-50 text-sm font-medium transition-colors flex items-center justify-center gap-2 cursor-pointer"
           >
             <Send size={14} />
             Write another match story
           </button>
         </div>
 
-        <div className="space-y-6">
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6">
-            <div className="flex items-center gap-3 mb-3">
+        <div className="space-y-3">
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-3.5">
+            <div className="flex items-center gap-3 mb-2">
               <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
                 <Award size={20} />
               </div>
@@ -407,7 +409,7 @@ export default function StudentDashboardPage() {
                 <p className="text-xs text-slate-500">Sports Media journalism certification</p>
               </div>
             </div>
-            <p className="text-sm text-slate-500 mb-4 leading-relaxed">
+            <p className="text-sm text-slate-500 mb-2 leading-snug">
               Upon completing all 7 modules and practical ground assignments, students receive an authorized, tamper-proof digital certificate accredited by SportsMedia.World.
             </p>
             <div className="flex items-center justify-between gap-3">
@@ -427,8 +429,8 @@ export default function StudentDashboardPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6">
-            <div className="flex items-center justify-between mb-3">
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-3.5">
+            <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
                   <Camera size={20} />
@@ -445,7 +447,7 @@ export default function StudentDashboardPage() {
                 Open &rarr;
               </Link>
             </div>
-            <p className="text-sm text-slate-500 mb-3">
+            <p className="text-sm text-slate-500 mb-2 leading-snug">
               Maintain your verified portfolio of match reports, press-box photos, and interview podcasts for scouting and media network opportunities.
             </p>
             <Link
@@ -456,6 +458,7 @@ export default function StudentDashboardPage() {
             </Link>
           </div>
         </div>
+      </div>
       </div>
 
       {/* MODAL: WRITE ARTICLE */}
@@ -476,7 +479,7 @@ export default function StudentDashboardPage() {
               </button>
             </div>
 
-            <form onSubmit={handleCreateArticle} className="p-5 space-y-4">
+            <form onSubmit={handleCreateArticle} className="p-3.5 space-y-2.5">
               <div>
                 <label className="block text-xs font-medium text-slate-600 mb-1.5">
                   Article title *
@@ -562,7 +565,7 @@ export default function StudentDashboardPage() {
               </button>
             </div>
 
-            <form onSubmit={handleSubmitAssignment} className="p-5 space-y-4">
+            <form onSubmit={handleSubmitAssignment} className="p-3.5 space-y-2.5">
               <div className="bg-blue-50 p-3 rounded-lg">
                 <h4 className="text-sm font-medium text-slate-900">{selectedAssignment.title}</h4>
                 <p className="text-xs text-slate-600 mt-0.5">
@@ -608,7 +611,7 @@ export default function StudentDashboardPage() {
       {/* MODAL: CERTIFICATE PREVIEW */}
       {showCertificateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-in fade-in">
-          <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-xl border border-slate-100 p-6 sm:p-8 text-center">
+          <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-xl border border-slate-100 p-4 sm:p-5 text-center">
             <button
               type="button"
               onClick={() => setShowCertificateModal(false)}
@@ -617,7 +620,7 @@ export default function StudentDashboardPage() {
               <X size={18} />
             </button>
 
-            <div className="border border-amber-200 p-6 rounded-xl bg-amber-50/30">
+            <div className="border border-amber-200 p-4 rounded-xl bg-amber-50/30">
               <div className="w-14 h-14 mx-auto rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mb-3">
                 <Award size={28} />
               </div>

@@ -82,13 +82,13 @@ export default function StudentPortfolioPage() {
       )}
 
       {/* Header */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-900 text-[10px] font-black uppercase tracking-wider mb-2">
             <Camera size={12} />
             Visual & Multimedia Assets
           </div>
-          <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
+          <h1 className="text-xl font-black text-slate-900 uppercase tracking-tight">
             Journalism Media Portfolio
           </h1>
           <p className="text-xs text-slate-500 font-medium">
@@ -107,7 +107,7 @@ export default function StudentPortfolioPage() {
       </div>
 
       {/* Filter Tabs */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3 mb-6 flex items-center gap-2 text-xs overflow-x-auto">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3 mb-3 flex items-center gap-2 text-xs overflow-x-auto">
         {(['all', 'photo', 'video', 'certificate', 'proof'] as const).map((tab) => (
           <button
             key={tab}
@@ -129,7 +129,7 @@ export default function StudentPortfolioPage() {
       </div>
 
       {/* Media Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {filteredMedia.map((media) => (
           <div
             key={media.id}
@@ -194,7 +194,7 @@ export default function StudentPortfolioPage() {
               </button>
             </div>
 
-            <form onSubmit={handleUploadSubmit} className="p-5 space-y-4">
+            <form onSubmit={handleUploadSubmit} className="p-3.5 space-y-2.5">
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
                   Asset Title *

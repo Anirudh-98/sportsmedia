@@ -74,13 +74,13 @@ export default function StudentCertificatesPage() {
       )}
 
       {/* Header */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-black uppercase tracking-wider mb-2">
             <Award size={12} />
             Verified Accreditations
           </div>
-          <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
+          <h1 className="text-xl font-black text-slate-900 uppercase tracking-tight">
             Certificates & Credentials
           </h1>
           <p className="text-xs text-slate-500 font-medium">
@@ -95,11 +95,11 @@ export default function StudentCertificatesPage() {
       </div>
 
       {/* Certificates Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         {certificates.map((cert) => (
           <div
             key={cert.id}
-            className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-5 flex flex-col justify-between hover:border-amber-400 hover:shadow-md transition-all space-y-4"
+            className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3.5 flex flex-col justify-between hover:border-amber-400 hover:shadow-md transition-all space-y-2.5"
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-3">
@@ -151,7 +151,7 @@ export default function StudentCertificatesPage() {
       {/* VIEW CERTIFICATE MODAL */}
       {selectedCert && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
-          <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl border-4 border-[#032D59] p-6 sm:p-8 text-center">
+          <div className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl border-4 border-[#032D59] p-4 sm:p-5 text-center">
             <button
               type="button"
               onClick={() => setSelectedCert(null)}
@@ -160,7 +160,7 @@ export default function StudentCertificatesPage() {
               <X size={18} />
             </button>
 
-            <div className="border-2 border-amber-400 p-6 rounded-xl bg-gradient-to-b from-amber-50/40 via-white to-amber-50/20">
+            <div className="border-2 border-amber-400 p-4 rounded-xl bg-gradient-to-b from-amber-50/40 via-white to-amber-50/20">
               <div className="w-14 h-14 mx-auto rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mb-3">
                 <Award size={32} />
               </div>

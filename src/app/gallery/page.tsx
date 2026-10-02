@@ -18,9 +18,9 @@ const GALLERY_IMAGES = [
 
 export default function GalleryPage() {
   return (
-    <div className="w-full flex-1 flex flex-col items-center py-6 px-3 sm:px-6 lg:px-12 max-w-7xl mx-auto">
+    <div className="w-full flex-1 flex flex-col items-center py-2 px-3 sm:px-4 lg:px-6">
       {/* Breadcrumb */}
-      <div className="w-full flex items-center justify-between mb-4 pb-2 border-b border-slate-200">
+      <div className="w-full flex items-center justify-between mb-2 pb-1.5 border-b border-slate-200">
         <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600">
           <Link href="/" className="hover:text-[#0B5FA5] flex items-center gap-1">
             <FaArrowLeft size={12} />
@@ -32,7 +32,7 @@ export default function GalleryPage() {
       </div>
 
       {/* Header */}
-      <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#032D59] uppercase tracking-tight text-center mb-6">
+      <h1 className="text-xl sm:text-2xl font-black text-[#032D59] uppercase tracking-tight text-center mb-3">
         SPORTS MEDIA PHOTO GALLERY
       </h1>
 

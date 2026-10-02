@@ -70,13 +70,13 @@ export default function SponsorProgramsPage() {
       )}
 
       {/* Header */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-900 text-[10px] font-black uppercase tracking-wider mb-2">
             <Trophy size={12} />
             Grassroots Initiatives
           </div>
-          <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
+          <h1 className="text-xl font-black text-slate-900 uppercase tracking-tight">
             Sports Programs & Equipment Drives
           </h1>
           <p className="text-xs text-slate-500 font-medium">
@@ -86,11 +86,11 @@ export default function SponsorProgramsPage() {
       </div>
 
       {/* Programs Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {programs.map((p) => (
           <div
             key={p.id}
-            className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-5 flex flex-col justify-between hover:border-purple-300 transition-all space-y-4"
+            className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3.5 flex flex-col justify-between hover:border-purple-300 transition-all space-y-2.5"
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-2">
@@ -160,7 +160,7 @@ export default function SponsorProgramsPage() {
               </button>
             </div>
 
-            <form onSubmit={handleFund} className="p-5 space-y-4">
+            <form onSubmit={handleFund} className="p-3.5 space-y-2.5">
               <div className="bg-purple-50 p-3.5 rounded-xl border border-purple-100">
                 <h4 className="text-xs font-black text-purple-950">{selectedProgram.title}</h4>
                 <p className="text-[11px] text-purple-700 mt-0.5">

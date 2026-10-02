@@ -43,7 +43,7 @@ export const WelcomeLoginCard: React.FC<WelcomeLoginCardProps> = ({
   // If already authenticated, show personalized dashboard quick-access card
   if (user) {
     return (
-      <div className="bg-gradient-to-b from-[#EEF6FC] via-[#E8F3FD] to-[#EEF6FC] rounded-lg border border-[#BCD7EF] p-4 flex flex-col justify-between h-full shadow-2xs">
+      <div className="bg-gradient-to-b from-[#EEF6FC] via-[#E8F3FD] to-[#EEF6FC] rounded-lg border border-[#BCD7EF] p-3 flex flex-col justify-between h-full shadow-2xs">
         <div>
           {/* Header */}
           <div className="flex items-center gap-2.5 pb-3 border-b border-[#D4E6F6]">
@@ -146,10 +146,10 @@ export const WelcomeLoginCard: React.FC<WelcomeLoginCardProps> = ({
   };
 
   return (
-    <div className="bg-gradient-to-b from-[#EEF6FC] via-[#E8F3FD] to-[#EEF6FC] rounded-lg border border-[#BCD7EF] p-3 flex flex-col justify-between h-full shadow-2xs">
+    <div className="bg-gradient-to-b from-[#EEF6FC] via-[#E8F3FD] to-[#EEF6FC] rounded-lg border border-[#BCD7EF] p-2.5 flex flex-col justify-between h-full shadow-2xs">
       <div>
         {/* Header with emblem & title */}
-        <div className="flex items-center gap-2.5 mt-2 sm:mt-2 pb-2 border-b border-[#D4E6F6]">
+        <div className="flex items-center gap-2.5 pb-1.5 border-b border-[#D4E6F6]">
           <div className="w-9 h-9 rounded-full bg-[#0B5FA5] flex items-center justify-center text-white shrink-0 shadow-xs">
             <FaHandsHelping size={17} className="text-white" />
           </div>
@@ -175,7 +175,7 @@ export const WelcomeLoginCard: React.FC<WelcomeLoginCardProps> = ({
         )}
 
         {/* Compact Login Form */}
-        <form onSubmit={handleSubmit} className="mt-2.5 space-y-2">
+        <form onSubmit={handleSubmit} className="mt-2 space-y-1.5">
           {/* Email / Mobile Input */}
           <div className="relative">
             <FaEnvelope
@@ -188,7 +188,7 @@ export const WelcomeLoginCard: React.FC<WelcomeLoginCardProps> = ({
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email / Mobile Number"
-              className="w-full pl-8 pr-2.5 py-2 text-xs bg-white border border-slate-300 rounded-md focus:outline-hidden focus:ring-1.5 focus:ring-[#0B5FA5] focus:border-transparent text-slate-900 placeholder-slate-500 font-bold"
+              className="w-full pl-8 pr-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-md focus:outline-hidden focus:ring-1.5 focus:ring-[#0B5FA5] focus:border-transparent text-slate-900 placeholder-slate-500 font-bold"
             />
           </div>
 
@@ -204,7 +204,7 @@ export const WelcomeLoginCard: React.FC<WelcomeLoginCardProps> = ({
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
-              className="w-full pl-8 pr-8 py-2 text-xs bg-white border border-slate-300 rounded-md focus:outline-hidden focus:ring-1.5 focus:ring-[#0B5FA5] focus:border-transparent text-slate-900 placeholder-slate-500 font-bold"
+              className="w-full pl-8 pr-8 py-1.5 text-xs bg-white border border-slate-300 rounded-md focus:outline-hidden focus:ring-1.5 focus:ring-[#0B5FA5] focus:border-transparent text-slate-900 placeholder-slate-500 font-bold"
             />
             <button
               type="button"
@@ -239,13 +239,13 @@ export const WelcomeLoginCard: React.FC<WelcomeLoginCardProps> = ({
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 bg-[#0B5FA5] hover:bg-[#032D59] disabled:opacity-60 text-white font-black text-xs sm:text-[13px] uppercase tracking-wider rounded-md shadow-xs transition-all active:scale-98 cursor-pointer mt-1 flex items-center justify-center gap-1.5"
+            className="w-full py-1.5 bg-[#0B5FA5] hover:bg-[#032D59] disabled:opacity-60 text-white font-black text-xs sm:text-[13px] uppercase tracking-wider rounded-md shadow-xs transition-all active:scale-98 cursor-pointer flex items-center justify-center gap-1.5"
           >
             {loading ? <span>Verifying...</span> : <span>LOGIN</span>}
           </button>
 
           {/* New User Link */}
-          <div className="text-center text-xs text-slate-800 font-bold pt-1">
+          <div className="text-center text-xs text-slate-800 font-bold">
             <span>New User? </span>
             <Link
               href="/login?mode=register"
@@ -257,13 +257,13 @@ export const WelcomeLoginCard: React.FC<WelcomeLoginCardProps> = ({
         </form>
 
         {/* 3 Circular Action Icons */}
-        <div className="grid grid-cols-3 gap-1.5 pt-2.5 mt-4 border-t border-[#D4E6F6] text-center">
+        <div className="grid grid-cols-3 gap-1.5 pt-2 mt-2 border-t border-[#D4E6F6] text-center">
           {/* TRAINEE JOURNALIST */}
           <div
             onClick={() => handleRoleNavigation('TRAINEE JOURNALIST')}
             className="flex flex-col items-center group cursor-pointer"
           >
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#168C45] text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
+            <div className="w-9 h-9 rounded-full bg-[#168C45] text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
               <FaUserGraduate size={16} />
             </div>
             <span className="text-[10.5px] font-black text-[#032D59] uppercase tracking-tight mt-1 leading-tight text-center">
@@ -279,7 +279,7 @@ export const WelcomeLoginCard: React.FC<WelcomeLoginCardProps> = ({
             onClick={() => handleRoleNavigation('COACHES')}
             className="flex flex-col items-center group cursor-pointer"
           >
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#F28C28] text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
+            <div className="w-9 h-9 rounded-full bg-[#F28C28] text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
               <FaChalkboardTeacher size={16} />
             </div>
             <span className="text-[11px] font-black text-[#032D59] uppercase tracking-tight mt-1 leading-tight">
@@ -295,7 +295,7 @@ export const WelcomeLoginCard: React.FC<WelcomeLoginCardProps> = ({
             onClick={() => handleRoleNavigation('SCHOOLS')}
             className="flex flex-col items-center group cursor-pointer"
           >
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#7E378B] text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
+            <div className="w-9 h-9 rounded-full bg-[#7E378B] text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
               <FaUniversity size={15} />
             </div>
             <span className="text-[11px] font-black text-[#032D59] uppercase tracking-tight mt-1 leading-tight">
@@ -309,7 +309,7 @@ export const WelcomeLoginCard: React.FC<WelcomeLoginCardProps> = ({
       </div>
 
       {/* Blue Zone Foundation Quote Box */}
-      <div className="mt-3 p-2 bg-[#E1EEF8] rounded-md border border-[#BCD7EF] text-[11px] font-bold text-[#032D59] text-center leading-snug">
+      <div className="mt-2 p-1.5 bg-[#E1EEF8] rounded-md border border-[#BCD7EF] text-[11px] font-bold text-[#032D59] text-center leading-snug">
         “Empowering India’s next generation of athletes from grassroots to the global podium.”
       </div>
     </div>

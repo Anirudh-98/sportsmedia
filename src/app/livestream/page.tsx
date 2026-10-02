@@ -13,9 +13,9 @@ import {
 
 export default function LiveStreamPage() {
   return (
-    <div className="w-full flex-1 flex flex-col items-center py-6 px-3 sm:px-6 lg:px-12 max-w-7xl mx-auto">
+    <div className="w-full flex-1 flex flex-col items-center py-2 px-3 sm:px-4 lg:px-6">
       {/* Breadcrumb */}
-      <div className="w-full flex items-center justify-between mb-4 pb-2 border-b border-slate-200">
+      <div className="w-full flex items-center justify-between mb-2 pb-1.5 border-b border-slate-200">
         <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600">
           <Link href="/" className="hover:text-[#0B5FA5] flex items-center gap-1">
             <FaArrowLeft size={12} />
@@ -31,17 +31,17 @@ export default function LiveStreamPage() {
       </div>
 
       {/* Header */}
-      <div className="w-full text-center max-w-3xl mb-8">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#032D59] uppercase tracking-tight">
+      <div className="w-full text-center max-w-4xl mb-3">
+        <h1 className="text-xl sm:text-2xl font-black text-[#032D59] uppercase tracking-tight">
           LIVE MATCH STREAMS &amp; BROADCASTS
         </h1>
-        <p className="text-sm sm:text-base text-slate-700 font-bold mt-2">
+        <p className="text-xs sm:text-sm text-slate-700 font-bold mt-1">
           Watch grassroots inter-school tournaments, state selection finals, and live athlete interviews streamed directly from stadiums across India.
         </p>
       </div>
 
       {/* Main Broadcast Screen */}
-      <div className="w-full max-w-4xl bg-slate-950 rounded-xl overflow-hidden shadow-2xl border border-slate-800 mb-8">
+      <div className="w-full max-w-4xl bg-slate-950 rounded-xl overflow-hidden shadow-2xl border border-slate-800 mb-3">
         <div className="relative aspect-video w-full flex items-center justify-center">
           <Image
             src="/images/youtube_player_exact.png"

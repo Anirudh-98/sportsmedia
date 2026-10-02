@@ -129,10 +129,10 @@ export default function CoachDashboardPage() {
       )}
 
       {/* PAGE HEADER */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3">
         <div>
           <p className="text-sm text-slate-400 mb-1">{todayLabel}</p>
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
             Welcome back, {user?.name || 'Coach'}
           </h1>
         </div>
@@ -158,7 +158,7 @@ export default function CoachDashboardPage() {
       </div>
 
       {/* STATS */}
-      <div className="flex flex-wrap items-center gap-y-3 bg-white border border-slate-100 rounded-2xl px-5 py-4 mb-6 shadow-sm">
+      <div className="flex flex-wrap items-center gap-y-3 bg-white border border-slate-100 rounded-2xl px-4 py-2 mb-3 shadow-sm">
         {[
           { icon: Users, value: athletes.length, label: 'Active athletes', color: '#059669' },
           { icon: Trophy, value: totalMedals, label: 'Medals won', color: '#D97706' },
@@ -177,10 +177,12 @@ export default function CoachDashboardPage() {
         ))}
       </div>
 
+      {/* Both card rows sit side by side on wide screens so the dashboard fits one screen */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 items-start mb-3">
       {/* ROSTER & TRIALS */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+        <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm p-3.5">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-100 mb-2">
             <div>
               <h2 className="text-sm font-semibold text-slate-900">My athletes roster</h2>
               <p className="text-xs text-slate-500 mt-0.5">Grassroots talents enrolled under your training program</p>
@@ -235,9 +237,9 @@ export default function CoachDashboardPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6 flex flex-col justify-between">
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-3.5 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-100 mb-2">
               <div>
                 <h2 className="text-sm font-semibold text-slate-900">Upcoming trials</h2>
                 <p className="text-xs text-slate-500 mt-0.5">Championship selection meets</p>
@@ -270,7 +272,7 @@ export default function CoachDashboardPage() {
             </div>
           </div>
 
-          <div className="pt-4 mt-4 border-t border-slate-100 text-center">
+          <div className="pt-2 mt-2 border-t border-slate-100 text-center">
             <Link href="/coach/events" className="text-sm font-medium hover:underline" style={{ color: ACCENT }}>
               Open complete match calendar &rarr;
             </Link>
@@ -279,9 +281,9 @@ export default function CoachDashboardPage() {
       </div>
 
       {/* ACHIEVEMENTS & MEDIA */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-3.5">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-100 mb-2">
             <div>
               <h2 className="text-sm font-semibold text-slate-900">Recent achievements</h2>
               <p className="text-xs text-slate-500 mt-0.5">Honors logged by your athletes</p>
@@ -311,8 +313,8 @@ export default function CoachDashboardPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-6">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-3.5">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-100 mb-2">
             <div>
               <h2 className="text-sm font-semibold text-slate-900">Match footage & proofs</h2>
               <p className="text-xs text-slate-500 mt-0.5">Verified action photos and timing videos</p>
@@ -346,6 +348,7 @@ export default function CoachDashboardPage() {
           </div>
         </div>
       </div>
+      </div>
 
       {/* MODAL: ADD ATHLETE */}
       {showAddAthleteModal && (
@@ -365,7 +368,7 @@ export default function CoachDashboardPage() {
               </button>
             </div>
 
-            <form onSubmit={handleAddAthlete} className="p-5 space-y-4">
+            <form onSubmit={handleAddAthlete} className="p-3.5 space-y-2.5">
               <div>
                 <label className="block text-xs font-medium text-slate-600 mb-1.5">
                   Athlete full name *
@@ -477,7 +480,7 @@ export default function CoachDashboardPage() {
               </button>
             </div>
 
-            <form onSubmit={handleUploadMedia} className="p-5 space-y-4">
+            <form onSubmit={handleUploadMedia} className="p-3.5 space-y-2.5">
               <div>
                 <label className="block text-xs font-medium text-slate-600 mb-1.5">
                   Media title *

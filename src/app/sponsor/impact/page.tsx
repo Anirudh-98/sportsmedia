@@ -40,13 +40,13 @@ export default function SponsorImpactPage() {
       )}
 
       {/* Header */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-900 text-[10px] font-black uppercase tracking-wider mb-2">
             <TrendingUp size={12} />
             CSR Impact Audit
           </div>
-          <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
+          <h1 className="text-xl font-black text-slate-900 uppercase tracking-tight">
             Impact Metrics & CSR Compliance
           </h1>
           <p className="text-xs text-slate-500 font-medium">
@@ -65,26 +65,26 @@ export default function SponsorImpactPage() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-6">
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-5">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3.5">
           <div className="text-xs font-black uppercase text-slate-400 mb-1">Medals Enabled</div>
-          <div className="text-3xl font-black text-purple-700">14</div>
+          <div className="text-2xl font-black text-purple-700">14</div>
           <p className="text-[11px] text-slate-500 mt-1">
             District & State medals won by athletes under your sponsorship fellowship.
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-5">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3.5">
           <div className="text-xs font-black uppercase text-slate-400 mb-1">Kits Distributed</div>
-          <div className="text-3xl font-black text-emerald-600">85 Kits</div>
+          <div className="text-2xl font-black text-emerald-600">85 Kits</div>
           <p className="text-[11px] text-slate-500 mt-1">
             Professional running spikes and equipment bags delivered to rural student athletes.
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-5">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3.5">
           <div className="text-xs font-black uppercase text-slate-400 mb-1">Audit Status</div>
-          <div className="text-3xl font-black text-blue-600">100%</div>
+          <div className="text-2xl font-black text-blue-600">100%</div>
           <p className="text-[11px] text-slate-500 mt-1">
             Section 135 Companies Act & 80G Tax Deductible certified by SportsMedia Foundation.
           </p>
@@ -92,7 +92,7 @@ export default function SponsorImpactPage() {
       </div>
 
       {/* Compliance & Impact Details */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-5 sm:p-6 space-y-4">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3.5 space-y-2.5">
         <h2 className="text-base font-black text-slate-900 uppercase pb-3 border-b border-slate-100">
           Sponsorship Audit Log & Fund Flow
         </h2>

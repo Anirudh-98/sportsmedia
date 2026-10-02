@@ -42,9 +42,9 @@ const NEWS_ARTICLES = [
 
 export default function NewsPage() {
   return (
-    <div className="w-full flex-1 flex flex-col items-center py-6 px-3 sm:px-6 lg:px-12 max-w-7xl mx-auto">
+    <div className="w-full flex-1 flex flex-col items-center py-2 px-3 sm:px-4 lg:px-6">
       {/* Breadcrumb */}
-      <div className="w-full flex items-center justify-between mb-4 pb-2 border-b border-slate-200">
+      <div className="w-full flex items-center justify-between mb-2 pb-1.5 border-b border-slate-200">
         <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600">
           <Link href="/" className="hover:text-[#0B5FA5] flex items-center gap-1">
             <FaArrowLeft size={12} />
@@ -59,21 +59,21 @@ export default function NewsPage() {
       </div>
 
       {/* Header */}
-      <div className="w-full text-center max-w-3xl mb-8">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#032D59] uppercase tracking-tight">
+      <div className="w-full text-center max-w-4xl mb-3">
+        <h1 className="text-xl sm:text-2xl font-black text-[#032D59] uppercase tracking-tight">
           LATEST SPORTS NEWS &amp; UPDATES
         </h1>
-        <p className="text-sm sm:text-base text-slate-700 font-bold mt-2">
+        <p className="text-xs sm:text-sm text-slate-700 font-bold mt-1">
           Daily tournament reports, record-breaking student achievements, and grassroots sports policy updates.
         </p>
       </div>
 
       {/* News Articles Grid */}
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
         {NEWS_ARTICLES.map((article) => (
           <div
             key={article.id}
-            className="bg-white rounded-xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between"
+            className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between"
           >
             <div>
               <div className="flex items-center justify-between text-xs font-bold text-slate-500 mb-2">

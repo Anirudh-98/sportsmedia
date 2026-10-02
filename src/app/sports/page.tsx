@@ -71,9 +71,9 @@ export default function SportsPage() {
   });
 
   return (
-    <div className="w-full flex-1 flex flex-col items-center py-6 px-3 sm:px-6 lg:px-12 max-w-7xl mx-auto">
+    <div className="w-full flex-1 flex flex-col items-center py-2 px-3 sm:px-4 lg:px-6">
       {/* Breadcrumb Navigation */}
-      <div className="w-full flex items-center justify-between mb-4 pb-2 border-b border-slate-200">
+      <div className="w-full flex items-center justify-between mb-2 pb-1.5 border-b border-slate-200">
         <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600">
           <Link href="/" className="hover:text-[#0B5FA5] flex items-center gap-1">
             <FaArrowLeft size={12} />
@@ -88,30 +88,30 @@ export default function SportsPage() {
       </div>
 
       {/* Header */}
-      <div className="w-full text-center max-w-3xl mb-6">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#032D59] uppercase tracking-tight">
+      <div className="w-full text-center max-w-4xl mb-3">
+        <h1 className="text-xl sm:text-2xl font-black text-[#032D59] uppercase tracking-tight">
           EXPLORE SPORTS &amp; GAMES
         </h1>
-        <p className="text-sm sm:text-base text-slate-700 font-bold mt-2">
+        <p className="text-xs sm:text-sm text-slate-700 font-bold mt-1">
           From Olympic disciplines to traditional Indian heritage sports, discover rules, school tournament calendars, and athlete pathways.
         </p>
       </div>
 
       {/* Search & Filter Bar */}
-      <div className="w-full max-w-2xl flex flex-col gap-3 mb-6">
-        <div className="relative w-full">
+      <div className="w-full max-w-5xl flex flex-col lg:flex-row lg:items-center gap-2 mb-3">
+        <div className="relative w-full lg:w-80 lg:shrink-0">
           <FaSearch size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search sports by name, rules, or keywords..."
-            className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-lg text-xs sm:text-sm font-medium focus:ring-2 focus:ring-[#0B5FA5] focus:outline-hidden shadow-xs"
+            className="w-full pl-10 pr-4 py-1.5 bg-white border border-slate-300 rounded-lg text-xs sm:text-sm font-medium focus:ring-2 focus:ring-[#0B5FA5] focus:outline-hidden shadow-xs"
           />
         </div>
 
         {/* Category Pills */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1.5 scrollbar-none">
+        <div className="flex items-center gap-1.5 overflow-x-auto lg:flex-wrap lg:overflow-visible pb-1.5 lg:pb-0 scrollbar-none">
           {categories.map((cat) => (
             <button
               key={cat}
@@ -129,20 +129,20 @@ export default function SportsPage() {
       </div>
 
       {/* Sports Grid */}
-      <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+      <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 mb-1">
         {filteredSports.map((sport) => {
           const Icon = sport.icon;
           return (
             <div
               key={sport.name}
-              className="bg-white rounded-lg border border-slate-200 p-4 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group"
+              className="bg-white rounded-lg border border-slate-200 p-2.5 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group"
             >
               <div>
-                <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center justify-between mb-1.5">
                   <div
-                    className={`w-12 h-12 rounded-full ${sport.color} text-white flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform`}
+                    className={`w-9 h-9 rounded-full ${sport.color} text-white flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform`}
                   >
-                    <Icon size={22} />
+                    <Icon size={17} />
                   </div>
                   <span className="text-[10.5px] font-bold text-[#0B5FA5] bg-blue-50 px-2 py-0.5 rounded">
                     {sport.category}
@@ -151,12 +151,12 @@ export default function SportsPage() {
                 <h3 className="text-sm font-black text-[#032D59] uppercase tracking-wide">
                   {sport.name}
                 </h3>
-                <p className="text-xs text-slate-600 font-medium mt-1 leading-relaxed">
+                <p className="text-xs text-slate-600 font-medium mt-0.5 leading-snug">
                   {sport.desc}
                 </p>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+              <div className="mt-2 pt-1.5 border-t border-slate-100 flex items-center justify-between">
                 <Link
                   href={`/events?sport=${encodeURIComponent(sport.name)}`}
                   className="text-xs font-black text-[#0B5FA5] hover:underline"

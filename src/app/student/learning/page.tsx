@@ -93,13 +93,13 @@ export default function StudentLearningPage() {
       )}
 
       {/* Page Header */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 text-[10px] font-black uppercase tracking-wider mb-2">
             <BookOpen size={12} />
             My Active Learning Hub
           </div>
-          <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
+          <h1 className="text-xl font-black text-slate-900 uppercase tracking-tight">
             Learning Roadmap & Syllabus
           </h1>
           <p className="text-xs text-slate-500 font-medium">
@@ -126,9 +126,11 @@ export default function StudentLearningPage() {
         </div>
       </div>
 
+      {/* Player + syllabus (left) and enrolled courses (right) share one row on desktop */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 items-start">
       {/* Active Lecture Player / Preview */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden mb-6">
-        <div className="aspect-video sm:aspect-21/9 bg-slate-900 text-white relative flex flex-col justify-between p-6 sm:p-8">
+      <div className="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden">
+        <div className="aspect-video sm:aspect-21/9 lg:aspect-auto lg:min-h-44 bg-slate-900 text-white relative flex flex-col justify-between gap-3 p-4 sm:p-5">
           <div className="flex items-center justify-between z-10">
             <span className="px-3 py-1 rounded-full bg-blue-600/80 backdrop-blur-xs text-xs font-black uppercase tracking-wider">
               Lesson {activeLessonIndex + 1} of {currentModuleLessons.length}
@@ -162,7 +164,7 @@ export default function StudentLearningPage() {
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-3 z-10 pt-4 border-t border-white/10">
+          <div className="flex flex-wrap items-center justify-between gap-3 z-10 pt-2 border-t border-white/10">
             <div className="flex items-center gap-2 text-xs font-bold text-slate-300">
               <Clock size={14} className="text-amber-400" />
               <span>Duration: {currentModuleLessons[activeLessonIndex].duration}</span>
@@ -184,8 +186,8 @@ export default function StudentLearningPage() {
         </div>
 
         {/* Syllabus Lessons List */}
-        <div className="p-5 sm:p-6">
-          <div className="flex items-center justify-between mb-4">
+        <div className="p-3.5">
+          <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-black uppercase text-slate-900">
               Syllabus Modules: Sports Reporting & Writing
             </h3>
@@ -194,7 +196,7 @@ export default function StudentLearningPage() {
             </span>
           </div>
 
-          <div className="space-y-2.5">
+          <div className="space-y-1.5">
             {currentModuleLessons.map((lesson, idx) => {
               const isSelected = activeLessonIndex === idx;
               const isDone = completedLessons.includes(idx);
@@ -203,7 +205,7 @@ export default function StudentLearningPage() {
                 <div
                   key={idx}
                   onClick={() => setActiveLessonIndex(idx)}
-                  className={`p-3.5 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-3 ${
+                  className={`px-3 py-2 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-3 ${
                     isSelected
                       ? 'border-blue-500 bg-blue-50/50 shadow-xs'
                       : 'border-slate-100 hover:border-slate-200 bg-slate-50/40'
@@ -244,8 +246,8 @@ export default function StudentLearningPage() {
       </div>
 
       {/* Enrolled Courses Progress Overview */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-5 sm:p-6 mb-6">
-        <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+      <div className="lg:col-span-5 bg-white rounded-2xl border border-slate-200 shadow-2xs p-3.5">
+        <div className="flex items-center justify-between pb-2 border-b border-slate-100 mb-2">
           <div>
             <h2 className="text-base font-black text-slate-900 uppercase">My Enrolled Courses</h2>
             <p className="text-xs text-slate-500">Overall academic standing in journalism school</p>
@@ -258,11 +260,11 @@ export default function StudentLearningPage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           {courses.map((course) => (
             <div
               key={course.id}
-              className="p-4 rounded-xl border border-slate-100 bg-slate-50/50 flex flex-col justify-between"
+              className="p-3 rounded-xl border border-slate-100 bg-slate-50/50 flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -272,7 +274,7 @@ export default function StudentLearningPage() {
                   <span className="text-xs font-black text-slate-800">{course.progress}%</span>
                 </div>
                 <h4 className="text-xs font-black text-slate-900 mb-1">{course.title}</h4>
-                <p className="text-[11px] text-slate-500 mb-3">Up next: {course.nextLesson}</p>
+                <p className="text-[11px] text-slate-500 mb-2">Up next: {course.nextLesson}</p>
               </div>
 
               <div>
@@ -295,6 +297,7 @@ export default function StudentLearningPage() {
             </div>
           ))}
         </div>
+      </div>
       </div>
     </DashboardShell>
   );

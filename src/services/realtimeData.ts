@@ -1,5 +1,8 @@
 'use client';
 
+import { db } from '@/lib/firebase';
+import { collection, getDocs, doc, setDoc, updateDoc } from 'firebase/firestore';
+
 // ==========================================
 // 1. DATA TYPES (Preserving 100% type compatibility)
 // ==========================================
@@ -938,7 +941,7 @@ export const updateApprovalStatus = async (id: string, status: 'approved' | 'rej
 };
 
 // ==========================================
-// 5. USERS MANAGEMENT (Hostinger Cloud Database via API)
+// 5. USERS MANAGEMENT (Cloud Database via API)
 // ==========================================
 
 export const subscribeUsers = (callback: (users: AppUser[]) => void) => {
@@ -947,13 +950,59 @@ export const subscribeUsers = (callback: (users: AppUser[]) => void) => {
     INITIAL_USERS,
     callback,
     async () => {
-      const data = await fetchApi<AppUser[]>('/api/users');
-      if (!data) return null;
-
-      // Merge with preset accounts to guarantee all demo accounts are available
       const mergedMap = new Map<string, AppUser>();
+      // 1. Initial demo presets
       INITIAL_USERS.forEach((u) => mergedMap.set(u.email.toLowerCase(), u));
-      data.forEach((u) => mergedMap.set(u.email.toLowerCase(), u));
+
+      // 2. Local registered users
+      if (typeof window !== 'undefined') {
+        try {
+          const localReg = JSON.parse(localStorage.getItem('sportsmedia_registered_users') || '[]');
+          localReg.forEach((u: any) => {
+            if (u.email) {
+              mergedMap.set(u.email.toLowerCase(), {
+                id: u.id,
+                name: u.name,
+                email: u.email,
+                role: u.role,
+                institution: u.institution || 'Individual',
+                status: u.status || 'Active',
+                joinedDate: u.joinedDate || 'Recently',
+              });
+            }
+          });
+        } catch {}
+      }
+
+      // 3. Firestore users collection
+      if (db) {
+        try {
+          const snapshot = await getDocs(collection(db, 'users'));
+          snapshot.forEach((d) => {
+            const data = d.data();
+            if (data.email) {
+              mergedMap.set(data.email.toLowerCase(), {
+                id: data.id || d.id,
+                name: data.name,
+                email: data.email,
+                role: data.role,
+                institution: data.institution || 'Individual',
+                status: data.status || 'Active',
+                joinedDate: data.joinedDate || 'Recently',
+              });
+            }
+          });
+        } catch (e) {
+          console.warn('Firestore users fetch warning:', e);
+        }
+      }
+
+      // 4. API users if available (e.g. dev server)
+      const data = await fetchApi<AppUser[]>('/api/users');
+      if (data) {
+        data.forEach((u) => mergedMap.set(u.email.toLowerCase(), u));
+      }
+
       return Array.from(mergedMap.values());
     }
   );
@@ -983,7 +1032,27 @@ export const createUser = async (data: {
   const existing = store.get<AppUser[]>('app_users', INITIAL_USERS);
   store.set('app_users', [newUser, ...existing.filter((u) => u.email.toLowerCase() !== cleanEmail)]);
 
-  // Persist to database via API
+  // Save to Firestore if available
+  if (db) {
+    try {
+      await setDoc(doc(db, 'users', userId), newUser, { merge: true });
+    } catch (fsErr) {
+      console.warn('Firestore user save warning:', fsErr);
+    }
+  }
+
+  // Save to localStorage registered users
+  if (typeof window !== 'undefined') {
+    try {
+      const reg = JSON.parse(localStorage.getItem('sportsmedia_registered_users') || '[]');
+      localStorage.setItem('sportsmedia_registered_users', JSON.stringify([
+        newUser,
+        ...reg.filter((u: any) => u.email?.toLowerCase() !== cleanEmail)
+      ]));
+    } catch {}
+  }
+
+  // Persist to database via API if available
   try {
     const res = await fetch('/api/users', {
       method: 'POST',
@@ -1009,6 +1078,12 @@ export const updateUserRole = async (
   const updated = users.map((u) => (u.id === userId ? { ...u, role: newRole } : u));
   store.set('app_users', updated);
 
+  if (db) {
+    try {
+      await updateDoc(doc(db, 'users', userId), { role: newRole });
+    } catch {}
+  }
+
   try {
     await fetch(`/api/users/${userId}`, {
       method: 'PUT',
@@ -1027,6 +1102,12 @@ export const updateUserStatus = async (
   const users = store.get<AppUser[]>('app_users', INITIAL_USERS);
   const updated = users.map((u) => (u.id === userId ? { ...u, status: newStatus } : u));
   store.set('app_users', updated);
+
+  if (db) {
+    try {
+      await updateDoc(doc(db, 'users', userId), { status: newStatus });
+    } catch {}
+  }
 
   try {
     await fetch(`/api/users/${userId}`, {

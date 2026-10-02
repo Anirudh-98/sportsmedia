@@ -80,13 +80,13 @@ export default function StudentAssignmentsPage() {
       )}
 
       {/* Page Header */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-black uppercase tracking-wider mb-2">
             <Clock size={12} />
             Ground Fieldwork & Assessment
           </div>
-          <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
+          <h1 className="text-xl font-black text-slate-900 uppercase tracking-tight">
             Assignments & Fieldwork
           </h1>
           <p className="text-xs text-slate-500 font-medium">
@@ -106,7 +106,7 @@ export default function StudentAssignmentsPage() {
       </div>
 
       {/* Filter Tabs */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3 mb-6 flex items-center gap-2 text-xs overflow-x-auto">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3 mb-3 flex items-center gap-2 text-xs overflow-x-auto">
         {(['all', 'pending', 'submitted', 'graded'] as const).map((tab) => (
           <button
             key={tab}
@@ -128,11 +128,11 @@ export default function StudentAssignmentsPage() {
       </div>
 
       {/* Assignments List */}
-      <div className="space-y-4">
+      <div className="space-y-2.5">
         {filteredAssignments.map((asg) => (
           <div
             key={asg.id}
-            className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-5 hover:border-blue-300 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4"
+            className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3.5 hover:border-blue-300 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4"
           >
             <div className="space-y-1.5 max-w-2xl">
               <div className="flex items-center gap-2">
@@ -212,7 +212,7 @@ export default function StudentAssignmentsPage() {
               </button>
             </div>
 
-            <form onSubmit={handleFormSubmit} className="p-5 space-y-4">
+            <form onSubmit={handleFormSubmit} className="p-3.5 space-y-2.5">
               <div className="bg-blue-50 p-3 rounded-xl border border-blue-100">
                 <h4 className="text-xs font-black text-slate-900">{selectedAssignment.title}</h4>
                 <p className="text-[11px] text-slate-600 mt-0.5">

@@ -41,12 +41,12 @@ export const UpcomingEventsCard: React.FC<UpcomingEventsCardProps> = ({
   ];
 
   return (
-    <div className="bg-white rounded-lg border border-[#D8E0E7] p-2.5 sm:p-3 flex flex-col justify-between h-full shadow-2xs">
+    <div className="bg-white rounded-lg border border-[#D8E0E7] p-2 flex flex-col justify-between h-full shadow-2xs">
       <div>
         {/* Header with blue gradient */}
-        <div className="flex items-center justify-between p-1.5 rounded-xs bg-gradient-to-r from-[#EEF6FC] via-[#F6FAFE] to-white border border-[#D8E5F2] mb-2.5">
+        <div className="flex items-center justify-between px-1.5 py-1 rounded-xs bg-gradient-to-r from-[#EEF6FC] via-[#F6FAFE] to-white border border-[#D8E5F2] mb-1.5">
           <div className="flex items-center gap-2">
-            <FaCalendarAlt size={16} className="text-[#0B5FA5]" />
+            <FaCalendarAlt size={14} className="text-[#0B5FA5]" />
             <h3 className="text-xs sm:text-[13.5px] font-black text-[#032D59] uppercase tracking-wider">
               UPCOMING EVENTS
             </h3>
@@ -61,7 +61,7 @@ export const UpcomingEventsCard: React.FC<UpcomingEventsCardProps> = ({
         </div>
 
         {/* 3 Events List with Blue Date Badges */}
-        <div className="space-y-2">
+        <div className="space-y-1">
           {events.map((evt) => (
             <div
               key={evt.id}

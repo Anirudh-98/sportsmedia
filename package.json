@@ -4,22 +4,20 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:deploy": "prisma migrate deploy"
+    "deploy": "npx -y firebase-tools@latest deploy --only firestore,hosting",
+    "deploy:all": "npx -y firebase-tools@latest deploy"
   },
   "dependencies": {
-    "@prisma/client": "^6.4.1",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.3.0",
+    "firebase": "^12.19.0",
     "jose": "^6.2.12",
     "lucide-react": "^1.47.0",
     "next": "16.3.5",
-    "prisma": "^6.4.1",
     "radix-ui": "^1.6.7",
     "react": "19.2.8",
     "react-dom": "19.2.8",

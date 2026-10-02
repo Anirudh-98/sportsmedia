@@ -36,9 +36,9 @@ export default function AthletesPage() {
   });
 
   return (
-    <div className="w-full flex-1 flex flex-col items-center py-6 px-3 sm:px-6 lg:px-12 max-w-7xl mx-auto">
+    <div className="w-full flex-1 flex flex-col items-center py-2 px-3 sm:px-4 lg:px-6">
       {/* Breadcrumb Navigation */}
-      <div className="w-full flex items-center justify-between mb-4 pb-2 border-b border-slate-200">
+      <div className="w-full flex items-center justify-between mb-2 pb-1.5 border-b border-slate-200">
         <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600">
           <Link href="/" className="hover:text-[#0B5FA5] flex items-center gap-1">
             <FaArrowLeft size={12} />
@@ -53,17 +53,17 @@ export default function AthletesPage() {
       </div>
 
       {/* Header */}
-      <div className="w-full text-center max-w-3xl mb-6">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#032D59] uppercase tracking-tight">
+      <div className="w-full text-center max-w-4xl mb-3">
+        <h1 className="text-xl sm:text-2xl font-black text-[#032D59] uppercase tracking-tight">
           TOP STUDENT ATHLETES DIRECTORY
         </h1>
-        <p className="text-sm sm:text-base text-slate-700 font-bold mt-2">
+        <p className="text-xs sm:text-sm text-slate-700 font-bold mt-1">
           Recognizing the most promising school and college sports achievers across India with verified tournament records.
         </p>
       </div>
 
       {/* Search & Filter Controls */}
-      <div className="w-full max-w-xl flex flex-col sm:flex-row items-center gap-2.5 mb-6">
+      <div className="w-full max-w-xl flex flex-col sm:flex-row items-center gap-2.5 mb-3">
         <div className="relative w-full">
           <FaSearch size={13} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
@@ -89,7 +89,7 @@ export default function AthletesPage() {
       </div>
 
       {/* Athletes Grid */}
-      <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+      <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
         {filteredAthletes.map((athlete) => (
           <div
             key={athlete.id}

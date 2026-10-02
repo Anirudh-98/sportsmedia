@@ -27,12 +27,12 @@ export const TopAthletesGrid: React.FC<TopAthletesGridProps> = ({
   }));
 
   return (
-    <div className="bg-white rounded-lg border border-[#D8E0E7] p-2.5 sm:p-3 flex flex-col justify-between h-full shadow-2xs">
+    <div className="bg-white rounded-lg border border-[#D8E0E7] p-2 flex flex-col justify-between h-full shadow-2xs">
       <div>
         {/* Header with blue gradient */}
-        <div className="flex items-center justify-between p-1.5 rounded-xs bg-gradient-to-r from-[#EEF6FC] via-[#F6FAFE] to-white border border-[#D8E5F2] mb-2.5">
+        <div className="flex items-center justify-between px-1.5 py-1 rounded-xs bg-gradient-to-r from-[#EEF6FC] via-[#F6FAFE] to-white border border-[#D8E5F2] mb-1.5">
           <div className="flex items-center gap-2">
-            <FaTrophy size={16} className="text-[#0B5FA5]" />
+            <FaTrophy size={14} className="text-[#0B5FA5]" />
             <h3 className="text-xs sm:text-[13.5px] font-black text-[#032D59] uppercase tracking-wider">
               TOP ATHLETES
             </h3>
@@ -55,7 +55,7 @@ export const TopAthletesGrid: React.FC<TopAthletesGridProps> = ({
               className="flex flex-col items-center text-center group cursor-pointer"
             >
               {/* Photo Box with Rounded Corners and Sky Background */}
-              <div className="relative w-full aspect-[56/64] rounded-md overflow-hidden bg-[#DDF0FD] border border-slate-200 group-hover:border-[#0B5FA5] group-hover:scale-105 transition-all duration-200 shadow-2xs">
+              <div className="relative w-full aspect-[56/58] rounded-md overflow-hidden bg-[#DDF0FD] border border-slate-200 group-hover:border-[#0B5FA5] group-hover:scale-105 transition-all duration-200 shadow-2xs">
                 <Image
                   src={athlete.image}
                   alt={athlete.name}
@@ -67,12 +67,12 @@ export const TopAthletesGrid: React.FC<TopAthletesGridProps> = ({
               </div>
 
               {/* Name */}
-              <span className="text-xs sm:text-[12.5px] font-black text-[#032D59] group-hover:text-[#0B5FA5] leading-tight mt-1.5 truncate w-full">
+              <span className="text-xs sm:text-[12.5px] font-black text-[#032D59] group-hover:text-[#0B5FA5] leading-tight mt-1 truncate w-full">
                 {athlete.name}
               </span>
 
               {/* Sport */}
-              <span className="text-[11px] sm:text-xs text-[#0B5FA5] font-extrabold leading-tight mt-0.5">
+              <span className="text-[11px] sm:text-xs text-[#0B5FA5] font-extrabold leading-tight">
                 {athlete.sport}
               </span>
             </div>

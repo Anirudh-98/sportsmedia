@@ -55,7 +55,7 @@ export const JournalismSchoolCard: React.FC<JournalismSchoolCardProps> = ({
   onEnrollNow,
 }) => {
   return (
-    <div className="relative overflow-hidden bg-white rounded-lg border border-[#D8E0E7] p-3 flex flex-col justify-between h-full shadow-2xs">
+    <div className="relative overflow-hidden bg-white rounded-lg border border-[#D8E0E7] p-2.5 flex flex-col justify-between h-full shadow-2xs">
       {/* Full-card background photo */}
       <Image
         src="/press.png"
@@ -69,9 +69,9 @@ export const JournalismSchoolCard: React.FC<JournalismSchoolCardProps> = ({
 
       <div className="relative z-10 flex flex-col justify-between h-full">
         {/* Top Section: Header & Description */}
-        <div>
+        <div className="flex-1 flex flex-col min-h-0">
           {/* Header with blue gradient accent */}
-          <div className="flex items-center gap-2 p-1.5 mt-4 rounded-md bg-white/95 border border-[#D8E5F2] shadow-2xs">
+          <div className="flex items-center gap-2 p-1.5 rounded-md bg-white/95 border border-[#D8E5F2] shadow-2xs">
             <div className="w-8 h-8 rounded bg-[#032D59] flex items-center justify-center text-white shrink-0 shadow-xs">
               <FaGraduationCap size={18} />
             </div>
@@ -92,19 +92,19 @@ export const JournalismSchoolCard: React.FC<JournalismSchoolCardProps> = ({
           </div>
 
           {/* Programme Description */}
-          <p className="text-xs sm:text-[12.5px] text-slate-800 font-semibold leading-relaxed mt-4 sm:mt-4 px-0.5">
+          <p className="text-xs sm:text-[12.5px] text-slate-800 font-semibold leading-snug mt-2 px-0.5">
             A unique certificate training programme to create a new generation of
             sports journalists, campus reporters and digital content creators.
           </p>
 
           {/* 6 Curriculum Bullet Points */}
-          <div className="max-w-[65%] space-y-1.5 mt-3.5 sm:mt-4 py-0.5">
+          <div className="max-w-[65%] flex-1 flex flex-col justify-evenly gap-1 mt-1.5">
             {CURRICULUM.map((item, idx) => {
               const Icon = item.icon;
               return (
                 <div
                   key={idx}
-                  className="flex items-center gap-2 text-xs mt-4 sm:text-[12.5px] font-extrabold text-slate-900 leading-snug py-0.5"
+                  className="flex items-center gap-2 text-xs sm:text-[12.5px] font-extrabold text-slate-900 leading-snug"
                 >
                   <div className={`shrink-0 ${item.color}`}>
                     <Icon size={15} />
@@ -117,18 +117,18 @@ export const JournalismSchoolCard: React.FC<JournalismSchoolCardProps> = ({
         </div>
 
         {/* Action Buttons */}
-        <div className="grid grid-cols-2 gap-2 mt-2.5 pt-2 border-t border-slate-200/80">
+        <div className="grid grid-cols-2 gap-2 mt-1.5 pt-1.5 border-t border-slate-200/80">
           <button
             type="button"
             onClick={onKnowMore}
-            className="py-2.5 px-3 bg-[#1565C0] hover:bg-[#0D47A1] text-white font-black text-xs sm:text-[13px] uppercase tracking-wider rounded-md shadow-xs text-center transition-all active:scale-98 cursor-pointer"
+            className="py-1.5 px-3 bg-[#1565C0] hover:bg-[#0D47A1] text-white font-black text-xs sm:text-[13px] uppercase tracking-wider rounded-md shadow-xs text-center transition-all active:scale-98 cursor-pointer"
           >
             KNOW MORE
           </button>
           <button
             type="button"
             onClick={onEnrollNow}
-            className="py-2.5 px-3 bg-gradient-to-r from-[#168C45] to-[#116E36] hover:from-[#116E36] hover:to-[#0D5429] text-white font-black text-xs sm:text-[13px] uppercase tracking-wider rounded-md shadow-xs text-center transition-all active:scale-98 cursor-pointer"
+            className="py-1.5 px-3 bg-gradient-to-r from-[#168C45] to-[#116E36] hover:from-[#116E36] hover:to-[#0D5429] text-white font-black text-xs sm:text-[13px] uppercase tracking-wider rounded-md shadow-xs text-center transition-all active:scale-98 cursor-pointer"
           >
             ENROLL NOW
           </button>

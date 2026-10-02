@@ -14,6 +14,7 @@ import {
 import { useAuth, UserRole } from '@/context/AuthContext';
 import { BlueZoneTreeLogo } from '@/components/brand/BrandLogos';
 import { NotFoundView } from '@/components/common/NotFoundView';
+import { FitToScreen } from '@/components/layout/FitToScreen';
 import { NavItem } from './dashboardNav';
 
 export type { NavItem };
@@ -80,9 +81,9 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
   }
 
   return (
-    <div className="min-h-screen w-full bg-[#F7F8FB] flex flex-col antialiased text-slate-800">
+    <div className="min-h-screen lg:h-dvh lg:overflow-hidden w-full bg-[#F7F8FB] flex flex-col antialiased text-slate-800">
       {/* TOP APP BAR */}
-      <header className="sticky top-0 z-40 w-full bg-white border-b border-slate-100 h-16 flex items-center justify-between px-3 sm:px-6 gap-3">
+      <header className="sticky top-0 z-40 w-full bg-white border-b border-slate-100 h-12 shrink-0 flex items-center justify-between px-3 sm:px-4 gap-3">
         <div className="flex items-center gap-3 min-w-0">
           <button
             type="button"
@@ -94,7 +95,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
           </button>
 
           <Link href="/" className="hidden lg:flex items-center gap-2 shrink-0">
-            <BlueZoneTreeLogo size={26} />
+            <BlueZoneTreeLogo size={24} />
             <span className="text-base font-bold text-slate-900 leading-none">
               SportsMedia.World
             </span>
@@ -107,7 +108,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
               value={navQuery}
               onChange={(e) => setNavQuery(e.target.value)}
               placeholder="Search or type a command"
-              className="w-full pl-9 pr-12 py-2.5 text-sm bg-slate-50 border border-slate-100 rounded-xl text-slate-700 placeholder:text-slate-400 outline-none transition-colors focus:bg-white focus:border-slate-200"
+              className="w-full pl-9 pr-12 py-1.5 text-sm bg-slate-50 border border-slate-100 rounded-xl text-slate-700 placeholder:text-slate-400 outline-none transition-colors focus:bg-white focus:border-slate-200"
             />
             <kbd className="absolute right-2.5 text-[10px] font-medium text-slate-400 bg-white border border-slate-200 rounded-md px-1.5 py-0.5">
               ⌘F
@@ -186,14 +187,14 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
       </header>
 
       {/* BODY: SIDEBAR + MAIN */}
-      <div className="flex-1 flex w-full">
+      <div className="flex-1 flex w-full lg:min-h-0">
         <aside
-          className={`fixed lg:sticky top-16 z-30 h-[calc(100vh-4rem)] w-64 bg-white border-r border-slate-100 flex flex-col justify-between p-3 transition-transform duration-200 ${
+          className={`fixed lg:static top-12 z-30 h-[calc(100vh-3rem)] lg:h-auto w-64 lg:w-56 shrink-0 bg-white border-r border-slate-100 flex flex-col justify-between p-2 transition-transform duration-200 ${
             sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
           }`}
         >
           <div className="space-y-0.5 overflow-y-auto">
-            <div className="text-xs font-medium text-slate-400 px-3 py-2">
+            <div className="text-xs font-medium text-slate-400 px-3 py-1.5">
               {displayRoleTitle} &middot; {roleBadge}
             </div>
 
@@ -209,7 +210,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
                   key={item.href}
                   href={item.href}
                   onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                  className={`flex items-center justify-between px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                     isActive ? 'text-white shadow-sm' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                   }`}
                   style={isActive ? { backgroundColor: themeColor } : {}}
@@ -239,10 +240,10 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
             )}
           </div>
 
-          <div className="pt-3 border-t border-slate-100 space-y-0.5">
+          <div className="pt-2 border-t border-slate-100 space-y-0.5">
             <Link
               href="/"
-              className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 rounded-xl transition-colors"
+              className="flex items-center gap-2.5 px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
             >
               <Home size={16} />
               <span>Public website</span>
@@ -251,7 +252,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
             <button
               type="button"
               onClick={logout}
-              className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-xl transition-colors cursor-pointer"
+              className="w-full flex items-center gap-2.5 px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
             >
               <LogOut size={16} />
               <span>Log out</span>
@@ -266,9 +267,10 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
           />
         )}
 
-        <main className="flex-1 w-full p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto overflow-x-hidden">
-          {children}
-        </main>
+        {/* Page content is scaled to fit the remaining screen height on desktop */}
+        <FitToScreen className="flex-1 min-w-0 flex flex-col overflow-x-hidden">
+          <main className="flex-1 w-full p-3 sm:p-4">{children}</main>
+        </FitToScreen>
       </div>
     </div>
   );

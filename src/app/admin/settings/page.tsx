@@ -49,13 +49,13 @@ export default function AdminSettingsPage() {
       )}
 
       {/* Header */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 text-[10px] font-black uppercase tracking-wider mb-2">
             <ShieldCheck size={12} />
             Zero-Trust Architecture
           </div>
-          <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
+          <h1 className="text-xl font-black text-slate-900 uppercase tracking-tight">
             Platform Settings & Role Permission Matrix
           </h1>
           <p className="text-xs text-slate-500 font-medium">
@@ -70,7 +70,7 @@ export default function AdminSettingsPage() {
       </div>
 
       {/* Role Selector Tabs */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3 mb-6 flex items-center gap-2 text-xs overflow-x-auto">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3 mb-3 flex items-center gap-2 text-xs overflow-x-auto">
         {(['student', 'coach', 'school', 'sponsor', 'admin'] as UserRole[]).map((r) => (
           <button
             key={r}
@@ -88,7 +88,7 @@ export default function AdminSettingsPage() {
       </div>
 
       {/* Permissions Table */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden mb-6">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden mb-3">
         <div className="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
           <h3 className="text-xs font-black uppercase text-slate-800">
             {(selectedRole === 'student' ? 'Trainee Journalist' : selectedRole).toUpperCase()} — Resource Access Control Matrix

@@ -69,13 +69,13 @@ export default function SchoolProfilePage() {
       )}
 
       {/* Header */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-black uppercase tracking-wider mb-2">
             <MapPin size={12} />
             Campus & Affiliations
           </div>
-          <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
+          <h1 className="text-xl font-black text-slate-900 uppercase tracking-tight">
             Institutional School Profile
           </h1>
           <p className="text-xs text-slate-500 font-medium">
@@ -84,14 +84,14 @@ export default function SchoolProfilePage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
         {/* Profile Edit Form */}
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-2xs p-5 sm:p-6">
+        <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-2xs p-3.5">
           <h2 className="text-base font-black text-slate-900 uppercase pb-3 border-b border-slate-100 mb-4">
             Institutional Information
           </h2>
 
-          <form onSubmit={handleSave} className="space-y-4">
+          <form onSubmit={handleSave} className="space-y-2.5">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
@@ -157,7 +157,7 @@ export default function SchoolProfilePage() {
         </div>
 
         {/* Infrastructure & Facilities Card */}
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-5 sm:p-6 space-y-4">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3.5 space-y-2.5">
           <h3 className="text-sm font-black uppercase text-slate-900 pb-2 border-b border-slate-100">
             Sports Infrastructure
           </h3>

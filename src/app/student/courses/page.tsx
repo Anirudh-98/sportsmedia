@@ -58,12 +58,12 @@ export default function StudentCoursesPage() {
       navItems={STUDENT_NAV_ITEMS}
     >
       {/* Page Header */}
-      <div className="mb-6">
+      <div className="mb-3">
         <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 text-[10px] font-black uppercase tracking-wider mb-2">
           <PlayCircle size={12} />
           Academic Curriculum
         </div>
-        <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
+        <h1 className="text-xl font-black text-slate-900 uppercase tracking-tight">
           Journalism Courses & Certifications
         </h1>
         <p className="text-xs text-slate-500 font-medium">
@@ -72,7 +72,7 @@ export default function StudentCoursesPage() {
       </div>
 
       {/* Search & Category Filter Bar */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-4 mb-6 space-y-3">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-4 mb-3 space-y-3">
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
             <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -111,11 +111,11 @@ export default function StudentCoursesPage() {
       </div>
 
       {/* Courses Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         {filteredCourses.map((course) => (
           <div
             key={course.id}
-            className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-5 flex flex-col justify-between hover:border-blue-300 hover:shadow-md transition-all"
+            className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3.5 flex flex-col justify-between hover:border-blue-300 hover:shadow-md transition-all"
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-3">

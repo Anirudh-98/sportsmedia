@@ -32,58 +32,38 @@ export const QuickLinksCard: React.FC<QuickLinksCardProps> = ({ onSelectLink }) 
     { title: 'Contact Us', icon: FaPhoneAlt, color: 'text-[#168C45]' },
   ];
 
+  // Interleaved so each left link shares a grid row (and height) with its right neighbour
+  const links = leftLinks.flatMap((link, idx) => [link, rightLinks[idx]]);
+
   return (
-    <div className="bg-white rounded-lg border border-[#D8E0E7] p-3.5 sm:p-4 flex flex-col justify-between h-full shadow-2xs">
-      <div>
+    <div className="bg-white rounded-lg border border-[#D8E0E7] p-2 flex flex-col justify-between h-full shadow-2xs">
+      <div className="flex-1 flex flex-col">
         {/* Header with blue gradient */}
-        <div className="flex items-center gap-2.5 p-2 rounded-xs bg-gradient-to-r from-[#EEF6FC] via-[#F6FAFE] to-white border border-[#D8E5F2] mb-3">
-          <FaLink size={17} className="text-[#0B5FA5]" />
-          <h3 className="text-sm sm:text-base font-black text-[#032D59] uppercase tracking-wider">
+        <div className="flex items-center gap-2 px-1.5 py-1 rounded-xs bg-gradient-to-r from-[#EEF6FC] via-[#F6FAFE] to-white border border-[#D8E5F2] mb-1.5">
+          <FaLink size={14} className="text-[#0B5FA5]" />
+          <h3 className="text-xs sm:text-[13.5px] font-black text-[#032D59] uppercase tracking-wider">
             QUICK LINKS
           </h3>
         </div>
 
         {/* 2 Columns of Links */}
-        <div className="grid grid-cols-2 gap-2.5">
-          {/* Left Column */}
-          <div className="space-y-2">
-            {leftLinks.map((item, idx) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => onSelectLink && onSelectLink(item.title)}
-                  className="w-full flex items-center gap-2 p-2 rounded-xs bg-[#F8FAFC] hover:bg-[#EEF6FC] border border-slate-200 hover:border-[#0B5FA5]/40 text-left group transition-colors cursor-pointer"
-                >
-                  <Icon size={15} className={`${item.color} shrink-0`} />
-                  <span className="text-xs sm:text-sm font-black leading-snug text-slate-900 group-hover:text-[#0B5FA5]">
-                    {item.title}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Right Column */}
-          <div className="space-y-2">
-            {rightLinks.map((item, idx) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => onSelectLink && onSelectLink(item.title)}
-                  className="w-full flex items-center gap-2 p-2 rounded-xs bg-[#F8FAFC] hover:bg-[#EEF6FC] border border-slate-200 hover:border-[#0B5FA5]/40 text-left group transition-colors cursor-pointer"
-                >
-                  <Icon size={15} className={`${item.color} shrink-0`} />
-                  <span className="text-xs sm:text-sm font-black leading-snug text-slate-900 group-hover:text-[#0B5FA5]">
-                    {item.title}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+        <div className="flex-1 grid grid-cols-2 auto-rows-fr gap-1.5">
+          {links.map((item) => {
+            const Icon = item.icon;
+            return (
+              <button
+                key={item.title}
+                type="button"
+                onClick={() => onSelectLink && onSelectLink(item.title)}
+                className="w-full flex items-center gap-2 px-2 py-1 rounded-xs bg-[#F8FAFC] hover:bg-[#EEF6FC] border border-slate-200 hover:border-[#0B5FA5]/40 text-left group transition-colors cursor-pointer"
+              >
+                <Icon size={14} className={`${item.color} shrink-0`} />
+                <span className="text-xs sm:text-[12.5px] font-black leading-tight text-slate-900 group-hover:text-[#0B5FA5]">
+                  {item.title}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>

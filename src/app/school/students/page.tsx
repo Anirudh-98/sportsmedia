@@ -103,13 +103,13 @@ export default function SchoolStudentsPage() {
       )}
 
       {/* Header */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-black uppercase tracking-wider mb-2">
             <Users size={12} />
             Student Athlete Registry
           </div>
-          <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
+          <h1 className="text-xl font-black text-slate-900 uppercase tracking-tight">
             Enrolled Student Athletes
           </h1>
           <p className="text-xs text-slate-500 font-medium">
@@ -128,7 +128,7 @@ export default function SchoolStudentsPage() {
       </div>
 
       {/* Search & Filter Bar */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-4 mb-6 space-y-3">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-4 mb-3 space-y-3">
         <div className="relative">
           <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input

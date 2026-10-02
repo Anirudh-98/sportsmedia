@@ -164,17 +164,17 @@ export default function AdminUsersPage() {
       )}
 
       {/* Header */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[11px] font-black uppercase tracking-wider mb-2 border border-emerald-200">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
             <span>Database Realtime Sync Active</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 uppercase tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-black text-slate-900 uppercase tracking-tight">
             User Accounts & Roles
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 font-medium">
-            Live directory of authenticated users in Hostinger Cloud Database with strict zero-trust role segregation.
+            Live directory of authenticated users in Cloud Database with strict zero-trust role segregation.
           </p>
         </div>
 
@@ -189,46 +189,46 @@ export default function AdminUsersPage() {
       </div>
 
       {/* KPI Stats Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-3">
         <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs">
           <div className="text-[10px] font-black uppercase tracking-wider text-slate-400">Total Users</div>
-          <div className="text-2xl font-black text-slate-900 mt-1">{totalCount}</div>
+          <div className="text-xl font-black text-slate-900 mt-1">{totalCount}</div>
           <div className="text-[10px] font-bold text-emerald-600 mt-0.5">Live Database</div>
         </div>
 
         <div className="bg-white p-3.5 rounded-xl border border-blue-100 shadow-2xs">
           <div className="text-[10px] font-black uppercase tracking-wider text-blue-600">Journalists</div>
-          <div className="text-2xl font-black text-blue-900 mt-1">{studentCount}</div>
+          <div className="text-xl font-black text-blue-900 mt-1">{studentCount}</div>
           <div className="text-[10px] font-bold text-slate-400 mt-0.5">Student role</div>
         </div>
 
         <div className="bg-white p-3.5 rounded-xl border border-emerald-100 shadow-2xs">
           <div className="text-[10px] font-black uppercase tracking-wider text-emerald-600">Coaches</div>
-          <div className="text-2xl font-black text-emerald-900 mt-1">{coachCount}</div>
+          <div className="text-xl font-black text-emerald-900 mt-1">{coachCount}</div>
           <div className="text-[10px] font-bold text-slate-400 mt-0.5">Coach role</div>
         </div>
 
         <div className="bg-white p-3.5 rounded-xl border border-purple-100 shadow-2xs">
           <div className="text-[10px] font-black uppercase tracking-wider text-purple-600">Schools</div>
-          <div className="text-2xl font-black text-purple-900 mt-1">{schoolCount}</div>
+          <div className="text-xl font-black text-purple-900 mt-1">{schoolCount}</div>
           <div className="text-[10px] font-bold text-slate-400 mt-0.5">School role</div>
         </div>
 
         <div className="bg-white p-3.5 rounded-xl border border-amber-100 shadow-2xs">
           <div className="text-[10px] font-black uppercase tracking-wider text-amber-600">Sponsors</div>
-          <div className="text-2xl font-black text-amber-900 mt-1">{sponsorCount}</div>
+          <div className="text-xl font-black text-amber-900 mt-1">{sponsorCount}</div>
           <div className="text-[10px] font-bold text-slate-400 mt-0.5">Sponsor role</div>
         </div>
 
         <div className="bg-white p-3.5 rounded-xl border border-slate-300 shadow-2xs">
           <div className="text-[10px] font-black uppercase tracking-wider text-slate-600">Admins</div>
-          <div className="text-2xl font-black text-slate-900 mt-1">{adminCount}</div>
+          <div className="text-xl font-black text-slate-900 mt-1">{adminCount}</div>
           <div className="text-[10px] font-bold text-slate-400 mt-0.5">Super Admin</div>
         </div>
       </div>
 
       {/* Search & Filter Bar */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-4 mb-6 space-y-3">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-4 mb-3 space-y-3">
         <div className="relative">
           <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
@@ -377,7 +377,7 @@ export default function AdminUsersPage() {
               </button>
             </div>
 
-            <form onSubmit={handleCreateUser} className="p-5 space-y-4">
+            <form onSubmit={handleCreateUser} className="p-3.5 space-y-2.5">
               <div>
                 <label className="block text-xs font-black text-slate-700 uppercase mb-1">
                   Full Name *
@@ -496,7 +496,7 @@ export default function AdminUsersPage() {
               </button>
             </div>
 
-            <div className="p-5 space-y-4">
+            <div className="p-3.5 space-y-2.5">
               <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs">
                 <div className="font-black text-slate-900">{selectedUser.name}</div>
                 <div className="text-slate-500 font-mono text-[11px]">{selectedUser.email}</div>

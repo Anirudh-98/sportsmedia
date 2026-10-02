@@ -63,13 +63,13 @@ export default function CoachAchievementsPage() {
       )}
 
       {/* Header */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-black uppercase tracking-wider mb-2">
             <Trophy size={12} />
             Podiums & Medals
           </div>
-          <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
+          <h1 className="text-xl font-black text-slate-900 uppercase tracking-tight">
             Squad Achievements & Honors
           </h1>
           <p className="text-xs text-slate-500 font-medium">
@@ -88,44 +88,44 @@ export default function CoachAchievementsPage() {
       </div>
 
       {/* Trophy KPI Overview */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-6">
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-5 flex items-center gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3.5 flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
             <Trophy size={26} />
           </div>
           <div>
-            <div className="text-2xl font-black text-slate-900">{totalMedals}</div>
+            <div className="text-xl font-black text-slate-900">{totalMedals}</div>
             <div className="text-xs font-bold text-slate-400 uppercase">Total Medals Won</div>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-5 flex items-center gap-4">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3.5 flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-yellow-100 text-yellow-700 flex items-center justify-center shrink-0">
             <Medal size={26} />
           </div>
           <div>
-            <div className="text-2xl font-black text-slate-900">4 Gold</div>
+            <div className="text-xl font-black text-slate-900">4 Gold</div>
             <div className="text-xs font-bold text-slate-400 uppercase">State Championships</div>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-5 flex items-center gap-4">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3.5 flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
             <Award size={26} />
           </div>
           <div>
-            <div className="text-2xl font-black text-slate-900">100%</div>
+            <div className="text-xl font-black text-slate-900">100%</div>
             <div className="text-xs font-bold text-slate-400 uppercase">SAI / NIS Verified</div>
           </div>
         </div>
       </div>
 
       {/* Achievements Roster Cards */}
-      <div className="space-y-4">
+      <div className="space-y-2.5">
         {athletes.map((a) => (
           <div
             key={a.id}
-            className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-emerald-300 transition-all"
+            className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-emerald-300 transition-all"
           >
             <div className="flex items-center gap-3.5">
               <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
@@ -178,7 +178,7 @@ export default function CoachAchievementsPage() {
               </button>
             </div>
 
-            <form onSubmit={handleAddAchievement} className="p-5 space-y-4">
+            <form onSubmit={handleAddAchievement} className="p-3.5 space-y-2.5">
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
                   Select Athlete

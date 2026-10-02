@@ -83,13 +83,13 @@ export default function SponsorDirectoryPage() {
       )}
 
       {/* Header */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-900 text-[10px] font-black uppercase tracking-wider mb-2">
             <Users size={12} />
             Talent Discovery
           </div>
-          <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
+          <h1 className="text-xl font-black text-slate-900 uppercase tracking-tight">
             Athlete Scouting & Directory
           </h1>
           <p className="text-xs text-slate-500 font-medium">
@@ -99,7 +99,7 @@ export default function SponsorDirectoryPage() {
       </div>
 
       {/* Search & Filter Bar */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-4 mb-6 space-y-3">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-4 mb-3 space-y-3">
         <div className="relative">
           <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
@@ -130,11 +130,11 @@ export default function SponsorDirectoryPage() {
       </div>
 
       {/* Athletes Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         {filteredAthletes.map((a) => (
           <div
             key={a.id}
-            className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-5 flex flex-col justify-between hover:border-purple-300 transition-all space-y-4"
+            className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3.5 flex flex-col justify-between hover:border-purple-300 transition-all space-y-2.5"
           >
             <div>
               <div className="flex items-center justify-between mb-3">
@@ -219,7 +219,7 @@ export default function SponsorDirectoryPage() {
               </button>
             </div>
 
-            <form onSubmit={handleSponsor} className="p-5 space-y-4">
+            <form onSubmit={handleSponsor} className="p-3.5 space-y-2.5">
               <div className="bg-purple-50 p-3.5 rounded-xl border border-purple-100">
                 <h4 className="text-xs font-black text-purple-950">
                   Athlete: {selectedAthlete.name} ({selectedAthlete.sport})

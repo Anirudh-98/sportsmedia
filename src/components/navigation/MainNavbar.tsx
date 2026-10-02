@@ -36,32 +36,32 @@ export const MainNavbar: React.FC = () => {
   return (
     <nav className="w-full bg-gradient-to-r from-[#032042] via-[#053266] to-[#032042] text-white sticky top-0 z-40 shadow-xs border-y border-[#0B4F8A]">
       <div className="w-full px-2 sm:px-3">
-        <div className="flex items-center justify-between h-9 sm:h-10">
+        <div className="flex items-center justify-between h-8">
           
           {/* Home Button with Blue Gradient Pill */}
           <Link
             href="/"
             aria-label="Home"
             onClick={() => setMobileMenuOpen(false)}
-            className={`flex items-center gap-1.5 justify-center h-7 sm:h-8 px-3 rounded-xs font-black text-xs sm:text-[13px] uppercase tracking-wider transition-all shadow-xs ${
+            className={`flex items-center gap-1.5 justify-center h-6 px-3 rounded-xs font-black text-xs uppercase tracking-wider transition-all shadow-xs ${
               isActive('/')
                 ? 'bg-gradient-to-b from-[#1877D2] to-[#0B5FA5] text-white border border-blue-400/40'
                 : 'text-white/90 hover:bg-[#0B5FA5]'
             }`}
           >
-            <FaHome size={14} className="text-white shrink-0" />
+            <FaHome size={13} className="text-white shrink-0" />
             <span>HOME</span>
           </Link>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden lg:flex items-center h-full flex-1 justify-between ml-1">
+          <div className="hidden xl:flex items-center h-full flex-1 justify-between ml-1">
             {NAV_ITEMS.slice(1).map((item) => {
               const active = isActive(item.href);
               return (
                 <Link
                   key={item.label}
                   href={item.href}
-                  className={`flex items-center justify-center h-full px-2 xl:px-2.5 text-xs xl:text-[12.5px] font-extrabold tracking-wide uppercase transition-colors whitespace-nowrap hover:bg-[#0B5FA5]/70 hover:text-white ${
+                  className={`flex items-center justify-center h-full px-1 text-[10.5px] 2xl:px-1.5 2xl:text-[11.5px] min-[1800px]:px-2.5 min-[1800px]:text-xs min-[1800px]:tracking-wide font-extrabold uppercase transition-colors whitespace-nowrap hover:bg-[#0B5FA5]/70 hover:text-white ${
                     active
                       ? 'bg-[#0B5FA5] text-white font-black shadow-inner border-b-2 border-amber-400'
                       : 'text-white/95 hover:text-white'
@@ -74,7 +74,7 @@ export const MainNavbar: React.FC = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex lg:hidden items-center">
+          <div className="flex xl:hidden items-center">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-1.5 rounded text-slate-200 hover:text-white hover:bg-slate-800 cursor-pointer"
@@ -89,7 +89,7 @@ export const MainNavbar: React.FC = () => {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#032D59] border-t border-slate-800 px-3 pt-2 pb-3 space-y-1">
+        <div className="xl:hidden lg:absolute lg:inset-x-0 lg:top-full lg:grid lg:grid-cols-4 lg:gap-x-2 lg:shadow-lg bg-[#032D59] border-t border-slate-800 px-3 pt-2 pb-3 space-y-1">
           {NAV_ITEMS.map((item) => {
             const active = isActive(item.href);
             return (

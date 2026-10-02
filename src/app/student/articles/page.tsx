@@ -79,13 +79,13 @@ export default function StudentArticlesPage() {
       )}
 
       {/* Header */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-900 text-[10px] font-black uppercase tracking-wider mb-2">
             <Newspaper size={12} />
             Editorial Room
           </div>
-          <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
+          <h1 className="text-xl font-black text-slate-900 uppercase tracking-tight">
             My Articles & Media Reports
           </h1>
           <p className="text-xs text-slate-500 font-medium">
@@ -104,7 +104,7 @@ export default function StudentArticlesPage() {
       </div>
 
       {/* Filter Tabs */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3 mb-6 flex items-center gap-2 text-xs overflow-x-auto">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3 mb-3 flex items-center gap-2 text-xs overflow-x-auto">
         {(['all', 'published', 'pending_approval', 'draft'] as const).map((tab) => (
           <button
             key={tab}
@@ -126,11 +126,11 @@ export default function StudentArticlesPage() {
       </div>
 
       {/* Articles Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {filteredArticles.map((art) => (
           <div
             key={art.id}
-            className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-5 flex flex-col justify-between hover:border-blue-300 transition-all space-y-4"
+            className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3.5 flex flex-col justify-between hover:border-blue-300 transition-all space-y-2.5"
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-2">
@@ -187,7 +187,7 @@ export default function StudentArticlesPage() {
               </button>
             </div>
 
-            <form onSubmit={handleCreateArticle} className="p-5 space-y-4">
+            <form onSubmit={handleCreateArticle} className="p-3.5 space-y-2.5">
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase mb-1">
                   Article Headline *

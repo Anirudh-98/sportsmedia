@@ -1,6 +1,8 @@
 import fs from 'fs/promises';
 import path from 'path';
 import crypto from 'crypto';
+import { storage } from '@/lib/firebase';
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 
 export interface UploadResult {
   success: boolean;
@@ -46,7 +48,7 @@ export function generateSafeFilename(originalFilename: string): string {
 }
 
 /**
- * Uploads a file to storage (Hostinger storage or local storage fallback).
+ * Uploads a file to storage (Firebase Storage with local storage fallback).
  */
 export async function uploadFile(
   buffer: Buffer,
@@ -59,34 +61,28 @@ export async function uploadFile(
   const safeName = generateSafeFilename(originalFilename);
   const cleanFolder = folder.replace(/[^a-zA-Z0-9_-]/g, '');
 
-  const hostingerUrl = process.env.HOSTINGER_STORAGE_PUBLIC_URL;
-  const hostingerHost = process.env.HOSTINGER_STORAGE_HOST;
-
-  // In production with Hostinger FTP/SFTP credentials configured:
-  if (hostingerHost && process.env.HOSTINGER_STORAGE_USERNAME && process.env.HOSTINGER_STORAGE_PASSWORD) {
+  // 1. Attempt upload to Firebase Storage if available
+  if (storage) {
     try {
-      // If basic-ftp or SFTP is configured, transfer to Hostinger storage host
-      // For now, save locally and prepare URL or dispatch to Hostinger CDN
-      const publicUploadsDir = path.join(process.cwd(), 'public', cleanFolder);
-      await fs.mkdir(publicUploadsDir, { recursive: true });
-      const targetPath = path.join(publicUploadsDir, safeName);
-      await fs.writeFile(targetPath, buffer);
+      const storageRef = ref(storage, `${cleanFolder}/${safeName}`);
+      const snapshot = await uploadBytes(storageRef, buffer, {
+        contentType: mimeType,
+      });
+      const downloadUrl = await getDownloadURL(snapshot.ref);
 
-      const baseUrl = hostingerUrl || '';
       return {
         success: true,
-        url: baseUrl ? `${baseUrl.replace(/\/$/, '')}/${cleanFolder}/${safeName}` : `/${cleanFolder}/${safeName}`,
+        url: downloadUrl,
         filename: safeName,
         mimeType,
         size: buffer.length,
       };
-    } catch (err: any) {
-      console.error('Hostinger storage upload error:', err);
-      throw new Error('Failed to upload file to storage: ' + (err.message || 'Unknown error'));
+    } catch (firebaseErr: any) {
+      console.warn('Firebase Storage upload failed, falling back to local storage:', firebaseErr?.message);
     }
   }
 
-  // Local development / zero-config fallback: store in public/uploads
+  // 2. Local fallback: store in public/uploads
   const publicUploadsDir = path.join(process.cwd(), 'public', cleanFolder);
   await fs.mkdir(publicUploadsDir, { recursive: true });
 
@@ -107,6 +103,17 @@ export async function uploadFile(
  */
 export async function deleteFile(relativeUrl: string): Promise<boolean> {
   try {
+    // If it's a Firebase Storage URL
+    if (relativeUrl.includes('firebasestorage.googleapis.com') && storage) {
+      try {
+        const fileRef = ref(storage, relativeUrl);
+        await deleteObject(fileRef);
+        return true;
+      } catch (err) {
+        console.warn('Failed to delete from Firebase Storage:', err);
+      }
+    }
+
     if (!relativeUrl || !relativeUrl.startsWith('/uploads/')) {
       return false;
     }

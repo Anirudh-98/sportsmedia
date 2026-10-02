@@ -87,13 +87,13 @@ export default function SchoolCoachesPage() {
       )}
 
       {/* Header */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-black uppercase tracking-wider mb-2">
             <UserCheck size={12} />
             Faculty & Directors
           </div>
-          <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
+          <h1 className="text-xl font-black text-slate-900 uppercase tracking-tight">
             Coaching Faculty & PET Masters
           </h1>
           <p className="text-xs text-slate-500 font-medium">
@@ -112,11 +112,11 @@ export default function SchoolCoachesPage() {
       </div>
 
       {/* Coaches Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {coaches.map((c) => (
           <div
             key={c.id}
-            className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-5 flex flex-col justify-between hover:border-amber-300 transition-all space-y-4"
+            className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3.5 flex flex-col justify-between hover:border-amber-300 transition-all space-y-2.5"
           >
             <div>
               <div className="flex items-center justify-between gap-2 mb-2">

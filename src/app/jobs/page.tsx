@@ -58,9 +58,9 @@ export default function JobsPage() {
   const [appliedJob, setAppliedJob] = useState<string | null>(null);
 
   return (
-    <div className="w-full flex-1 flex flex-col items-center py-6 px-3 sm:px-6 lg:px-12 max-w-7xl mx-auto">
+    <div className="w-full flex-1 flex flex-col items-center py-2 px-3 sm:px-4 lg:px-6">
       {/* Breadcrumb */}
-      <div className="w-full flex items-center justify-between mb-4 pb-2 border-b border-slate-200">
+      <div className="w-full flex items-center justify-between mb-2 pb-1.5 border-b border-slate-200">
         <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600">
           <Link href="/" className="hover:text-[#0B5FA5] flex items-center gap-1">
             <FaArrowLeft size={12} />
@@ -75,21 +75,21 @@ export default function JobsPage() {
       </div>
 
       {/* Header */}
-      <div className="w-full text-center max-w-3xl mb-8">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#032D59] uppercase tracking-tight">
+      <div className="w-full text-center max-w-4xl mb-3">
+        <h1 className="text-xl sm:text-2xl font-black text-[#032D59] uppercase tracking-tight">
           SPORTS CAREERS &amp; JOB PORTAL
         </h1>
-        <p className="text-sm sm:text-base text-slate-700 font-bold mt-2">
+        <p className="text-xs sm:text-sm text-slate-700 font-bold mt-1">
           Connecting qualified PET teachers, NIS coaches, sports physiotherapists, and media professionals with leading schools and academies.
         </p>
       </div>
 
       {/* Job Listings */}
-      <div className="w-full space-y-4 mb-8">
+      <div className="w-full grid grid-cols-1 xl:grid-cols-2 gap-2 mb-3">
         {JOBS_DATA.map((job) => (
           <div
             key={job.id}
-            className="bg-white rounded-xl border border-slate-200 p-5 sm:p-6 shadow-xs hover:shadow-md transition-shadow flex flex-col md:flex-row items-start md:items-center justify-between gap-5"
+            className="bg-white rounded-xl border border-slate-200 p-3.5 shadow-xs hover:shadow-md transition-shadow flex flex-col md:flex-row items-start md:items-center justify-between gap-3"
           >
             <div className="space-y-1.5">
               <div className="flex items-center gap-2 flex-wrap">
@@ -100,7 +100,7 @@ export default function JobsPage() {
                   <FaClock size={11} /> {job.posted}
                 </span>
               </div>
-              <h2 className="text-base sm:text-lg font-black text-[#032D59] uppercase">
+              <h2 className="text-sm sm:text-base font-black text-[#032D59] uppercase leading-tight">
                 {job.title}
               </h2>
               <div className="flex items-center gap-3 text-xs text-slate-600 font-medium flex-wrap">
@@ -114,7 +114,7 @@ export default function JobsPage() {
                 </span>
                 <span className="font-bold text-[#168C45]">{job.salary}</span>
               </div>
-              <p className="text-xs text-slate-600 pt-1 leading-relaxed">
+              <p className="text-xs text-slate-600 leading-snug">
                 {job.requirements}
               </p>
             </div>
@@ -133,7 +133,7 @@ export default function JobsPage() {
       </div>
 
       {/* Post a Job Banner */}
-      <div className="w-full bg-slate-50 border border-slate-200 rounded-xl p-6 sm:p-8 text-center space-y-3">
+      <div className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-center space-y-1.5">
         <h2 className="text-lg font-black text-[#032D59] uppercase">
           ARE YOU A SCHOOL OR ACADEMY HIRING SPORTS STAFF?
         </h2>
@@ -142,7 +142,7 @@ export default function JobsPage() {
         </p>
         <Link
           href="/contact"
-          className="inline-block py-2.5 px-6 bg-[#032D59] hover:bg-[#0B5FA5] text-white font-black text-xs uppercase tracking-wider rounded-md shadow-xs transition-all"
+          className="inline-block py-2 px-6 bg-[#032D59] hover:bg-[#0B5FA5] text-white font-black text-xs uppercase tracking-wider rounded-md shadow-xs transition-all"
         >
           POST A JOB VACANCY
         </Link>

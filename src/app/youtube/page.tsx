@@ -66,9 +66,9 @@ export default function YouTubePage() {
   ];
 
   return (
-    <div className="w-full flex-1 flex flex-col items-center py-6 px-3 sm:px-6 lg:px-12 max-w-7xl mx-auto">
+    <div className="w-full flex-1 flex flex-col items-center py-2 px-3 sm:px-4 lg:px-6">
       {/* Breadcrumb Navigation */}
-      <div className="w-full flex items-center justify-between mb-4 pb-2 border-b border-slate-200">
+      <div className="w-full flex items-center justify-between mb-2 pb-1.5 border-b border-slate-200">
         <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600">
           <Link href="/" className="hover:text-[#0B5FA5] flex items-center gap-1">
             <FaArrowLeft size={12} />
@@ -84,13 +84,13 @@ export default function YouTubePage() {
       </div>
 
       {/* Channel Header Banner */}
-      <div className="w-full bg-gradient-to-r from-[#111827] via-[#1f2937] to-[#111827] text-white rounded-xl p-6 sm:p-8 shadow-md border border-slate-700 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-full bg-[#E5232E] text-white flex items-center justify-center shadow-md shrink-0">
-            <FaYoutube size={28} />
+      <div className="w-full bg-gradient-to-r from-[#111827] via-[#1f2937] to-[#111827] text-white rounded-xl px-4 py-2.5 shadow-md border border-slate-700 mb-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-[#E5232E] text-white flex items-center justify-center shadow-md shrink-0">
+            <FaYoutube size={20} />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-black uppercase tracking-wide">
+            <h1 className="text-lg sm:text-xl font-black uppercase tracking-wide leading-tight">
               SPORTSMEDIA.WORLD
             </h1>
             <p className="text-xs sm:text-sm text-slate-300 font-semibold">
@@ -103,7 +103,7 @@ export default function YouTubePage() {
           <button
             type="button"
             onClick={() => setSubscribed(!subscribed)}
-            className={`px-5 py-2.5 rounded-md text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+            className={`px-5 py-2 rounded-md text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
               subscribed
                 ? 'bg-slate-700 text-slate-200'
                 : 'bg-[#E5232E] hover:bg-[#CC0000] text-white shadow-xs'
@@ -114,7 +114,7 @@ export default function YouTubePage() {
           <button
             type="button"
             onClick={() => setSubscribed(!subscribed)}
-            className="p-2.5 rounded-md bg-slate-800 text-slate-300 hover:text-white cursor-pointer"
+            className="p-2 rounded-md bg-slate-800 text-slate-300 hover:text-white cursor-pointer"
             aria-label="Notification bell"
           >
             <FaBell size={16} />
@@ -122,8 +122,10 @@ export default function YouTubePage() {
         </div>
       </div>
 
+      {/* Featured video (left) and playlist (right) share one row on desktop */}
+      <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-3 items-start">
       {/* Featured Video Player Display */}
-      <div className="w-full max-w-4xl bg-white rounded-xl border border-slate-200 p-4 shadow-sm mb-8">
+      <div className="w-full max-w-4xl mx-auto lg:max-w-none lg:col-span-5 bg-white rounded-xl border border-slate-200 p-3 shadow-sm flex flex-col">
         <div
           onClick={() => setActiveVideo('Young Talents Bigger Tomorrow')}
           className="relative w-full aspect-[508/201] rounded-lg overflow-hidden bg-slate-950 shadow-md group cursor-pointer"
@@ -137,12 +139,12 @@ export default function YouTubePage() {
           />
         </div>
 
-        <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+        <div className="mt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <span className="text-xs font-black uppercase text-[#0B5FA5] bg-blue-50 px-2 py-0.5 rounded">
               Featured Premiere
             </span>
-            <h2 className="text-lg sm:text-xl font-black text-[#032D59] uppercase mt-1">
+            <h2 className="text-base sm:text-lg font-black text-[#032D59] uppercase mt-1 leading-tight">
               Young Talents Bigger Tomorrow &mdash; Grassroots Sports Revolution
             </h2>
             <p className="text-xs text-slate-600 font-medium mt-1">
@@ -162,9 +164,9 @@ export default function YouTubePage() {
       </div>
 
       {/* Video Playlist Grid */}
-      <div className="w-full mb-8">
-        <div className="mb-4">
-          <h2 className="text-xl font-black text-[#032D59] uppercase tracking-wide">
+      <div className="w-full lg:col-span-7">
+        <div className="mb-2">
+          <h2 className="text-base sm:text-lg font-black text-[#032D59] uppercase tracking-wide">
             POPULAR EPISODES &amp; HIGHLIGHTS
           </h2>
           <p className="text-xs text-slate-600 font-semibold mt-0.5">
@@ -172,7 +174,7 @@ export default function YouTubePage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {playlist.map((video) => (
             <div
               key={video.id}
@@ -180,7 +182,7 @@ export default function YouTubePage() {
               className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-2xs hover:shadow-md transition-shadow group cursor-pointer flex flex-col justify-between"
             >
               <div>
-                <div className="relative aspect-video w-full bg-slate-900 overflow-hidden">
+                <div className="relative aspect-video lg:aspect-auto lg:h-36 w-full bg-slate-900 overflow-hidden">
                   <Image
                     src={video.img}
                     alt={video.title}
@@ -197,7 +199,7 @@ export default function YouTubePage() {
                   </div>
                 </div>
 
-                <div className="p-4 space-y-1.5">
+                <div className="p-2.5 space-y-1">
                   <div className="flex items-center justify-between text-[11px] text-slate-500 font-bold">
                     <span className="text-[#0B5FA5] uppercase font-black">{video.sport}</span>
                     <span>{video.views}</span>
@@ -213,6 +215,7 @@ export default function YouTubePage() {
             </div>
           ))}
         </div>
+      </div>
       </div>
     </div>
   );

@@ -27,9 +27,9 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="w-full flex-1 flex flex-col items-center py-6 px-3 sm:px-6 lg:px-12 max-w-7xl mx-auto">
+    <div className="w-full flex-1 flex flex-col items-center py-2 px-3 sm:px-4 lg:px-6">
       {/* Breadcrumb */}
-      <div className="w-full flex items-center justify-between mb-4 pb-2 border-b border-slate-200">
+      <div className="w-full flex items-center justify-between mb-2 pb-1.5 border-b border-slate-200">
         <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600">
           <Link href="/" className="hover:text-[#0B5FA5] flex items-center gap-1">
             <FaArrowLeft size={12} />
@@ -44,20 +44,20 @@ export default function ContactPage() {
       </div>
 
       {/* Header */}
-      <div className="w-full text-center max-w-3xl mb-8">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#032D59] uppercase tracking-tight">
+      <div className="w-full text-center max-w-4xl mb-3">
+        <h1 className="text-xl sm:text-2xl font-black text-[#032D59] uppercase tracking-tight">
           GET IN TOUCH WITH SPORTS MEDIA BLUE ZONE
         </h1>
-        <p className="text-sm sm:text-base text-slate-700 font-bold mt-2">
+        <p className="text-xs sm:text-sm text-slate-700 font-bold mt-1">
           Reach out to affiliate your school, enroll in journalism courses, sponsor athletes, or request tournament live streaming.
         </p>
       </div>
 
       {/* 2-Column Content: Left Contact Cards, Right Message Form */}
-      <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 mb-8 items-start">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-3 mb-3 items-start">
         {/* Left 5 Cols: Contact Information */}
-        <div className="lg:col-span-5 space-y-4">
-          <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-xs space-y-4">
+        <div className="lg:col-span-5 space-y-2">
+          <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs space-y-2">
             <h2 className="text-lg font-black text-[#032D59] uppercase tracking-wide">
               HEADQUARTERS &amp; MEDIA DESK
             </h2>
@@ -123,13 +123,13 @@ export default function ContactPage() {
         </div>
 
         {/* Right 7 Cols: Direct Message Form */}
-        <div className="lg:col-span-7 bg-white rounded-xl border border-slate-200 p-6 sm:p-8 shadow-xs">
+        <div className="lg:col-span-7 bg-white rounded-xl border border-slate-200 p-4 shadow-xs">
           <h2 className="text-lg font-black text-[#032D59] uppercase mb-4">
             SEND US A DIRECT MESSAGE
           </h2>
 
           {submitted ? (
-            <div className="p-6 bg-emerald-50 border border-emerald-200 rounded-lg text-center">
+            <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg text-center">
               <FaCheckCircle className="text-[#168C45] mx-auto mb-2" size={36} />
               <h3 className="text-base font-black text-slate-900">Message Received!</h3>
               <p className="text-xs text-slate-700 mt-1">
@@ -137,7 +137,7 @@ export default function ContactPage() {
               </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-2">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
                   <label className="block text-xs font-black text-slate-700 uppercase mb-1">

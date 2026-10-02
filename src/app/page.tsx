@@ -45,12 +45,12 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full flex-1 flex flex-col gap-2 p-2 sm:p-2.5">
+    <div className="w-full flex-1 flex flex-col gap-1.5 p-1.5">
       {/* ROW 1: 3-Column Hero Section
            - Col 1 (left): Welcome to SPORTSMEDIA.WORLD + Login Form + 3 Roles + Quote Box (~25%)
            - Col 2 (center): YouTube Video Player + 5 Thumbnails + Red Channel Button (~50%)
            - Col 3 (right): Sports Media Journalism School + Curriculum + Press Photographer (~25%) */}
-      <section className="w-full grid grid-cols-1 lg:grid-cols-12 gap-1 sm:gap-1.5 items-stretch">
+      <section className="w-full lg:flex-1 grid grid-cols-1 lg:grid-cols-12 gap-1.5 items-stretch">
         {/* Column 1: Welcome & Login */}
         <div className="lg:col-span-3 flex flex-col">
           <WelcomeLoginCard />
@@ -84,7 +84,7 @@ export default function Home() {
            - Card 2: TOP ATHLETES (4 athlete portrait cards in a row)
            - Card 3: OUR IMPACT (4 vertical colored metric cards)
            - Card 4: QUICK LINKS (2x4 link buttons with icons) */}
-      <section className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2 sm:gap-2.5 items-stretch">
+      <section className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-1.5 items-stretch">
         {/* Card 1: Upcoming Events */}
         <div className="lg:col-span-3 flex flex-col">
           <UpcomingEventsCard

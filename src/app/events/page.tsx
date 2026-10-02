@@ -77,9 +77,9 @@ export default function EventsPage() {
   });
 
   return (
-    <div className="w-full flex-1 flex flex-col items-center py-6 px-3 sm:px-6 lg:px-12 max-w-7xl mx-auto">
+    <div className="w-full flex-1 flex flex-col items-center py-2 px-3 sm:px-4 lg:px-6">
       {/* Breadcrumb Navigation */}
-      <div className="w-full flex items-center justify-between mb-4 pb-2 border-b border-slate-200">
+      <div className="w-full flex items-center justify-between mb-2 pb-1.5 border-b border-slate-200">
         <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600">
           <Link href="/" className="hover:text-[#0B5FA5] flex items-center gap-1">
             <FaArrowLeft size={12} />
@@ -94,17 +94,17 @@ export default function EventsPage() {
       </div>
 
       {/* Header */}
-      <div className="w-full text-center max-w-3xl mb-6">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#032D59] uppercase tracking-tight">
+      <div className="w-full text-center max-w-4xl mb-3">
+        <h1 className="text-xl sm:text-2xl font-black text-[#032D59] uppercase tracking-tight">
           UPCOMING SPORTS EVENTS &amp; TOURNAMENTS
         </h1>
-        <p className="text-sm sm:text-base text-slate-700 font-bold mt-2">
+        <p className="text-xs sm:text-sm text-slate-700 font-bold mt-1">
           Official school championships, state selection trials, and grassroots tournaments powered by SportsMedia Blue Zone.
         </p>
       </div>
 
       {/* Sport Filter Tabs */}
-      <div className="w-full flex items-center justify-center gap-2 flex-wrap mb-6">
+      <div className="w-full flex items-center justify-center gap-2 flex-wrap mb-3">
         {['All', 'Athletics', 'Football', 'Badminton', 'Cricket'].map((sport) => (
           <button
             key={sport}
@@ -121,15 +121,15 @@ export default function EventsPage() {
       </div>
 
       {/* Events List */}
-      <div className="w-full space-y-4 mb-8">
+      <div className="w-full grid grid-cols-1 xl:grid-cols-2 gap-2 mb-3">
         {filteredEvents.map((evt) => (
           <div
             key={evt.id}
-            className="bg-white rounded-xl border border-slate-200 p-5 sm:p-6 shadow-xs hover:shadow-md transition-shadow flex flex-col md:flex-row items-start md:items-center justify-between gap-5"
+            className="bg-white rounded-xl border border-slate-200 p-3.5 shadow-xs hover:shadow-md transition-shadow flex flex-col md:flex-row items-start md:items-center justify-between gap-3"
           >
             {/* Left: Date Badge + Details */}
             <div className="flex items-start gap-4">
-              <div className="w-14 h-16 rounded-lg bg-[#0B5FA5] text-white flex flex-col items-center justify-center shrink-0 shadow-xs">
+              <div className="w-13 h-14 rounded-lg bg-[#0B5FA5] text-white flex flex-col items-center justify-center shrink-0 shadow-xs">
                 <span className="text-xl font-black leading-none">{evt.day}</span>
                 <span className="text-[11px] font-black tracking-widest uppercase mt-0.5">
                   {evt.month}
@@ -146,7 +146,7 @@ export default function EventsPage() {
                     {evt.status}
                   </span>
                 </div>
-                <h3 className="text-base sm:text-lg font-black text-[#032D59] uppercase tracking-wide">
+                <h3 className="text-sm sm:text-base font-black text-[#032D59] uppercase tracking-wide leading-tight">
                   {evt.title}
                 </h3>
                 <div className="flex items-center gap-4 text-xs text-slate-600 font-medium flex-wrap pt-1">
@@ -167,13 +167,13 @@ export default function EventsPage() {
               <button
                 type="button"
                 onClick={() => setRegisteredEvent(evt.id)}
-                className="w-full md:w-44 py-2 px-4 bg-[#1565C0] hover:bg-[#0D47A1] text-white font-black text-xs uppercase tracking-wider rounded-md text-center shadow-xs transition-all cursor-pointer"
+                className="w-full md:w-40 py-1.5 px-3 bg-[#1565C0] hover:bg-[#0D47A1] text-white font-black text-xs uppercase tracking-wider rounded-md text-center shadow-xs transition-all cursor-pointer"
               >
                 {registeredEvent === evt.id ? 'REGISTERED ✓' : 'REGISTER TEAM'}
               </button>
               <Link
                 href="/contact"
-                className="w-full md:w-44 py-2 px-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-black text-xs uppercase tracking-wider rounded-md text-center border border-slate-300 transition-all"
+                className="w-full md:w-40 py-1.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-800 font-black text-xs uppercase tracking-wider rounded-md text-center border border-slate-300 transition-all"
               >
                 DOWNLOAD RULES
               </Link>
@@ -183,7 +183,7 @@ export default function EventsPage() {
       </div>
 
       {/* Host Tournament Banner */}
-      <div className="w-full bg-gradient-to-r from-[#032042] via-[#053266] to-[#032042] text-white rounded-xl p-6 sm:p-8 text-center space-y-3">
+      <div className="w-full bg-gradient-to-r from-[#032042] via-[#053266] to-[#032042] text-white rounded-xl p-3 text-center space-y-1.5">
         <h2 className="text-lg sm:text-xl font-black uppercase">
           WANT TO HOST AN EVENT OR TOURNAMENT WITH BLUE ZONE?
         </h2>
@@ -192,7 +192,7 @@ export default function EventsPage() {
         </p>
         <Link
           href="/contact"
-          className="inline-block py-2.5 px-6 bg-[#168C45] hover:bg-[#116E36] text-white font-black text-xs uppercase tracking-wider rounded-md shadow-xs transition-all"
+          className="inline-block py-2 px-6 bg-[#168C45] hover:bg-[#116E36] text-white font-black text-xs uppercase tracking-wider rounded-md shadow-xs transition-all"
         >
           SUBMIT HOSTING REQUEST
         </Link>

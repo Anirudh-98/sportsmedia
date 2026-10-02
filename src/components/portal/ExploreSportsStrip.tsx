@@ -59,9 +59,9 @@ export const ExploreSportsStrip: React.FC<ExploreSportsStripProps> = ({
   onExploreAll,
 }) => {
   return (
-    <section className="w-full bg-gradient-to-r from-[#D8EDFC] via-[#EEF7FD] to-[#D8EDFC] border-y border-[#BCD7EF] py-2 px-2 sm:px-3 shadow-2xs">
+    <section className="w-full bg-gradient-to-r from-[#D8EDFC] via-[#EEF7FD] to-[#D8EDFC] border-y border-[#BCD7EF] py-1.5 px-2 sm:px-3 shadow-2xs">
       {/* Header Bar */}
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex items-center justify-between mb-1">
         <div className="flex items-center gap-2">
           <div className="h-4 w-1.5 bg-[#0B5FA5] rounded-full" />
           <h3 className="text-xs sm:text-sm font-black text-[#032D59] uppercase tracking-wider">
@@ -80,7 +80,7 @@ export const ExploreSportsStrip: React.FC<ExploreSportsStripProps> = ({
       </div>
 
       {/* 18 Sports Circular Icons Row */}
-      <div className="grid grid-cols-6 sm:grid-cols-9 lg:grid-cols-18 gap-1.5 sm:gap-2">
+      <div className="grid grid-cols-6 sm:grid-cols-9 lg:grid-cols-18 gap-1.5">
         {SPORTS.map((sport) => {
           const Icon = sport.icon;
           return (
@@ -92,13 +92,13 @@ export const ExploreSportsStrip: React.FC<ExploreSportsStripProps> = ({
             >
               {/* Colored Circular Icon */}
               <div
-                className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full ${sport.color} text-white flex items-center justify-center shadow-xs group-hover:scale-110 group-hover:shadow-md transition-all duration-200`}
+                className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full ${sport.color} text-white flex items-center justify-center shadow-xs group-hover:scale-110 group-hover:shadow-md transition-all duration-200`}
               >
-                <Icon size={20} />
+                <Icon size={18} />
               </div>
 
               {/* Sport Label */}
-              <span className="text-[10px] sm:text-[11px] font-black text-[#032D59] group-hover:text-[#0B5FA5] uppercase tracking-tight mt-1 leading-tight truncate w-full">
+              <span className="text-[10px] sm:text-[11px] font-black text-[#032D59] group-hover:text-[#0B5FA5] uppercase tracking-tight mt-0.5 leading-tight truncate w-full">
                 {sport.name}
               </span>
             </button>

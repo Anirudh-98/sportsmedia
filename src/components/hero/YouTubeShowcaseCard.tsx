@@ -35,10 +35,10 @@ export const YouTubeShowcaseCard: React.FC<YouTubeShowcaseCardProps> = ({
   const activeVideoUrl = `https://www.youtube.com/watch?v=${activeVideoId}`;
 
   return (
-    <div className="bg-white rounded-lg border border-[#D8E0E7] p-2 sm:p-2.5 flex flex-col justify-between h-full shadow-2xs">
-      <div>
+    <div className="bg-white rounded-lg border border-[#D8E0E7] p-2 flex flex-col justify-between h-full shadow-2xs">
+      <div className="flex-1 flex flex-col min-h-0">
         {/* Channel branding row */}
-        <div className="mb-2 flex items-center justify-between">
+        <div className="mb-1.5 flex items-center justify-between">
           <div className="flex items-center gap-1.5">
             <div className="flex h-7 w-7 items-center justify-center rounded-xs bg-[#E5232E] text-white">
               <FaYoutube size={20} />
@@ -68,8 +68,8 @@ export const YouTubeShowcaseCard: React.FC<YouTubeShowcaseCardProps> = ({
           </div>
         </div>
 
-        {/* 1. Main Featured Video - increased height a bit as requested */}
-        <div className="relative w-full h-[220px] sm:h-[240px] md:h-[255px] rounded-md overflow-hidden bg-slate-900 border border-slate-300 shadow-xs">
+        {/* 1. Main Featured Video - takes whatever height is left in the card on desktop */}
+        <div className="relative w-full h-[220px] sm:h-[240px] lg:h-auto lg:flex-1 lg:min-h-[180px] rounded-md overflow-hidden bg-slate-900 border border-slate-300 shadow-xs">
           <iframe
             key={activeVideoId}
             className="absolute inset-0 h-full w-full"
@@ -81,7 +81,7 @@ export const YouTubeShowcaseCard: React.FC<YouTubeShowcaseCardProps> = ({
         </div>
 
         {/* 2. Video Thumbnails Row - click to play in the main player above */}
-        <div className="mt-2.5 w-full">
+        <div className="mt-1.5 w-full">
           <div className="grid grid-cols-5 gap-1 sm:gap-1.5">
             {VIDEOS.map((video) => (
               <button
@@ -113,7 +113,7 @@ export const YouTubeShowcaseCard: React.FC<YouTubeShowcaseCardProps> = ({
         href={activeVideoUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-full mt-2.5 py-2.5 px-3 bg-[#E5232E] hover:bg-[#CC0000] text-white font-black text-xs sm:text-[13px] uppercase tracking-wider rounded-md shadow-xs flex items-center justify-center gap-2 transition-all active:scale-98 cursor-pointer"
+        className="w-full mt-1.5 py-1.5 px-3 bg-[#E5232E] hover:bg-[#CC0000] text-white font-black text-xs sm:text-[13px] uppercase tracking-wider rounded-md shadow-xs flex items-center justify-center gap-2 transition-all active:scale-98 cursor-pointer"
       >
         <FaPlay size={11} className="text-white shrink-0" />
         <span>WATCH MORE ON OUR YOUTUBE CHANNEL</span>

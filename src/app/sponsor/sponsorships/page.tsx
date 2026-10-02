@@ -49,13 +49,13 @@ export default function SponsorMySponsorshipsPage() {
       )}
 
       {/* Header */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="mb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-900 text-[10px] font-black uppercase tracking-wider mb-2">
             <Heart size={12} />
             My Portfolio
           </div>
-          <h1 className="text-2xl font-black text-slate-900 uppercase tracking-tight">
+          <h1 className="text-xl font-black text-slate-900 uppercase tracking-tight">
             Active Sponsorships & Beneficiaries
           </h1>
           <p className="text-xs text-slate-500 font-medium">
@@ -69,11 +69,11 @@ export default function SponsorMySponsorshipsPage() {
       </div>
 
       {/* Sponsored Athletes List */}
-      <div className="space-y-4">
+      <div className="space-y-2.5">
         {sponsoredAthletes.map((a) => (
           <div
             key={a.id}
-            className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-purple-300 transition-all"
+            className="bg-white rounded-2xl border border-slate-200 shadow-2xs p-3.5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-purple-300 transition-all"
           >
             <div className="flex items-center gap-4">
               <div className="relative w-14 h-14 rounded-2xl overflow-hidden bg-slate-200 shrink-0 border-2 border-purple-100">

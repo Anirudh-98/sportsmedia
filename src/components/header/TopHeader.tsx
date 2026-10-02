@@ -54,13 +54,13 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenAuth, onSearch }) =>
         <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-[#04336A]/60" />
       </div>
 
-      <div className="relative z-10 w-full px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-2 lg:gap-4">
+      <div className="relative z-10 w-full px-2 sm:px-3 lg:px-4 py-1">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-1.5 lg:gap-4">
 
           {/* LEFT: Logo, brand name, pillars */}
           <div className="flex w-full items-center justify-between lg:justify-start gap-2.5 lg:w-auto">
             <div className="flex items-center gap-2">
-              <div className="relative w-12 h-12 sm:w-14 sm:h-14 shrink-0 flex items-center justify-center">
+              <div className="relative w-10 h-10 sm:w-11 sm:h-11 shrink-0 flex items-center justify-center">
                 <Image
                   src="/bluezonelogo.webp"
                   alt="Sports Media Blue Zone Logo"
@@ -70,14 +70,14 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenAuth, onSearch }) =>
                   priority
                 />
               </div>
-              <div className="flex flex-col leading-tight">
-                <span className="text-sm sm:text-base font-black uppercase tracking-tight text-[#032D59]">
+              <div className="flex flex-col leading-tight whitespace-nowrap">
+                <span className="text-[13px] sm:text-sm font-black uppercase tracking-tight text-[#032D59]">
                   SPORTS MEDIA
                 </span>
-                <span className="text-base sm:text-lg font-black uppercase tracking-wide text-[#0B5FA5] leading-none">
+                <span className="text-sm sm:text-base font-black uppercase tracking-wide text-[#0B5FA5] leading-none">
                   BLUE ZONE
                 </span>
-                <span className="mt-0.5 text-[10px] sm:text-[10.5px] font-black text-[#032D59] tracking-tight">
+                <span className="mt-0.5 text-[9.5px] sm:text-[10px] font-black text-[#032D59] tracking-tight">
                   Sports for a Better Society
                 </span>
               </div>
@@ -85,7 +85,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenAuth, onSearch }) =>
 
             {/* Vertical separator & 4 Pillars stacked */}
             <div className="flex items-center gap-2 pl-2 border-l border-[#B8D5ED]">
-              <div className="flex flex-col text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-[#0B5FA5] leading-snug">
+              <div className="flex flex-col text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-[#0B5FA5] leading-tight">
                 {PILLARS.map((p) => (
                   <span key={p}>{p}</span>
                 ))}
@@ -95,29 +95,29 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenAuth, onSearch }) =>
 
           {/* CENTER: SPORTSMEDIA.WORLD Pill Banner */}
           <div className="flex w-full flex-col items-center justify-center lg:w-auto my-0.5 lg:my-0">
-            <div className="flex flex-col items-center gap-0.5 rounded-xl border-2 border-slate-900 bg-gradient-to-r from-[#032D59] via-[#051A36] to-[#032D59] px-5 sm:px-7 py-2 shadow-md">
+            <div className="flex flex-col items-center gap-0.5 rounded-xl border-2 border-slate-900 bg-gradient-to-r from-[#032D59] via-[#051A36] to-[#032D59] px-5 sm:px-7 lg:px-3 xl:px-7 py-1 shadow-md">
               <div className="flex items-center gap-2.5">
-                <FaGlobe className="h-6 w-6 shrink-0 text-white" />
-                <h1 className="text-xl sm:text-2xl font-black tracking-wider text-white">
+                <FaGlobe className="h-5 w-5 shrink-0 text-white" />
+                <h1 className="text-lg sm:text-xl lg:text-base xl:text-xl font-black tracking-wider text-white leading-tight whitespace-nowrap">
                   SPORTSMEDIA<span className="text-[#F4C430]">.WORLD</span>
                 </h1>
               </div>
-              <span className="text-xs sm:text-[13px] font-bold tracking-wide text-slate-200">
+              <span className="text-[11px] sm:text-xs lg:text-[11px] xl:text-xs font-bold tracking-wide text-slate-200 leading-tight whitespace-nowrap">
                 The Digital Gateway to Sports Talent
               </span>
             </div>
           </div>
 
           {/* RIGHT: More Sports Brighter Lives, Follow Us, Search, Auth */}
-          <div className="flex w-full flex-col items-center lg:items-end gap-1.5 lg:w-auto">
+          <div className="flex w-full flex-col items-center lg:items-end gap-1 lg:w-auto">
             {/* Top row: More Sports Brighter Lives & Follow Us */}
             <div className="flex items-center justify-between w-full lg:w-auto gap-3">
-              <span className="text-xs sm:text-sm font-black italic tracking-wide text-[#0B5FA5]">
+              <span className="text-xs sm:text-sm lg:text-xs xl:text-sm font-black italic tracking-wide text-[#0B5FA5] lg:whitespace-nowrap">
                 More Sports Brighter Lives
               </span>
 
               <div className="flex items-center gap-1.5">
-                <span className="text-xs font-black text-slate-800">Follow Us :</span>
+                <span className="text-xs font-black text-slate-800 whitespace-nowrap">Follow Us :</span>
                 <div className="flex items-center gap-1">
                   {SOCIALS.map(({ Icon, href, bg, label, fill }) => (
                     <a
@@ -138,18 +138,18 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenAuth, onSearch }) =>
 
             {/* Bottom row: Search Bar and Login / Register Buttons */}
             <div className="flex items-center gap-2 w-full lg:w-auto">
-              <form onSubmit={handleSearchSubmit} className="relative flex-1 sm:w-68">
+              <form onSubmit={handleSearchSubmit} className="relative flex-1 sm:w-68 lg:w-40 xl:w-68">
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search Sports, Athletes, Events, Videos..."
-                  className="w-full rounded-full border border-slate-300 bg-slate-50 py-1.5 pl-3.5 pr-8 text-xs font-semibold text-slate-900 shadow-inner placeholder-slate-500 outline-none transition-all focus:border-[#0B5FA5] focus:bg-white"
+                  className="w-full rounded-full border border-slate-300 bg-slate-50 py-1 pl-3.5 pr-8 text-xs font-semibold text-slate-900 shadow-inner placeholder-slate-500 outline-none transition-all focus:border-[#0B5FA5] focus:bg-white"
                 />
                 <button
                   type="submit"
                   aria-label="Search"
-                  className="absolute right-1 top-1/2 -translate-y-1/2 rounded-full p-1.5 bg-[#032D59] text-white hover:bg-[#0B5FA5] transition-colors"
+                  className="absolute right-1 top-1/2 -translate-y-1/2 rounded-full p-1 bg-[#032D59] text-white hover:bg-[#0B5FA5] transition-colors"
                 >
                   <FaSearch size={11} />
                 </button>
@@ -160,7 +160,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenAuth, onSearch }) =>
                   <div className="flex items-center gap-2">
                     <Link
                       href={`/${user.role}/dashboard`}
-                      className="inline-flex items-center gap-1.5 rounded-md bg-[#032D59] px-3.5 py-1.5 text-xs font-black uppercase tracking-wider text-white hover:bg-[#0B5FA5] shadow-xs cursor-pointer active:scale-95 transition-all"
+                      className="inline-flex items-center gap-1.5 rounded-md bg-[#032D59] px-3.5 py-1 text-xs font-black uppercase tracking-wider text-white hover:bg-[#0B5FA5] shadow-xs cursor-pointer active:scale-95 transition-all"
                     >
                       <FaUserShield size={12} className="text-[#F4C430]" />
                       <span>{user.role === 'student' ? 'Trainee Journalist' : user.role} Dashboard</span>
@@ -178,13 +178,13 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenAuth, onSearch }) =>
                   <>
                     <Link
                       href="/login"
-                      className="rounded-md bg-[#0765AD] px-5 py-2 text-sm font-black uppercase tracking-wider text-white hover:bg-[#054E85] shadow-2xs cursor-pointer active:scale-95 transition-all"
+                      className="rounded-md bg-[#0765AD] px-4 lg:px-3 xl:px-4 py-1 text-xs font-black uppercase tracking-wider text-white hover:bg-[#054E85] shadow-2xs cursor-pointer active:scale-95 transition-all"
                     >
                       LOGIN
                     </Link>
                     <Link
                       href="/login?mode=register"
-                      className="rounded-md bg-[#159447] px-5 py-2 text-sm font-black uppercase tracking-wider text-white hover:bg-[#0F7538] shadow-2xs cursor-pointer active:scale-95 transition-all"
+                      className="rounded-md bg-[#159447] px-4 lg:px-3 xl:px-4 py-1 text-xs font-black uppercase tracking-wider text-white hover:bg-[#0F7538] shadow-2xs cursor-pointer active:scale-95 transition-all"
                     >
                       REGISTER
                     </Link>
