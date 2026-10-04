@@ -44,13 +44,13 @@ export const metadata: Metadata = {
     siteName: "SportsMedia.World",
     title,
     description,
-    images: [{ url: "/bluezonelogo.webp" }],
+    images: [{ url: "/logo.png" }],
   },
   twitter: {
     card: "summary",
     title,
     description,
-    images: ["/bluezonelogo.webp"],
+    images: ["/logo.png"],
   },
   robots: {
     index: true,
@@ -58,11 +58,10 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/bluezonelogo.webp", type: "image/webp" },
-      { url: "/icon.webp", type: "image/webp" },
+      { url: "/icon.png", type: "image/png" },
     ],
-    shortcut: "/bluezonelogo.webp",
-    apple: "/bluezonelogo.webp",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
   },
 };
 
@@ -77,9 +76,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full`}
     >
       <head>
-        <link rel="icon" href="/bluezonelogo.webp" type="image/webp" />
-        <link rel="shortcut icon" href="/bluezonelogo.webp" type="image/webp" />
-        <link rel="apple-touch-icon" href="/bluezonelogo.webp" />
+        <link rel="icon" href="/icon.png" type="image/png" />
+        <link rel="shortcut icon" href="/icon.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/icon.png" />
       </head>
       <body className="min-h-full flex flex-col bg-[#f8fafc] text-slate-900">
         <AuthProvider>

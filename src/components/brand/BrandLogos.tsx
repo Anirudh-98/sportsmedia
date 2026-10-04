@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 /**
- * Blue Zone Official Logo using /bluezonelogo.webp
+ * Blue Zone Official Logo using /logo.png
  */
 export const BlueZoneTreeLogo: React.FC<{ className?: string; size?: number }> = ({
   className = '',
@@ -13,7 +13,7 @@ export const BlueZoneTreeLogo: React.FC<{ className?: string; size?: number }> =
       style={{ width: size, height: size }}
     >
       <Image
-        src="/bluezonelogo.webp"
+        src="/logo.png"
         alt="Sports Media Blue Zone Logo"
         fill
         sizes={`${size}px`}

@@ -62,7 +62,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({ onOpenAuth, onSearch }) =>
             <div className="flex items-center gap-2">
               <div className="relative w-10 h-10 sm:w-11 sm:h-11 shrink-0 flex items-center justify-center">
                 <Image
-                  src="/bluezonelogo.webp"
+                  src="/logo.png"
                   alt="Sports Media Blue Zone Logo"
                   fill
                   sizes="64px"

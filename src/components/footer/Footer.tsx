@@ -19,7 +19,7 @@ export const Footer: React.FC = () => {
         <div className="flex items-center gap-2">
           <div className="relative w-8 h-8 flex items-center justify-center shrink-0">
             <Image
-              src="/bluezonelogo.webp"
+              src="/logo.png"
               alt="Sports Media Blue Zone Logo"
               fill
               sizes="64px"

@@ -100,7 +100,7 @@ export default function AboutUsPage() {
           <div className="md:col-span-3 flex flex-col items-center justify-center p-2.5 bg-white/10 rounded-lg border border-white/15 text-center">
             <div className="relative w-12 h-12 mb-1">
               <Image
-                src="/bluezonelogo.webp"
+                src="/logo.png"
                 alt="Blue Zone Logo"
                 fill
                 className="object-contain"

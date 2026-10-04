@@ -294,7 +294,7 @@ export function PressIdCardFront({ student }: { student: StudentIdCardData }) {
       <div className="absolute top-[86px] left-[18px] w-[112px] flex flex-col items-center text-center">
         <div className="relative w-[92px] h-[82px]">
           <Image
-            src="/bluezonelogo.webp"
+            src="/logo.png"
             alt="Sports Media Blue Zone Logo"
             fill
             sizes="92px"
