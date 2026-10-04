@@ -1,7 +1,7 @@
 'use client';
 
 import { db } from '@/lib/firebase';
-import { collection, getDocs, doc, setDoc, updateDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, setDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 
 // ==========================================
 // 1. DATA TYPES (Preserving 100% type compatibility)
@@ -1123,6 +1123,12 @@ export const updateUserStatus = async (
 export const deleteUser = async (userId: string) => {
   const users = store.get<AppUser[]>('app_users', INITIAL_USERS);
   store.set('app_users', users.filter((u) => u.id !== userId));
+
+  if (db) {
+    try {
+      await deleteDoc(doc(db, 'users', userId));
+    } catch {}
+  }
 
   try {
     await fetch(`/api/users/${userId}`, {

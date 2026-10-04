@@ -203,7 +203,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = useCallback(
-    async (email: string, password?: string, targetRole?: UserRole, rememberMe: boolean = true): Promise<UserRole> => {
+    async (email: string, password?: string, targetRole?: UserRole, _rememberMe: boolean = true): Promise<UserRole> => {
       const cleanEmail = email.trim().toLowerCase();
 
       if (!cleanEmail) {

@@ -8,6 +8,8 @@ interface FitToScreenProps {
   className?: string;
   /** Classes for the scaled content wrapper. */
   contentClassName?: string;
+  /** Skip the scaling and let the frame scroll instead. */
+  disabled?: boolean;
 }
 
 const DESKTOP_QUERY = '(min-width: 1024px)';
@@ -23,6 +25,7 @@ export const FitToScreen: React.FC<FitToScreenProps> = ({
   children,
   className = '',
   contentClassName = '',
+  disabled = false,
 }) => {
   const frameRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -30,7 +33,7 @@ export const FitToScreen: React.FC<FitToScreenProps> = ({
   useLayoutEffect(() => {
     const frame = frameRef.current;
     const content = contentRef.current;
-    if (!frame || !content) return;
+    if (!frame || !content || disabled) return;
 
     const desktop = window.matchMedia(DESKTOP_QUERY);
     let raf = 0;
@@ -75,11 +78,13 @@ export const FitToScreen: React.FC<FitToScreenProps> = ({
       cancelAnimationFrame(raf);
       observer.disconnect();
       desktop.removeEventListener('change', schedule);
+      content.style.zoom = '';
+      frame.style.overflowY = '';
     };
-  }, []);
+  }, [disabled]);
 
   return (
-    <div ref={frameRef} className={`lg:min-h-0 lg:overflow-hidden ${className}`}>
+    <div ref={frameRef} className={`lg:min-h-0 ${disabled ? 'lg:overflow-y-auto' : 'lg:overflow-hidden'} ${className}`}>
       <div ref={contentRef} className={`flex flex-col lg:min-h-full ${contentClassName}`}>
         {children}
       </div>

@@ -14,7 +14,11 @@ import {
   Camera,
   ArrowRight,
   Download,
+  ShieldCheck,
+  Sparkles,
+  Printer,
 } from 'lucide-react';
+import { PressIdCardBothSides, PRESET_STUDENTS, StudentIdCardData, printPressIdCard } from '@/components/idcard/PressIdCard';
 import { DashboardShell } from '@/components/dashboard/DashboardShell';
 import { STUDENT_NAV_ITEMS } from '@/components/dashboard/dashboardNav';
 import {
@@ -103,6 +107,16 @@ export default function StudentDashboardPage() {
     showToast('Assignment submitted successfully! Sent to instructor for grading.');
   };
 
+  const idCardStudent: StudentIdCardData = {
+    ...PRESET_STUDENTS[0],
+    name: user?.name || PRESET_STUDENTS[0].name,
+    avatar: user?.avatar || PRESET_STUDENTS[0].avatar,
+    idNo: user?.id
+      ? `SMBZ-TJ-2025-${user.id.replace(/\D/g, '').slice(-3).padStart(3, '0')}`
+      : PRESET_STUDENTS[0].idNo,
+    institution: user?.institution || PRESET_STUDENTS[0].institution,
+  };
+
   const completedCoursesCount = courses.filter((c) => c.status === 'completed').length;
   const pendingAssignmentsCount = assignments.filter((a) => a.status === 'pending').length;
 
@@ -113,6 +127,7 @@ export default function StudentDashboardPage() {
       roleBadge="Journalism School"
       themeColor={ACCENT}
       navItems={STUDENT_NAV_ITEMS}
+      scrollable
     >
       {toastMsg && (
         <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-2.5 text-sm font-medium animate-in fade-in slide-in-from-bottom-3">
@@ -131,6 +146,13 @@ export default function StudentDashboardPage() {
         </div>
         <div className="flex flex-wrap gap-2">
           <Link
+            href="/student/id-card"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-sky-300 bg-sky-50 text-sky-800 text-sm font-semibold hover:bg-sky-100 transition-colors cursor-pointer"
+          >
+            <ShieldCheck size={16} className="text-sky-700" />
+            Press ID Card
+          </Link>
+          <Link
             href="/student/learning"
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-sm font-semibold hover:bg-slate-50 transition-colors cursor-pointer"
           >
@@ -148,6 +170,100 @@ export default function StudentDashboardPage() {
           </button>
         </div>
       </div>
+
+      {/* HIGHLIGHTED PRESS ID CARD */}
+      <section
+        id="press-id-card"
+        className="rounded-3xl p-[2px] mb-3 bg-gradient-to-r from-sky-400 via-blue-500 to-amber-400 shadow-lg shadow-blue-900/20"
+      >
+        <div className="rounded-[22px] bg-gradient-to-br from-[#061833] via-[#0A2244] to-[#12327F] p-4 sm:p-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-4 border-b border-white/10">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-white/10 text-sky-300 flex items-center justify-center shrink-0">
+                <ShieldCheck size={22} />
+              </div>
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <h2 className="text-base sm:text-lg font-extrabold text-white tracking-tight">
+                    Your Official Press ID Card
+                  </h2>
+                  <span className="inline-flex items-center gap-1.5 text-[11px] font-bold bg-emerald-400/15 text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-400/30">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    Verified Digital Pass
+                  </span>
+                </div>
+                <p className="text-xs text-sky-100/70">
+                  Trainee Sports Media Journalist &middot; {idCardStudent.idNo} &middot; Valid till {idCardStudent.validTill}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => printPressIdCard('front')}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white text-[#0A2244] hover:bg-sky-50 text-xs font-bold transition-colors cursor-pointer"
+              >
+                <Printer size={14} />
+                <span>Print Front</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => printPressIdCard('back')}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white text-[#0A2244] hover:bg-sky-50 text-xs font-bold transition-colors cursor-pointer"
+              >
+                <Printer size={14} />
+                <span>Print Back</span>
+              </button>
+              <Link
+                href="/student/id-card"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-white/20 bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-colors"
+              >
+                <span>Full ID Studio</span>
+                <ArrowRight size={13} />
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 2xl:grid-cols-[minmax(0,940px)_minmax(0,1fr)] gap-5 items-center">
+            {/* Front & back of the card */}
+            <div className="flex justify-center">
+              <PressIdCardBothSides student={idCardStudent} cardWidth={460} />
+            </div>
+
+            {/* Card usage notes */}
+            <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-1 gap-3 text-sm text-sky-50/85">
+              <div className="rounded-2xl p-4 bg-white/5 border border-white/10 space-y-2.5">
+                <h4 className="font-bold text-white text-sm flex items-center gap-2">
+                  <Sparkles size={16} className="text-amber-300" /> What this ID is for
+                </h4>
+                <p className="leading-relaxed">
+                  Identifies you as a trainee on the <strong className="text-white">Sports Journalism Certificate Training Programme</strong> during authorised training and field assignments.
+                </p>
+                <ul className="space-y-1.5 list-disc pl-4">
+                  <li>Interviews, photography and video coverage of sports events.</li>
+                  <li>Always take prior permission from the school, organiser and individuals.</li>
+                  <li>It is not government accreditation or official press status.</li>
+                </ul>
+              </div>
+
+              <div className="rounded-2xl p-4 bg-white/5 border border-white/10 grid grid-cols-2 gap-3">
+                {[
+                  { label: 'Name', value: idCardStudent.name },
+                  { label: 'ID No.', value: idCardStudent.idNo },
+                  { label: 'Course', value: idCardStudent.course },
+                  { label: 'Blood Group', value: idCardStudent.bloodGroup },
+                ].map((item) => (
+                  <div key={item.label} className="min-w-0">
+                    <p className="text-[11px] text-sky-200/60">{item.label}</p>
+                    <p className="font-semibold text-white truncate">{item.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* STATS */}
       <div className="flex flex-wrap items-center gap-y-3 bg-white border border-slate-100 rounded-2xl px-4 py-2 mb-3 shadow-sm">

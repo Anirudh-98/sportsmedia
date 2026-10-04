@@ -25,6 +25,8 @@ interface DashboardShellProps {
   roleBadge: string;
   themeColor: string;
   navItems: NavItem[];
+  /** Let the page scroll at full size instead of scaling it to fit one screen. */
+  scrollable?: boolean;
   children: React.ReactNode;
 }
 
@@ -34,6 +36,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
   roleBadge,
   themeColor,
   navItems,
+  scrollable = false,
   children,
 }) => {
   const pathname = usePathname();
@@ -268,7 +271,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({
         )}
 
         {/* Page content is scaled to fit the remaining screen height on desktop */}
-        <FitToScreen className="flex-1 min-w-0 flex flex-col overflow-x-hidden">
+        <FitToScreen disabled={scrollable} className="flex-1 min-w-0 flex flex-col overflow-x-hidden">
           <main className="flex-1 w-full p-3 sm:p-4">{children}</main>
         </FitToScreen>
       </div>

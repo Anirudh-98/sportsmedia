@@ -33,6 +33,7 @@ export interface NavItem {
 
 export const STUDENT_NAV_ITEMS: NavItem[] = [
   { label: 'Dashboard', href: '/student/dashboard', icon: GraduationCap },
+  { label: 'Press ID Card', href: '/student/id-card', icon: ShieldCheck, badge: 'Official' },
   { label: 'My Learning', href: '/student/learning', icon: BookOpen },
   { label: 'Courses', href: '/student/courses', icon: PlayCircle },
   { label: 'Assignments', href: '/student/assignments', icon: Clock, badge: '2 Due' },

@@ -72,8 +72,8 @@ export default function ContactPage() {
                 </span>
                 <span className="text-xs text-slate-600 font-medium leading-relaxed">
                   Sports Media Blue Zone Foundation<br />
-                  Plot No. 42, Road No. 3, Banjara Hills / Gachibowli Sports Hub<br />
-                  Hyderabad, Telangana - 500034, India
+                  # 407, South Block, Archana Arcade<br />
+                  Secunderabad - 500 003, Telangana, India
                 </span>
               </div>
             </div>
